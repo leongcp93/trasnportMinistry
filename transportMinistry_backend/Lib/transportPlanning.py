@@ -1,39 +1,69 @@
-# -*- coding: u/tf-8 -*-
+# -*- coding: utf-8 -*-
 """
-Created on Thu Apr 19 13:32:09 2018
+Created on Thu Apr 19 09:08:54 2018
 
 @author: BrunoAdmin
 """
+
 import databaseInteraction as db
 import datetime
 import pandas as pd
+import os
 
-def create_event():
+global path
+path = "../Events_temp"
+
+## Event file handling
+def create_event(lg, date, time):
     """
     Create a temp event with unique id.
     
     Returns the uniqueID of the event
     """
-    pass
+    # define name
+    unique_id = "[{}]{}{}".format(lg,date, time)
+    
+    # define file
+    file = pd.DataFrame()
+    file.to_csv('{}/{}.csv'.format(path, unique_id), index=False)
+    return unique_id
 
-def delete_event():
+
+def delete_event(event_id=None):
     """
     Simply deleted a finished event
     
     Returns flag
     """
-    pass
+    try:
+        filename = "{}.txt".format(event_id)
+        os.remove("{}/{}".format(path, filename))
+        return "Delete successfully"
+    except:
+        return "Warning: event not found."
 
-
-def show_all_events(lg=):
+def find_lg_events(lg=None):
     """
     Returns all the ID of one lifegroup
-    
     """
-    pass
+    # get all files from the directory
+    ls = os.listdir("{}".format(path))
+    
+    # parse the bracket and append only file with lg==this_lg
+    files = []
+    for i in ls:
+        # Analysing lifegroup
+        this_lg = i.split(']')[0].strip('[]')
+        if this_lg == lg or lg==None:
+            files.append(i)
+            
+    return files
 
+## event file handling ends
+    
 
-def submit(lg_unit, name, driver_flag):
+## Event action handling
+def submit(event_id, lg_unit, name, driver_flag):
     """
     Submit attendee's info; Store it temporary in folder Event_temp
     Returns: flag (success / fail)
@@ -63,7 +93,6 @@ def submit(lg_unit, name, driver_flag):
     
     # Register this person into event
     df = pd.read_csv()
-    df
     
     
     # return flag 
@@ -81,3 +110,5 @@ def submit_confirm(lg_unit, name):
     # store
     
     pass
+
+## Event action handling ends
