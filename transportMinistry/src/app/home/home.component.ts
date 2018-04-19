@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  adminForm: FormGroup;
+  post: any;
+  id: string = '';
+  password: string = '';
+
+  constructor(private fb: FormBuilder) {
+
+    this.adminForm = fb.group({
+      'id': [null, Validators.required],
+      'password': [null, Validators.required],
+      'validate' : ''
+    });
+
+   }
 
   ngOnInit() {
+  }
+
+  addPost(post){
+    this.id = post.id;
+    this.password = post.password;
   }
 
 }

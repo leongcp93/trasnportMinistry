@@ -1,15 +1,23 @@
-<div align="right">
-    <button type="button" class="btn btn-link nav-item">Admin login</button>
-    </div>
- 
  <div class="container-fluid content-align-default" align="center">
-   <label><strong>Lifegroup Unit</strong></label><br>
-  <input type="text" class="txt col-md-6" name="lifegroup" placeholder="Lifegroup Unit..."><br>
-  <label><strong>Name</strong></label><br>
-  <input type="text" class="txt col-md-6" name="name" placeholder="Your Name..."><br>
-  <label> Are you a driver?</label><br>
-  <label>Yes</label>&nbsp;<input type="checkbox" name="Yes" id="">
-  <label>No</label>&nbsp;<input type="checkbox" name="No" id=""><br>
-  <button type="submit" class="btn btn-primary custome-button col-md-6">Submit</button><br>
-  <button type="button" class="btn btn-link col-md-6">New Friend?</button>
+  <div align="right">
+    <a routerLink="/home" class="btn btn-link nav-item">Admin login</a>
+    </div>
+
+<div *ngIf="!name; else forminfo">
+  <form [formGroup]="signupForm" (ngSubmit)="addPost(signupForm.value)">
+    <div>
+      <label><strong>Lifegroup Unit</strong></label><br>
+      <input class="txt col-md-6" formControlName="lifegroup" type="text"><br>
+      <div class="alert col-md-6" *ngIf="!signupForm.controls['lifegroup'].valid && signupForm.controls['lifegroup'].touched">Please key in your unit.</div><br>
+      <label><strong>Name</strong></label><br>
+      <input class="txt col-md-6" formControlName="name" type="text"><br>
+      <div class="alert col-md-6" *ngIf="!signupForm.controls['name'].valid && signupForm.controls['name'].touched">Please do fill your name.</div><br>
+
+    <label> Are you a driver?</label><br>
+    <label>Yes</label>&nbsp;<input type="checkbox" name="Yes" id="">
+    <label>No</label>&nbsp;<input type="checkbox" name="No" id=""><br>
+    <input type="button" class="btn btn-primary col-md-6" value="Submit" [disabled]="!signupForm.valid"><br>
+   <a routerLink="/add-people" class="btn btn-link col-md-6">New Friend?</a>
+</div>
+</form>
 </div>
