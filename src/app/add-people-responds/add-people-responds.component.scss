@@ -2,3 +2,19 @@
     padding: 20px;
     margin: 5%;
 }
+
+.content-display{
+    animation: 2s contDisplay forwards;
+}
+
+@keyframes contDisplay {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

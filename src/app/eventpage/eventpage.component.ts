@@ -19,8 +19,8 @@ export class EventpageComponent implements OnInit {
 
   constructor(private fb: FormBuilder) { 
     this.eventForm = fb.group ({
-      'fromLocation':[null, Validators.required],
-      'toLocation':[null, Validators.required],
+      'fromLocation':[null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
+      'toLocation':[null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'setTime':[null, Validators.required],
       'validate': ''
     })

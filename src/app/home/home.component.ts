@@ -16,8 +16,8 @@ export class HomeComponent implements OnInit {
   constructor(private fb: FormBuilder) {
 
     this.adminForm = fb.group({
-      'id': [null, Validators.required],
-      'password': [null, Validators.required],
+      'id': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
+      'password': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'validate' : ''
     });
 

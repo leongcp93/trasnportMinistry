@@ -2,7 +2,9 @@
   <a routerLink="/signup" class="btn btn-link">Back</a>
 </div>
 
-<div class="container-fluid add-people-align" align="center">
+<!--Validation this part is completed and required to seperate the condition-->
+
+<div class="container-fluid add-people-align content-display" align="center">
   <form [formGroup]="addForm" (ngSubmit)="addPost(addForm.value)">
     <label><strong>Name</strong></label><br>
   <input formControlName="name" type="text" class="txt col-md-6" placeholder="Your name..."><br>
@@ -12,7 +14,7 @@
   <div class="alert col-md-6" *ngIf="!addForm.controls['postcode'].valid && addForm.controls['postcode'].touched">Postcode is required</div>
   <br>
   <br>
-  <input type="submit" class="btn btn-primary col-md-6 button-design" value="Submit" [disabled]="!addForm.valid">
+  <input routerLink="/add-people-responds" type="submit" class="btn btn-primary col-md-6 button-design" value="Submit" [disabled]="!addForm.valid">
   <!--<a routerLink="/add-people-responds" class="btn btn-primary col-md-6 button-design">Submit</a>-->
   </form>
   

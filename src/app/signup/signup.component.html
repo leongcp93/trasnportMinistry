@@ -12,12 +12,20 @@
       <label><strong>Name</strong></label><br>
       <input class="txt col-md-6" formControlName="name" type="text"><br>
       <div class="alert col-md-6" *ngIf="!signupForm.controls['name'].valid && signupForm.controls['name'].touched">Please do fill your name.</div><br>
+      <label><strong>Postcode (Optional)</strong></label><br>
+      <input class="txt col-md-6" formControlName="postcode" type="text"><br>
+      <div class="alert col-md-6" *ngIf="!signupForm.controls['postcode'].valid">Please key in the correct format.</div><br>
 
-    <label> Are you a driver?</label><br>
-    <label>Yes</label>&nbsp;<input type="checkbox" name="Yes" id="">
-    <label>No</label>&nbsp;<input type="checkbox" name="No" id=""><br>
-    <button routerLink="/submit-responds" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid"><i class="fa fa-check-circle"></i> Submit</button><br>
-    <!--<input type="button" class="btn btn-primary col-md-6" value="Submit" [disabled]="!signupForm.valid"><br>-->
+      
+        <label> Are you a driver?</label><br>
+        <label>Yes <input type="radio" name="isDriver" required></label>
+        <label>No <input type="radio" name="isDriver" required></label><br>
+      
+      
+       
+      
+      <button routerLink="/submit-responds" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid"><i class="fa fa-check-circle"></i> Submit</button><br>
+      <!--<input type="button" class="btn btn-primary col-md-6" value="Submit" [disabled]="!signupForm.valid"><br>-->
    <a routerLink="/add-people" class="btn btn-link col-md-6">New Friend?</a>
 </div>
 </form>

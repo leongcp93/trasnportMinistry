@@ -26,6 +26,8 @@ import { AddPeopleComponent } from './add-people/add-people.component';
 import { ProfileInfoComponent } from './profile-info/profile-info.component';
 import { AddPeopleRespondsComponent } from './add-people-responds/add-people-responds.component';
 import { EventpageComponent } from './eventpage/eventpage.component';
+import { EditPageComponent } from './edit-page/edit-page.component';
+import { EditPageRespondComponent } from './edit-page-respond/edit-page-respond.component';
 
 
 
@@ -47,7 +49,11 @@ import { EventpageComponent } from './eventpage/eventpage.component';
     
     AddPeopleRespondsComponent,
     
-    EventpageComponent
+    EventpageComponent,
+    
+    EditPageComponent,
+    
+    EditPageRespondComponent
     
   ],
   imports: [
@@ -55,6 +61,7 @@ import { EventpageComponent } from './eventpage/eventpage.component';
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
+    FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule
