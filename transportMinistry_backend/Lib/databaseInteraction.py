@@ -49,7 +49,7 @@ class Person (object):
         # query
         q = "INSERT INTO {tb} (name, lg, postcode) \
         VALUES ('{nm}', '{lg}', {pc});".format(tb=table1_name, nm = name, lg=unit, pc=postcode)
-        msg = _sql(q)            
+        msg = _sql(q)        
         return msg
         
     
@@ -136,7 +136,7 @@ def red_reset_button():
     - Destroy everything :))))))
     - Re-create tables
     """    
-    
+    print('You have decided to clear out everything...')
     # Delete all records
     sql1 = "DROP TABLE {tn};".format(tn = table1_name)
     sql2= "DROP TABLE {tn};".format(tn = table2_name)
@@ -171,12 +171,14 @@ def red_reset_button():
         else:
             print("{} --  error --  {}".format(q,e))
         
+    return 'Reset db'
+
 def _sql(q):
     """
     Space for direct sql
     """
     ## Standard procedure
-    sql_file = "../Database/my_db.sqlite"
+    sql_file = "Database/my_db.sqlite"
     conn = sqlite3.connect(sql_file)
     c=conn.cursor()
     w = q.split(" ")
@@ -208,16 +210,22 @@ def _sql(q):
     
     
 ## Debugging Testing
-"""    
 if __name__ == '__main__':
-    red_reset_button()     
-    e = LifeGroup('uq4')
-    e.add_lg()
-    p = Person('uq6','bruno',4067)
-    p.add_db() # success
-    p = Person('uq4','sd',4000)
-    p.add_db() # failed
+    # change directory only if run as debug
+    global sql_file
+    sql_file = "../Database/my_db.sqlite"
     
+    red_reset_button()     
+    
+    ## register lg
+    lgs = []
+    lgs.extend(["uq{}".format(lg) for lg in range(1,10)])
+    lgs.extend(["qut{}".format(lg) for lg in range(1,7)])
+    for lg in lgs:
+        LifeGroup(lg).add_lg()
+        
+    ## testing    
+    Person('uq6','bruno',4067).add_db() # success
+    Person('uq4','sd',4000).add_db() # fail
     show_all_lg()
     show_person(lg=10000)
-"""

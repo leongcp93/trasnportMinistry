@@ -8,109 +8,21 @@ Notes:
     Webservice run on port 3000
 
 """
-from flask import Flask, Response, request, send_file
+from flask import Flask, Response, request, send_file, jsonify, send_from_directory
 import threading
-import lib.databaseInteraction
-import lib.algorithms
+import Lib.databaseInteraction as db
+import Lib.algorithms as alg
+import Lib.transportPlanning as plan
 import csv
+import os
 app = Flask(__name__)
-
-
-## -------------------------------------------------------------
-## -------------------------------------------------------------
-
-@app.route("/runspider")
-def run_runspider():
-    """
-    Run the spider.    
-    Return a flag that telling client computer that the app is running
-    multi-thread
-    """       
-    try: 
-        # Train data (Thread)
-        def crawling_begin():
-            # just to run the py script (according to email)
-            import os
-            os.system("python webScraping.py")
-        
-        td = threading.Thread(target=crawling_begin)
-        td.daemon = True
-        td.start()
-        return "Thank you the spider is crawling :) Come back after 2 hours"
-    except:
-        return "Something went wrong, 898"
-    
-@app.route("/runtest")
-def run_runtest():
-    """
-    Run the spider.    
-    Return a flag that telling client computer that the app is running
-    multi-thread
-    """       
-    try: 
-        # Train data (Thread)
-        def crawling_begin():
-            # just to run the py script (according to email)
-            import os
-            os.system("python webScraping_testing.py")
-        
-        td = threading.Thread(target=crawling_begin)
-        td.daemon = True
-        td.start()
-        return "Thank you the spider is crawling :) Come back after 2 hours"
-    except:
-        return "Something went wrong, 898"
-
-
-
-@app.route("/test")
-def get_testing():
-    """
-    Get the current status: whether or not a scraper is running    
-    """
-    try: 
-        # Train data (Thread)
-        def daemon_testing():
-            # just to run the py script (according to email)
-            import os
-            os.system("python testDaemon.py")
-        
-        td = threading.Thread(target=daemon_testing)
-        td.daemon = True
-        td.start()
-        return "a file is supposed to be generated soon according to time"
-    except Exception as e:
-        return "testing went wrong: {}".format(e)
-
-@app.route("/status")
-def get_status():
-    """
-    Get the current status: whether or not a scraper is running    
-    """
-    return "status"    
-
-###### Download general file
-@app.route("/download")
-def download_latest():
-    """
-    Download the latest job _analysed.csv when called    
-    """
-    try:
-        import os
-        f_name = _get_latest_fname()
-        return send_file(os.path.join("job_dataset/", f_name), attachment_filename=f_name, as_attachment=True)
-    
-    except Exception as e:
-        return "Downloading error: {}".format(e)
-    
-    
-## -------------------------------------------------------------
-## -------------------------------------------------------------
-    
     
 ## Actual implementation
-@app.route("/")
-def index():
+global url_prex
+url_prex = '/api'
+    
+@app.route("{}/".format(url_prex), methods=['GET'])
+def index(): 
     """
     Landing page
     """
@@ -129,17 +41,24 @@ def index():
           of the RESTful api that you can call directly via url. JSON files or otherwise strings\
            will be returned. I hope you are developer, otherwise please use the proper interface to \
            interact with the system. IF YOU SIMPLY CALL THESE METHODS, YOU WILL PROBABLY SCREW \
-           UP THE SYSTEM!!!!"]
+           UP THE SYSTEM!!!! nuh i m just kidding..."]
     dc = html_process("p",dc)
-    methods = ["[get ] /: webservice landing page, instructions of all available methods",
+    methods = ["[get ] /: webservice landing page, instructions of all available methods", ##
+               "[get ] /readme: all the detailed requirements",
+               "--- DB interaction ---",
+               "[post] /editPerson: {'lg':value, 'name':value, 'postcode':value}", ##
+               "[post] /deletePerson: {'lg':value, 'name':value}", ##
+               "[post] /registerPerson: {'lg':value, 'name':value, 'postcode':value}", ##
+               "[post] /addLG: {'lg':value, 'auth':value}", ##
+               "[post] /deleteLG: {'lg':value, 'auth':value}",##
+               "[get ] /nuclearbomb: reset everything",##
+               "--- Event planning ---",
                "[post] /submit: ",
-               "[post] /submitConfirm: ",
-               "[post] /editPerson: ",
-               "[post] /deletePerson: ",
-               "[post] /findCombination: ",
-               "[post] /registerPerson: ",
-               "[post] /addLG: ", 
-               "[post] /deleteLG: "]
+               "[post] /bestmatches: ",
+               "--- Display info ---",
+               "[get ] /whoisgoing/?event_id=<value> : show all the names who is going",
+               "[get ] /showmembers/?auth=<value>&lg=<value> : who is in the lifegroup",
+               "[get ] /"]
     methods = html_process("li",methods)
     
     
@@ -162,10 +81,14 @@ def index():
     
     return body    
 
+## Reademe
+@app.route("{}/readme".format(url_prex), methods=['GET'])
+def read_me():
+    return app.send_static_file('readme.html')
 
 ## DB direct modify
-@app.route("/addLG")
-def add_LG():
+@app.route("{}/addLG".format(url_prex), methods=['POST'])
+def add_LG(): ##
     """
     Register life group
     
@@ -175,10 +98,24 @@ def add_LG():
     Returns:
         - success / fail
     """
-    return "log"
+    try:
+        ## receive file
+        content = request.get_json()
+        lg = content.get('lg')
+        
+        ## exec
+        msg = db.LifeGroup(lg=lg)
+        msg = msg.add_lg()
+        
+        return msg
+    
+    except Exception as e:
+        return e
+        #return "Some internal error existed"
 
-@app.route("/deleteLG")
-def delete_LG():
+
+@app.route("{}/deleteLG".format(url_prex), methods=['POST'])
+def delete_LG(): ##
     """
     Delete life group
     
@@ -188,15 +125,18 @@ def delete_LG():
     Returns:
         - success / fail
     """
-    return "log"## Helper Person Info class
-class Info (object):
-    def __init__(self, lg = None, name = None, postcode = None):
-        self.lg = lg
-        self.name = name
-        self.postcode = postcode
+    try:
+        ## receive file
+        content = request.get_json()
+        lg = content.get('lg')
+        msg = db.LifeGroup(lg).del_lg()
+        return msg
     
-@app.route("/registerPerson")
-def add_person():
+    except Exception as e:
+        return "Some internal error existed"
+    
+@app.route("{}/registerPerson".format(url_prex), methods=['POST'])
+def add_person(): ##
     """
     Register person
     
@@ -208,12 +148,21 @@ def add_person():
     Returns:
         - success / fail
     """
-    info = Info(lg = None, name = None, postcode = None)
-    p = Person(info)
-    p.add_db()
-    return "Added successfully"
+    try:
+        ## receive file
+        content = request.get_json()
+        lg = content.get('lg')
+        name = content.get('name')
+        postcode = content.get('postcode')
+        
+        msg = db.Person(lg = lg, name = name, postcode = postcode).add_db()
+        return msg
+        #return "Added successfully"
+    
+    except Exception as e:
+        return "Some internal error existed"
 
-@app.route("/editPerson")
+@app.route("{}/editPerson".format(url_prex), methods=['POST'])
 def edit_person():
     """
     Register life group
@@ -226,11 +175,22 @@ def edit_person():
     Returns:
         - success / fail
     """
-    p = Person()
-    p.edit_db()
-    return "Edited successfully"
+    try:
+        ## receive file
+        content = request.get_json()
+        lg = content.get('lg')
+        name = content.get('name')
+        postcode = content.get('postcode')
+        
+        msg = db.Person(lg = lg, name = name, postcode = postcode).edit_db()
+        return msg
+        #return "Edited successfully"
+    
+    except Exception as e:
+        return "Some internal error existed"
+    
 
-@app.route("/deletePerson")
+@app.route("{}/deletePerson".format(url_prex), methods=['POST'])
 def delete_person():
     """
     Register life group
@@ -242,10 +202,113 @@ def delete_person():
     Returns:
         - success / fail
     """
-    p = Person()
-    p.del_db()
-    return "Deleted successfully"
+    try:
+        ## receive file
+        content = request.get_json()
+        lg = content.get('lg')
+        name = content.get('name')
+        
+        msg = db.Person(lg = lg, name = name).del_db()
+        return msg
+        #return "Deleted successfully"
+    
+    except Exception as e:
+        return "Some internal error existed"
 
+@app.route("{}/nuclearbomb".format(url_prex), methods=['GET'])
+def reset(): ##
+    """
+    Reset db
+    """
+    msg = db.red_reset_button()
+    return msg
+
+
+## -------------------------------------------------------------
+## ----------------Event -------------------------------------
+@app.route("{}/submit".format(url_prex), methods=['POST'])
+def api_submit(): ##
+    """
+    Submit the person info that are going to one particular event.
+    """
+    try:
+        ## receive file
+        content = request.get_json()
+        event = content.get('event_id')
+        lg = content.get('lg')
+        name = content.get('name')
+        driver_flag = content.get('isDriver')
+        pc_from = content.get('postcode_from')
+        pc_to = content.get('postcode_to')
+        
+        ## 
+        msg = submit(event, lg, name, driver_flag, pc_from, pc_to)
+        if type(msg) == tuple:
+            pass
+            
+        else:
+            return msg
+    
+    except Exception as e:
+        return "Some internal error existed {}".format(e)
+
+@app.route("{}/createEvent".format(url_prex), methods=['POST'])
+def api_createEvent(): ##
+    """
+    Submit the person info that are going to one particular event.
+    """
+    try:
+        ## receive file
+        content = request.get_json()
+        lg = content.get('lg')
+        pc_from = content.get('postcode_from')
+        pc_to = content.get('postcode_to')
+        note = content.get('note')
+        
+        ## Event        
+        e = plan.Event(lg= lg, note=note)
+        e_id = e.create_event()
+        return e_id
+    
+    except Exception as e:
+        return "Some internal error existed {}".format(e)
+    
+@app.route("{}/bestmatches".format(url_prex), methods=['POST'])
+def api_bestmatches(): ##
+    """
+    Submit the person info that are going to one particular event.
+    """
+    try:
+        ## receive file
+        content = request.get_json()
+        event_id = content.get('event_id')
+        lg = content.get('lg')
+        
+        ## Get drivers / passengers
+        drivers
+        passengers
+        
+        ## trigger calculation        
+        mapping = alg.find_combinations(drivers, passengers)
+        return mapping
+    
+    except Exception as e:
+        return "Some internal error existed {}".format(e)
+
+
+## ----------------End Event----------------------------------------
+## -------------------------------------------------------------
+    
+
+    ## -------------------------------------------------------------
+## -------------------------------------------------------------
+    ## -------------------------------------------------------------
+## -------------------------------------------------------------
+    ## -------------------------------------------------------------
+## -------------------------------------------------------------
+    
+## -------------------------------------------------------------
+## -------------------------------------------------------------
 
 ### Scheduler
 """
@@ -254,4 +317,12 @@ https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-
 
 """
 if __name__ == "__main__":
+    ## cd to absolute dir (depends on server)
+    #os.chdir("/home/bruno1993/transport_api/")
     app.run(host="0.0.0.0", port=3000)
+    
+    
+    
+    
+    
+    
