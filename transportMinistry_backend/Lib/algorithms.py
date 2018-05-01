@@ -188,7 +188,7 @@ class postcode_finder(object):
     """
     def __init__(self):
         import pandas as pd
-        self.d = pd.read_csv('../Database/Australian_postcode_location.csv')
+        self.d = pd.read_csv('Database/Australian_postcode_location.csv')
 
     def _return_coordinates(self, postcode):
         """
@@ -206,7 +206,7 @@ class postcode_finder(object):
 ### Debug: dummy inputs
 if __name__ == "__main__":
     # demo example
-    drivers = {'adam':(4000, 3), 
+    drivers = {'adam':(4000, 1), 
                'peter':(4067, 5),
                'spam':(4066, 6),
                'rr':(4000, 3)}
@@ -253,7 +253,7 @@ if __name__ == "__main__":
                   'pvdvp':4067,
                   'pnfbpp':4104,
                   'svfb':4069,
-                  'sdgns':4074,}
+                  'sdgns':4074}
     
     d = find_combinations(drivers, passengers)
     print(d)

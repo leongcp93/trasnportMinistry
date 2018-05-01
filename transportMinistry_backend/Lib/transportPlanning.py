@@ -44,7 +44,7 @@ class Event(object):
         unique_id = "[{}]{}#{}#".format(lg,date, time)
         
         # define file
-        colm = {'name':[], 'from':[], 'to':[], 'driver':[]}
+        colm = {'name':[], 'postcode':[], 'driver':[]}
         file = pd.DataFrame(data=colm)    
         
         file.to_csv('{}/{}.csv'.format(path, unique_id), index=False)
@@ -95,7 +95,7 @@ class Event(object):
 
 
 ## Event action handling
-def submit(event_id, lg_unit, name, driver_flag, code_from, code_to):
+def submit(event_id, lg_unit, name, driver_flag, code_from, code_to, code_vary):
     """
     Submit attendee's info; Store it temporary in folder Event_temp
     Returns: flag (success / fail)
@@ -128,7 +128,7 @@ def submit(event_id, lg_unit, name, driver_flag, code_from, code_to):
         return e
     
 
-def _submit_confirm(lg_unit, name, event_id, code_from, code_to, driver_flag):
+def _submit_confirm(lg_unit, name, event_id, code_from, code_to, code_vary, driver_flag):
     """
     Require the input be correct
     Returns: flag (success / fail)    
@@ -145,7 +145,7 @@ def _submit_confirm(lg_unit, name, event_id, code_from, code_to, driver_flag):
     #### Register this person into event
     event_path = '{}/{}.csv'.format(path, event_id)
     df = pd.read_csv(event_path)
-    df = df.append({'name':name, 'from':code_from, 'to':code_to, 'driver':driver_flag}, ignore_index=True)
+    df = df.append({'name':name, 'postcode':code_vary, 'driver':driver_flag}, ignore_index=True)
     df.to_csv('{}/{}.csv'.format(path, event_id), index=False)
     
     #### Registering done
@@ -163,5 +163,5 @@ if __name__ == "__main__":
     # personal info
     lg = 'uq6'
     name = 'bruno'
-    print(submit(u_id, lg,name, 1, 4000, 4067))
+    print(submit(u_id, lg,name, 4, 4000, 4067, 4067))
     

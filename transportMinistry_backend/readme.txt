@@ -36,8 +36,8 @@ Here are all the methods that you can call; Also their detailed specifications.
 	required: {'event_id','lg','name','isDriver','postcode_from','postcode_to'}
 	return: {}
 
-[post] /bestmatches: /*
-	required: {'event_id','lg'}
+[post] /bestmatches: //
+	required: {'event_id'}
 	return: {driver1:[passenger_names,...], driver2:[p_name,...]...}
 
 --- Display info ---

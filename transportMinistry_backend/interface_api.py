@@ -15,6 +15,7 @@ import Lib.algorithms as alg
 import Lib.transportPlanning as plan
 import csv
 import os
+import pandas as pd
 app = Flask(__name__)
     
 ## Actual implementation
@@ -282,31 +283,41 @@ def api_bestmatches(): ##
         ## receive file
         content = request.get_json()
         event_id = content.get('event_id')
-        lg = content.get('lg')
         
         ## Get drivers / passengers
-        drivers
-        passengers
+        event_file = "Events_temp/{}.csv".format(event_id)
+        file = pd.read_csv(event_file)
         
-        ## trigger calculation        
-        mapping = alg.find_combinations(drivers, passengers)
-        return mapping
+        condition_isDriver = file['driver'] != 0 #as for driver column, non-0 is capacity
+        condition_isPassenger = file['driver'] == 0
+        drivers = file[condition_isDriver]
+        passengers = file[condition_isPassenger]
+        
+        map_drivers = {}
+        map_passengers = {}
+        
+        for i, row in drivers.iterrows():
+            ## Append drive into the dictionary
+            name = row['name']
+            info_pair = (row['postcode'], row['driver'])
+            map_drivers.update({name: info_pair})
+            
+        for i, row in passengers.iterrows():
+            ## Append passenger into the dictionary
+            name = row['name']
+            postcode = row['postcode']
+            map_passengers.update({name: postcode})        
+        
+        ## trigger calculation
+        mapping = alg.find_combinations(map_drivers, map_passengers)
+        return jsonify(mapping)
     
     except Exception as e:
-        return "Some internal error existed {}".format(e)
+        return "Error: Please check again the input of Event ID or Lifegroup{}".format(e)
 
 
 ## ----------------End Event----------------------------------------
 ## -------------------------------------------------------------
-    
-
-    ## -------------------------------------------------------------
-## -------------------------------------------------------------
-    ## -------------------------------------------------------------
-## -------------------------------------------------------------
-    ## -------------------------------------------------------------
-## -------------------------------------------------------------
-    
 ## -------------------------------------------------------------
 ## -------------------------------------------------------------
 
