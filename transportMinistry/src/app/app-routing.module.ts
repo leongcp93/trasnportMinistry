@@ -9,6 +9,10 @@ import { HomeComponent } from './home/home.component';
 import { AddPeopleComponent } from './add-people/add-people.component';
 import { AddPeopleRespondsComponent } from './add-people-responds/add-people-responds.component';
 import { AdminComponent } from './admin/admin.component';
+import { EventpageComponent } from './eventpage/eventpage.component';
+import { EditPageComponent } from './edit-page/edit-page.component';
+import { EditPageRespondComponent } from './edit-page-respond/edit-page-respond.component';
+import { CreateEventRespondsComponent } from './create-event-responds/create-event-responds.component';
 
 //this is where i changed refer this https://www.youtube.com/watch?v=Nehk4tBxD4o&t=399s for sample
 const routes: Routes = [
@@ -21,6 +25,10 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'add-people', component: AddPeopleComponent},
   {path: 'add-people-responds', component: AddPeopleRespondsComponent},
+  {path: 'eventpage', component: EventpageComponent},
+  {path: 'edit-page', component: EditPageComponent},
+  {path: 'edit-page-respond', component: EditPageRespondComponent},
+  {path: 'create-event-responds', component: CreateEventRespondsComponent},
   {path: '**', component:SignupComponent}
 
 ];
@@ -41,5 +49,6 @@ export const routingComponent = [
   ManagingPeopleComponent, 
   HomeComponent, 
   AddPeopleComponent, 
-  AddPeopleRespondsComponent
+  AddPeopleRespondsComponent,
+  EventpageComponent
 ]

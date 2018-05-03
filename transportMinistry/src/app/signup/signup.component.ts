@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Subscriber } from 'rxjs/Subscriber';
 
 @Component({
   selector: 'app-signup',
@@ -12,12 +14,17 @@ export class SignupComponent implements OnInit {
   post: any;
   lifegroup: string = '';
   name: string = '';
+  errorMessage: string = '';
+  postcode: number;
+  isDriver: boolean;
 
   constructor(private fb: FormBuilder) {
 
     this.signupForm = fb.group({
-      'name': [null, Validators.required],
-      'lifegroup': [null, Validators.required],
+      'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
+      'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
+      'postcode': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
+      //'isDriver': [null, Validators.required], // this is default validation for checking
       'validate': ''
     });
 
@@ -26,9 +33,14 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
   }
 
-  addPost(post){
+
+
+  addPassenger(post){
     this.name=post.name;
     this.lifegroup=post.lifegroup;
+    /*
+    add more method to send.
+    */
   }
 
 }

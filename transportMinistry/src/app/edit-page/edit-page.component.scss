@@ -8,6 +8,21 @@
     border-radius: 25px;
 }
 
+.content-display{
+    animation: 2s contDisplay forwards;
+}
+
+@keyframes contDisplay {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 .alert{
     background: #f2edda;
@@ -28,24 +43,4 @@
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-.content-display{
-    animation: 2s contDisplay forwards;
-}
-
-@keyframes contDisplay {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.overflow{
-    overflow: scroll;
 }

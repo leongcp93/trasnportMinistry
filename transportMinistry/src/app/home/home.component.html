@@ -1,4 +1,4 @@
-<div class="login-align container-fluid" align="center">
+<div class="login-align container-fluid content-display" align="center">
   <h3>Admin login</h3>
 
   <div *ngIf="!id; else forminfo">
@@ -14,7 +14,8 @@
   <div class="alert col-md-6" *ngIf="!adminForm.controls['password'].valid && adminForm.controls['password'].touched"> Please key in your password.</div>
   <br>
   <br>
-  <input type="button" class="btn btn-primary col-md-6 custome-button" value="Login" [disabled]="!adminForm.valid">
+  <button routerLink="/admin" class="btn btn-primary col-md-6 custome-button" [disabled]="!adminForm.valid"><i class="fa fa-sign-in"></i> Login</button>
+  <!--<input type="button" class="btn btn-primary col-md-6 custome-button" value="Login" [disabled]="!adminForm.valid">-->
   <!--<a routerLink="/admin" class="btn btn-primary col-md-6 custome-button">Login</a>-->
   
     <br>

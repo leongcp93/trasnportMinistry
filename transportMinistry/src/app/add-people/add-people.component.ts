@@ -16,9 +16,10 @@ export class AddPeopleComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
 
+    //These are the validation condition
     this.addForm =  fb.group({
-      'name': [null, Validators.required],
-      'postcode': [null, Validators.required],
+      'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
+      'postcode': [null, Validators.compose([Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4) ])],
       'validate' : ''
     });
 
@@ -27,6 +28,8 @@ export class AddPeopleComponent implements OnInit {
   ngOnInit() {
   }
 
+
+  //post method for the retrieved result
   addPost(post){
 
     this.name = post.name;
