@@ -13,7 +13,6 @@ import threading
 import Lib.databaseInteraction as db
 import Lib.algorithms as alg
 import Lib.transportPlanning as plan
-import csv
 import os
 import pandas as pd
 app = Flask(__name__)
@@ -226,7 +225,7 @@ def reset(): ##
 
 
 ## -------------------------------------------------------------
-## ----------------Event -------------------------------------
+## ---------------- Event -------------------------------------
 @app.route("{}/submit".format(url_prex), methods=['POST'])
 def api_submit(): ##
     """
@@ -236,16 +235,16 @@ def api_submit(): ##
         ## receive file
         content = request.get_json()
         event = content.get('event_id')
+        #event = CodeConverter.external2internal(event)
         lg = content.get('lg')
         name = content.get('name')
         driver_flag = content.get('isDriver')
-        pc_from = content.get('postcode_from')
-        pc_to = content.get('postcode_to')
+        pc_vary = content.get('postcode_vary') # this can be asked in the front-end; if special postcode request is required
         
-        ## 
-        msg = submit(event, lg, name, driver_flag, pc_from, pc_to)
+        ## fetching the method
+        msg = plan.submit(event, lg, name, driver_flag, pc_vary)
         if type(msg) == tuple:
-            pass
+            return msg[0]
             
         else:
             return msg
@@ -318,8 +317,102 @@ def api_bestmatches(): ##
 
 ## ----------------End Event----------------------------------------
 ## -------------------------------------------------------------
+
+## -------------------------------------------------------------
+## ----------------Display Info------------------------------------
+
+# Sending parameters via url
+# Example: url/api/whoisgoing?eventID=<value>
+
+@app.route("{}/whoisgoing".format(url_prex), methods=['GET'])
+def show_pplgoing():
+    
+    try:
+        # Parameters
+        event_id = request.args.get('eventID', type = str)
+        event_id = CodeConverter().external2internal(event_id)
+        
+        # Call function: read eventID file first
+        file = pd.read_csv('Events_temp/{}.csv'.format(event_id))
+        
+        # retrieve all passengers (df) to list
+        condition = file['driver'] == 0
+        ls_array = file['name'].loc[condition].values.tolist()
+        
+        # retrieve all drivers, attach tag, to list
+        condition = file['driver'] >= 1
+        ls_drivers = file['name'].loc[condition].values.tolist()
+        ls_drivers = ["{} (driving)".format(i) for i in ls_drivers]
+        ls_drivers.extend(ls_array)
+        
+        return jsonify({"names":ls_drivers})
+    except Exception as e:
+        return "Event ID does not exist {}".format(e)
+
+
+@app.route("{}/showmembers".format(url_prex), methods=['GET'])
+def show_members():
+    """
+    This method shows all the members of a lifegroup.
+    """
+    # Parameters
+    lg = request.args.get('lg', type = str)
+    passcode = request.args.get('passcode', type = str)
+
+    # call function
+    members = db.show_person(lg=lg)
+    
+    if passcode != "1234":
+        ls = []
+        for name in members:
+            ls.append(name[1])
+            
+        return jsonify({"members":ls})
+    
+    else:
+        return jsonify({"members":members})
+
+
+## ----------------End Display---------------------------------
+## -------------------------------------------------------------
+
+
+
+
+
 ## -------------------------------------------------------------
 ## -------------------------------------------------------------
+
+class CodeConverter(object):
+    def __init__(self):
+        pass
+    
+    def external2internal(self, eventID):
+        # uq6-2018-05-01-20-13-26 to
+        # [uq6]2018-05-01#20-13-26#
+        ls_event = eventID.split('-')
+        
+        lg = ls_event[0]
+        yy = ls_event[1]
+        mm = ls_event[2]
+        dd = ls_event[3]
+        h = ls_event[4]
+        m = ls_event[5]
+        s = ls_event[6]
+        
+        encode = "[{}]{}-{}-{}#{}-{}-{}#".format(lg,yy,mm,dd,h,m,s)
+        return encode
+    
+    def internal2external(self, eventID):
+        # [uq6]2018-05-01#20-13-26# to
+        # uq6-2018-05-01-20-13-26
+        lg = eventID.split(']')[0][1:]
+        yymmdd = eventID.split(']')[1].split('#')[0]
+        hms = eventID.split('#')[1]
+        encode = "{}-{}-{}".format(lg, yymmdd, hms)
+        return encode
+                            
+
 
 ### Scheduler
 """
