@@ -8,14 +8,16 @@
 
 <!-- start of the container -->
 <div class="content-display">
-  <div class="special-container">
-    <strong>Driver: David</strong>
-
+  <div class="special-container" *ngFor="let driver of drivername">
+    <ul>
+      <li><strong>Driver: {{drivername}}</strong><br></li>
+    </ul>
+    
+<!--place a condition to let admin to select into the container-->
     <div class="passenger-container">
       <strong>Passenger:</strong>
       <ul>
         <li><div>Patrick <button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
-        <li><div>Adam <button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
       </ul>
     </div>
     
@@ -23,16 +25,22 @@
     
   </div>
   <br>
+  <br>
+  <br>
   <!--this is the end of the container-->
     <div class="container">
-        <input type="checkbox" /> Pater <br>
-        <input type="checkbox" /> Sozai <br>
-        <input type="checkbox" /> Solou <br>
-        <input type="checkbox" /> Solou <br>
-        <input type="checkbox" /> Solou <br>
-        <input type="checkbox" /> Solou <br>
+      <div >
+        <ul *ngFor="let passenger of passengername">
+          <li><input type="checkbox" > <label>{{passenger}}</label> <br></li>
+        </ul>
+        
+      </div>
+      
+        
     </div>
-    <button type="submit" class="btn btn-primary button-align col-xs-6 col-md-4">Submit</button>
+    <button type="submit" class="btn btn-primary button-align ">Submit</button>
 
 </div>
+<br>
+<br>
 

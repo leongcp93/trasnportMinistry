@@ -10,44 +10,60 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ManagingTransportComponent implements OnInit {
 
-  driver: string = '';
-  passengername: string='';
+  //driver: string = '';
+  passengername: Array<string>=[''];
   transportForm: FormGroup;
+  drivername: Array<string>=[''];
+  i: number;
 
   constructor(private httpClient:HttpClient, private fb: FormBuilder) {
 
+    
+
+    
 
 
    }
 
+
+   ngOnInit() {
+     this.getDriver();
+     this.getPassenger();
+  }
+
+
    //getter for drivers data
    getDriver(){
-     this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Drivers/${this.driver}`)
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Passenger`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
-        if (data.length){
-          this.driver = data[0].Drivers;
-         
+        if (data.length) {
+          for (this.i=0; this.i<data.length; this.i++){
+            this.passengername[this.i] = data[this.i].name;
+            console.log(this.passengername[this.i]+" in "+this.i+" as passenger");
+          }
         }
       }
     )
    }
   
+
    //getter for passengers data
    getPassenger(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Passenger/${this.passengername}`)//change this when the legit url is there.
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Drivers`)
     .subscribe(
       (data:any[])=>{
-        if (data.length) {
-          this.passengername = data[0].Passenger;
-          
+        if (data.length){
+          for (this.i=0; this.i<data.length; this.i++){
+            this.drivername[this.i] = data[this.i].name;
+            console.log(this.drivername[this.i]+" in "+this.i+" as driver");
+          }
         }
       }
     )
    }
 
 
-  ngOnInit() {
-  }
+  
 
 }
