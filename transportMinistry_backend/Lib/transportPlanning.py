@@ -9,9 +9,10 @@ Created on Thu Apr 19 09:08:54 2018
 import datetime
 import pandas as pd
 import os
+import Lib.databaseInteraction as db
 
 global path
-path = "../Events_temp"
+path = "Events_temp"
 
 ## Event file handling
 class Event(object):
@@ -45,7 +46,7 @@ class Event(object):
         
         # define file
         colm = {'name':[], 'postcode':[], 'driver':[]}
-        file = pd.DataFrame(data=colm)    
+        file = pd.DataFrame(data=colm)
         
         file.to_csv('{}/{}.csv'.format(path, unique_id), index=False)
         return unique_id
@@ -56,7 +57,7 @@ class Event(object):
         """
         lg = self.lg
         
-        # get all files from the directory
+        # get all files from the directory'
         ls = os.listdir("{}".format(path))
         if ls != None:
             ls.sort()
@@ -95,11 +96,12 @@ class Event(object):
 
 
 ## Event action handling
-def submit(event_id, lg_unit, name, driver_flag, code_from, code_to, code_vary):
+def submit(event_id, lg_unit, name, driver_flag, code_vary):
     """
     Submit attendee's info; Store it temporary in folder Event_temp
     Returns: flag (success / fail)
     """
+    
     lg_unit = lg_unit.lower()
     name = name.lower()
     
@@ -107,6 +109,7 @@ def submit(event_id, lg_unit, name, driver_flag, code_from, code_to, code_vary):
     lg = db.show_all_lg()
     people = db.show_person(lg=lg_unit)
     people = [p[1] for p in people]
+    
     
     ## check
     if lg_unit not in lg:
@@ -122,30 +125,33 @@ def submit(event_id, lg_unit, name, driver_flag, code_from, code_to, code_vary):
 
     ## Normal submit procedure    
     try:
-        msg = _submit_confirm(lg_unit, name, event_id, code_from, code_to, driver_flag)
+        msg = _submit_confirm(lg_unit, name, event_id, code_vary, driver_flag)
         return msg
     except Exception as e:
         return e
     
 
-def _submit_confirm(lg_unit, name, event_id, code_from, code_to, code_vary, driver_flag):
+def _submit_confirm(lg_unit, name, event_id, code_vary, driver_flag):
     """
     Require the input be correct
     Returns: flag (success / fail)    
     """
-    # Parse info
-    # Go to the recently created event
-    event = Event(lg_unit).list_events()
-    
-    ## if there exist more than 1 event -> it will return suggestions which event u r actually refereing to
-    ## then they need to submit_confirm again
-    if len(event) >= 2:
-        event = None
     
     #### Register this person into event
     event_path = '{}/{}.csv'.format(path, event_id)
     df = pd.read_csv(event_path)
-    df = df.append({'name':name, 'postcode':code_vary, 'driver':driver_flag}, ignore_index=True)
+    
+    #### detect duplicates
+    # name is the primary key in this file
+    if name in df['name'].values:
+        # change record
+        condition = df['name'] == name
+        df.postcode.loc[condition] = code_vary
+        df.driver.loc[condition] = driver_flag
+        
+    else:
+        df = df.append({'name':name, 'postcode':code_vary, 'driver':driver_flag}, ignore_index=True)
+    
     df.to_csv('{}/{}.csv'.format(path, event_id), index=False)
     
     #### Registering done
@@ -163,5 +169,5 @@ if __name__ == "__main__":
     # personal info
     lg = 'uq6'
     name = 'bruno'
-    print(submit(u_id, lg,name, 4, 4000, 4067, 4067))
+    print(submit(u_id, lg,name, 4, 4067))
     

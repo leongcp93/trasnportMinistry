@@ -32,15 +32,19 @@ Here are all the methods that you can call; Also their detailed specifications.
 	required: {'lg','postcode_from','postcode_to','note'}
 	return: {'event_id'} if success
 
-[post] /submit: /* tbt
-	required: {'event_id','lg','name','isDriver','postcode_from','postcode_to'}
-	return: {}
+[post] /submit: //
+	required: {'event_id','lg','name','isDriver','postcode_vary'}
+	return: {msg}
 
 [post] /bestmatches: //
-	required: {'event_id'}
+	required: {'event_id','lg'}
 	return: {driver1:[passenger_names,...], driver2:[p_name,...]...}
 
 --- Display info ---
-[get ] /whoisgoing/?event_id= : show all the names who is going
-[get ] /showmembers/?auth=&lg= : who is in the lifegroup
+[get ] /whoisgoing?event_id= : show all the names who is going
+[get ] /showmembers?auth=&lg= : who is in the lifegroup
 [get ] /
+
+
+
+
