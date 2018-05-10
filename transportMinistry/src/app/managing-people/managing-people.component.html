@@ -20,10 +20,11 @@
   
 
 
-    <div *ngIf="found" class="profile-design">
+    <div *ngIf="found" class="profile-design" >
 
-      <span>Name: {{name}}<br>
-        Postcode: {{postcode}}
+      <span>Name: {{names}}<br>
+        Postcode: {{postcode}}<br>
+        Available space: {{space}}
         <div align="right">
         <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1"><i class="fa fa-edit"></i> Edit</button><button class="btn btn-danger selection-design col-md-1"><i class="fa fa-trash"></i> Delete</button>
       </div>

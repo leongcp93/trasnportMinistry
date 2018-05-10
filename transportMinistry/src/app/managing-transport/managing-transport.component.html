@@ -5,42 +5,39 @@
       </ol>
 </div>
 
-
+    
+    
 <!-- start of the container -->
 <div class="content-display">
-  <div class="special-container" *ngFor="let driver of drivername">
-    <ul>
-      <li><strong>Driver: {{drivername}}</strong><br></li>
-    </ul>
+  
+  <div class="special-container" *ngFor="let driver of drivername" (click)="selectionCheck()">
+    <strong>Driver: {{driver}}</strong>
     
-<!--place a condition to let admin to select into the container-->
     <div class="passenger-container">
       <strong>Passenger:</strong>
       <ul>
         <li><div>Patrick <button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
       </ul>
     </div>
-    
-
-    
+    <div class="container">
+        <div >
+          <ul *ngFor="let passenger of passengername" >
+            <li><input type="checkbox"> <label>{{passenger}}</label> <br></li>
+          </ul>
+          
+        </div>
+      
+      </div>
   </div>
   <br>
   <br>
   <br>
   <!--this is the end of the container-->
-    <div class="container">
-      <div >
-        <ul *ngFor="let passenger of passengername">
-          <li><input type="checkbox" > <label>{{passenger}}</label> <br></li>
-        </ul>
-        
-      </div>
-      
-        
-    </div>
-    <button type="submit" class="btn btn-primary button-align ">Submit</button>
-
-</div>
+  
+   
+    <button type="submit" class="btn btn-primary button-align" >Submit</button>
+  
+  </div>
 <br>
 <br>
 

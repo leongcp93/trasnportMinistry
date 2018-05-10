@@ -11,7 +11,7 @@ import { Subscriber } from 'rxjs/Subscriber';
 export class EditPageComponent implements OnInit {
 
   name: string='';
-  postcode: number;
+  postcode: string='';
   editForm: FormGroup;
   post: any;
 
@@ -25,6 +25,22 @@ export class EditPageComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.getPassenger();
   }
+
+
+  getPassenger(){
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?name=${this.name}`)//change this when the legit url is there.
+    .subscribe(
+      (data:any[])=>{
+        if (data.length) {
+            this.name = data[0].name;
+            this.postcode = data[0].postcode;
+            console.log("got information of "+this.name+" and "+this.postcode);
+          
+        }
+      }
+    )
+   }
 
 }

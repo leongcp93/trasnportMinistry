@@ -15,14 +15,14 @@ export class ManagingTransportComponent implements OnInit {
   transportForm: FormGroup;
   drivername: Array<string>=[''];
   i: number;
+  checking: boolean = false;
+  disable: boolean = true;
+  passengerSpace: number = 0;
 
   constructor(private httpClient:HttpClient, private fb: FormBuilder) {
 
+   
     
-
-    
-
-
    }
 
 
@@ -34,7 +34,7 @@ export class ManagingTransportComponent implements OnInit {
 
    //getter for drivers data
    getDriver(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Passenger`)//change this when the legit url is there.
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?space=${this.passengerSpace}`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
@@ -50,7 +50,7 @@ export class ManagingTransportComponent implements OnInit {
 
    //getter for passengers data
    getPassenger(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Drivers`)
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?space=1&&space=2&&space=3&&space=4&&space=5&&space=6&&space=7`)
     .subscribe(
       (data:any[])=>{
         if (data.length){
@@ -63,7 +63,13 @@ export class ManagingTransportComponent implements OnInit {
     )
    }
 
-
+   //this function is used to check the selection
+   selectionCheck(){
+      this.checking = true;
+      this.disable = false;
+      console.log("checking is "+this.checking+" disable is "+this.disable);
+      
+   }
   
 
 }

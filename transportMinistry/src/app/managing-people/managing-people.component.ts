@@ -16,6 +16,8 @@ export class ManagingPeopleComponent implements OnInit {
   found: boolean; 
   managingForm: FormGroup;
   post: any;
+  space: number;
+  i: number;
 
 
   constructor(private httpClient:HttpClient, private fb: FormBuilder) { 
@@ -24,6 +26,7 @@ export class ManagingPeopleComponent implements OnInit {
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'validate': ''
     });
+    
 
    }
 
@@ -36,12 +39,13 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   getPassenger(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Passenger?name=${this.name}`)//change this when the legit url is there.
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?name=${this.name}`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
           this.name = data[0].name;
           this.postcode = data[0].postcode;
+          this.space = data[0].space;
           this.found = true;
         }
       }
