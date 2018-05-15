@@ -12,6 +12,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 //form module using reactive form
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+//import animation module in here
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 //http client module to get and post 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -67,7 +70,8 @@ import { CreateEventRespondsComponent } from './create-event-responds/create-eve
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -8,27 +8,35 @@
     
     
 <!-- start of the container -->
-<div class="content-display">
+<form>
+<div class="content-display" >
   
-  <div class="special-container" *ngFor="let driver of drivername" (click)="selectionCheck()">
+  <div class="special-container" *ngFor="let driver of drivername" >
     <strong>Driver: {{driver}}</strong>
     
     <div class="passenger-container">
       <strong>Passenger:</strong>
       <ul>
-        <li><div>Patrick <button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
+        <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
+        <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
+        <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
+        <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
       </ul>
     </div>
+    <p>List of available passengers:</p>
     <div class="container">
         <div >
           <ul *ngFor="let passenger of passengername" >
-            <li><input type="checkbox"> <label>{{passenger}}</label> <br></li>
+            <button class="btn btn-link" (click)="animatePassenger()"><li>{{passenger}}</li></button> <br>
           </ul>
+
+          <!--[@passengerVisibility]="visibility" [@passengerDisplay]="display" this is use for animation-->
           
         </div>
       
       </div>
   </div>
+
   <br>
   <br>
   <br>
