@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Read Me</title>
+    <style></style>
+</head>
+
+<body id="preview">
+    <p>--------------------General Info--------------------------<br> Here are all the methods that you can call; Also their detailed specifications.<br> prefix url: <a href="http://transport.hope-church.co.au:3000/api">transport.hope-church.co.au:3000/api</a></p>
+    <p>[get ] /<br> description: webservice landing (index) page</p>
+    <p>[get ] /readme<br> description: all the detailed specifications</p>
+    <p>---------------------Lifegroup DB--------------------------<br> [post] /editPerson<br> description: interact with lifegroup database. Edit the postcode of a member from a lifegroup.<br> required &lt;auth&gt;: an auth token; just pass string “password1234”<br>        required: {‘lg’, ‘auth’,‘postcode’}<br> return: {‘msg’}</p>
+    <p>[post] /deletePerson<br> description: interact with lifegroup database. Delete a member from a lifegroup.<br> required: {‘lg’, ‘auth’}<br> return: {‘msg’}</p>
+    <p>[post] /registerPerson<br> description: interact with lifegroup database. Register a member from a lifegroup.<br> required: {‘lg’, ‘auth’, ‘postcode’}<br> return: {‘msg’}</p>
+    <p>[post] /addLG<br> description: interact with lifegroup database. Add a lifegroup among all LGs (good, multiplying).<br> required: {‘lg’, ‘auth’}<br> return: {‘msg’}</p>
+    <p>[post] /deleteLG<br> description: interact with lifegroup database. Delete a lifegroup among all LGs (sad).<br> required: {‘lg’, ‘auth’}<br> return: {‘msg’}</p>
+    <p>[get ] /nuclearbomb<br> description: reset everything (only developer has access)<br> required: {‘auth’}<br> return: {‘msg’}<br> --------------------Transport Events Planning -----------------------<br> [post] /createEvent<br> description: it creates
+        an ONE WAY transport event. If return trip is required, 2 events have to be<br> created. For example, unidus prayer, Event1-home2unidus and Event2-unidus2home are<br> required.
+        <br> required: {‘lg’,‘postcode_from’,‘postcode_to’,‘note’}<br> return: {‘event_id’} if success;<br> {‘msg’} if failed;</p>
+    <p>[post] /submit<br> description: this method is for general users to submit their attendance to one particular event. If they have confirmed their<br> need transport / driving, they will need to submit this request to register themselves into this
+        event.<br> parameter &lt;postcode_vary&gt;: this postcode is used for identifying starting/destination location if default postcode of this person<br> is no longer applicable. For example, Bruno lives in 4067. There is a touching heaven prayer
+        tonight;<br> He will be leaving from city (4000) instead of his own house in the evening. So, his default postcode (4067)<br> has to be replaced by 4000 because 4067 is no longer useful.<br> required: {‘event_id’,‘lg’,‘name’,‘isDriver’,‘postcode_vary’}<br>        return: {‘msg’}</p>
+    <p>[post] /bestmatches<br> description: after knowing who will be going to one particular event, the organizer has to place passengers into driver’s car.<br> This method will look for the best combination f driver &amp; passengers according to their
+        end destination / starting<br> location.
+        <br> required: {‘event_id’,‘lg’}<br> return: {driver1:[passenger_names,…], driver2:[p_name,…]…}</p>
+    <p>--------------------Display Info -----------------------------<br> [get ] /whoisgoing?event_id=<br> description: this method returns the list of names and associate with a driver flag<br> return: {“names”:&lt;array of str&gt;}<br> example: {“names”:
+        [“foobar (driving)”,“tom (driving)”,“peter”,“john”,“spam”,“foo”]}</p>
+    <p>[get ] /showmembers?auth=&amp;lg=<br> description: this method returns all the member’s name of a given LG<br> return: {“members”:&lt;array of str&gt;}<br> example: {“members”: [“foo”,“spam”]}</p>
+</body>
+
+</html>

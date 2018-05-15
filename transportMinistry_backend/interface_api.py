@@ -8,86 +8,95 @@ Notes:
     Webservice run on port 3000
 
 """
-from flask import Flask, Response, request, send_file, jsonify, send_from_directory
-import threading
+from functools import wraps
+from flask import Flask, Response, request, jsonify, render_template
+
 import Lib.databaseInteraction as db
 import Lib.algorithms as alg
 import Lib.transportPlanning as plan
-import os
 import pandas as pd
 app = Flask(__name__)
     
 ## Actual implementation
-global url_prex
+global url_prex, auth_passcode
 url_prex = '/api'
+auth_passcode = 'pw1234'
+
+
+## --------------------- Auth class --------------------------------
+def check_auth(username, password):
+    """This function is called to check if a username /
+    password combination is valid.
+    """
+    return username == 'admin' and password == 'badpassword'
+
+def authenticate():
+    """Sends a 401 response that enables basic auth"""
+    return Response(
+    'Your username/password is wrong.', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+## --------------------- Auth class --------------------------------
     
+
+## ---------------------- Converter class ----------------------------
+class CodeConverter(object):
+    def __init__(self):
+        pass
+    
+    def external2internal(self, eventID):
+        # uq6-2018-05-01-20-13-26 to
+        # [uq6]2018-05-01#20-13-26#
+        ls_event = eventID.split('-')
+        
+        lg = ls_event[0]
+        yy = ls_event[1]
+        mm = ls_event[2]
+        dd = ls_event[3]
+        h = ls_event[4]
+        m = ls_event[5]
+        s = ls_event[6]
+        
+        encode = "[{}]{}-{}-{}#{}-{}-{}#".format(lg,yy,mm,dd,h,m,s)
+        return encode
+    
+    def internal2external(self, eventID):
+        # [uq6]2018-05-01#20-13-26# to
+        # uq6-2018-05-01-20-13-26
+        lg = eventID.split(']')[0][1:]
+        yymmdd = eventID.split(']')[1].split('#')[0]
+        hms = eventID.split('#')[1]
+        encode = "{}-{}-{}".format(lg, yymmdd, hms)
+        return encode
+## ---------------------- Converter class ----------------------------
+
 @app.route("{}/".format(url_prex), methods=['GET'])
 def index(): 
     """
     Landing page
     """
-    
-    def html_process(tag, contents):
-        # mini helper method to generate tag
-        s = ""
-        for c in contents:
-            s += "<{}>{}</{}>".format(tag,c,tag)
-        return s
-    
-    header = ["Welcome to Hope Church Life Group Transportation management web service documentation page"]
-    header = html_process("h1",header)
-    
-    dc = ["I mean, you are actually not supposed to see this... But if you do, ya, here are some \
-          of the RESTful api that you can call directly via url. JSON files or otherwise strings\
-           will be returned. I hope you are developer, otherwise please use the proper interface to \
-           interact with the system. IF YOU SIMPLY CALL THESE METHODS, YOU WILL PROBABLY SCREW \
-           UP THE SYSTEM!!!! nuh i m just kidding..."]
-    dc = html_process("p",dc)
-    methods = ["[get ] /: webservice landing page, instructions of all available methods", ##
-               "[get ] /readme: all the detailed requirements",
-               "--- DB interaction ---",
-               "[post] /editPerson: {'lg':value, 'name':value, 'postcode':value}", ##
-               "[post] /deletePerson: {'lg':value, 'name':value}", ##
-               "[post] /registerPerson: {'lg':value, 'name':value, 'postcode':value}", ##
-               "[post] /addLG: {'lg':value, 'auth':value}", ##
-               "[post] /deleteLG: {'lg':value, 'auth':value}",##
-               "[get ] /nuclearbomb: reset everything",##
-               "--- Event planning ---",
-               "[post] /submit: ",
-               "[post] /bestmatches: ",
-               "--- Display info ---",
-               "[get ] /whoisgoing/?event_id=<value> : show all the names who is going",
-               "[get ] /showmembers/?auth=<value>&lg=<value> : who is in the lifegroup",
-               "[get ] /"]
-    methods = html_process("li",methods)
-    
-    
-    h2 = ["The txt file has to be in this format in order to work"]
-    h2 = html_process("h2",h2)
-    
-    txt_format = ["1st row: ['title1','title2',...]",
-                  "2nd row: ['job1','job2',...]",
-                  "Example is below (upload.txt):",
-                  "--------------I am upload.txt------------------",
-                  "['junior', 'graduate', 'parttime']",
-                  "['marketing', 'accountant', 'banker']",
-                  "--------------I am upload.txt------------------"]
-    txt_format = html_process("p",txt_format)
-    
-    body = "<html><body>\
-            {}{}\
-            <ul>{}</ul>\
-            </body></html>".format(header, dc, methods)
-    
-    return body    
+    body = "<h1>Hope Church Transport app API Landing page</h1>"
+    body = body + "<p>Please enter through <a href='http://transport.hope-church.com.au'>main entrance</a>, this is back door</p>"
+    body = body + "<p>I hate hackers, so please dont mess up with me. I am SERIOUS! Nuh, I am just kidding; Jesus and I still love you <3. But ya, please <b> go to the main entrance if you are not part of our dev team; otherwise you will mess up the system </b>. Thanks</p>"
+    body = body + "<p>Full document please visit <a href='/api/readme'>readme</a></p>"
+    body = body + "<p>Established on 15/05/2018 ; Developed by Patrick and Bruno.</p>"
+    return body
 
-## Reademe
 @app.route("{}/readme".format(url_prex), methods=['GET'])
-def read_me():
-    return app.send_static_file('readme.html')
+@requires_auth
+def secret_page():
+    return render_template('readdoc.html')
 
 ## DB direct modify
-@app.route("{}/addLG".format(url_prex), methods=['POST'])
+@app.route("{}/lifegroup".format(url_prex), methods=['PUT'])
 def add_LG(): ##
     """
     Register life group
@@ -103,6 +112,10 @@ def add_LG(): ##
         content = request.get_json()
         lg = content.get('lg')
         
+        ## passcode
+        if content.get('auth') != auth_passcode:
+            return "Un-authorized action"
+        
         ## exec
         msg = db.LifeGroup(lg=lg)
         msg = msg.add_lg()
@@ -114,7 +127,7 @@ def add_LG(): ##
         #return "Some internal error existed"
 
 
-@app.route("{}/deleteLG".format(url_prex), methods=['POST'])
+@app.route("{}/lifegroup".format(url_prex), methods=['DELETE'])
 def delete_LG(): ##
     """
     Delete life group
@@ -129,13 +142,18 @@ def delete_LG(): ##
         ## receive file
         content = request.get_json()
         lg = content.get('lg')
+        
+        ## passcode
+        if content.get('auth') != auth_passcode:
+            return "Un-authorized action"
+        
         msg = db.LifeGroup(lg).del_lg()
         return msg
     
     except Exception as e:
         return "Some internal error existed"
     
-@app.route("{}/registerPerson".format(url_prex), methods=['POST'])
+@app.route("{}/member".format(url_prex), methods=['PUT'])
 def add_person(): ##
     """
     Register person
@@ -155,6 +173,10 @@ def add_person(): ##
         name = content.get('name')
         postcode = content.get('postcode')
         
+        ## passcode
+        if content.get('auth') != auth_passcode:
+            return "Un-authorized action"
+        
         msg = db.Person(lg = lg, name = name, postcode = postcode).add_db()
         return msg
         #return "Added successfully"
@@ -162,7 +184,7 @@ def add_person(): ##
     except Exception as e:
         return "Some internal error existed"
 
-@app.route("{}/editPerson".format(url_prex), methods=['POST'])
+@app.route("{}/member".format(url_prex), methods=['DELETE'])
 def edit_person():
     """
     Register life group
@@ -182,15 +204,19 @@ def edit_person():
         name = content.get('name')
         postcode = content.get('postcode')
         
+        ## passcode
+        if content.get('auth') != auth_passcode:
+            return "Un-authorized action"
+        
         msg = db.Person(lg = lg, name = name, postcode = postcode).edit_db()
         return msg
         #return "Edited successfully"
     
     except Exception as e:
-        return "Some internal error existed"
+        return e
     
 
-@app.route("{}/deletePerson".format(url_prex), methods=['POST'])
+@app.route("{}/member".format(url_prex), methods=['DELETE'])
 def delete_person():
     """
     Register life group
@@ -208,6 +234,10 @@ def delete_person():
         lg = content.get('lg')
         name = content.get('name')
         
+        ## passcode
+        if content.get('auth') != auth_passcode:
+            return "Un-authorized action"
+        
         msg = db.Person(lg = lg, name = name).del_db()
         return msg
         #return "Deleted successfully"
@@ -215,7 +245,30 @@ def delete_person():
     except Exception as e:
         return "Some internal error existed"
 
-@app.route("{}/nuclearbomb".format(url_prex), methods=['GET'])
+@app.route("{}/member".format(url_prex), methods=['GET'])
+def show_members():
+    """
+    This method shows all the members of a lifegroup.
+    """
+    # Parameters
+    lg = request.args.get('lg', type = str)
+    passcode = request.args.get('passcode', type = str)
+
+    # call function
+    members = db.show_person(lg=lg)
+    
+    if passcode != auth_passcode:
+        ls = []
+        for name in members:
+            ls.append(name[1])
+            
+        return jsonify({"members":ls})
+    
+    else:
+        return jsonify({"members":members})
+
+@app.route("{}/clear".format(url_prex), methods=['GET'])
+@requires_auth
 def reset(): ##
     """
     Reset db
@@ -226,7 +279,7 @@ def reset(): ##
 
 ## -------------------------------------------------------------
 ## ---------------- Event -------------------------------------
-@app.route("{}/submit".format(url_prex), methods=['POST'])
+@app.route("{}/event".format(url_prex), methods=['POST'])
 def api_submit(): ##
     """
     Submit the person info that are going to one particular event.
@@ -252,7 +305,7 @@ def api_submit(): ##
     except Exception as e:
         return "Some internal error existed {}".format(e)
 
-@app.route("{}/createEvent".format(url_prex), methods=['POST'])
+@app.route("{}/event".format(url_prex), methods=['PUT'])
 def api_createEvent(): ##
     """
     Submit the person info that are going to one particular event.
@@ -324,7 +377,7 @@ def api_bestmatches(): ##
 # Sending parameters via url
 # Example: url/api/whoisgoing?eventID=<value>
 
-@app.route("{}/whoisgoing".format(url_prex), methods=['GET'])
+@app.route("{}/attendees".format(url_prex), methods=['GET'])
 def show_pplgoing():
     
     try:
@@ -350,71 +403,13 @@ def show_pplgoing():
         return "Event ID does not exist {}".format(e)
 
 
-@app.route("{}/showmembers".format(url_prex), methods=['GET'])
-def show_members():
-    """
-    This method shows all the members of a lifegroup.
-    """
-    # Parameters
-    lg = request.args.get('lg', type = str)
-    passcode = request.args.get('passcode', type = str)
 
-    # call function
-    members = db.show_person(lg=lg)
-    
-    if passcode != "1234":
-        ls = []
-        for name in members:
-            ls.append(name[1])
-            
-        return jsonify({"members":ls})
-    
-    else:
-        return jsonify({"members":members})
 
 
 ## ----------------End Display---------------------------------
 ## -------------------------------------------------------------
 
 
-
-
-
-## -------------------------------------------------------------
-## -------------------------------------------------------------
-
-class CodeConverter(object):
-    def __init__(self):
-        pass
-    
-    def external2internal(self, eventID):
-        # uq6-2018-05-01-20-13-26 to
-        # [uq6]2018-05-01#20-13-26#
-        ls_event = eventID.split('-')
-        
-        lg = ls_event[0]
-        yy = ls_event[1]
-        mm = ls_event[2]
-        dd = ls_event[3]
-        h = ls_event[4]
-        m = ls_event[5]
-        s = ls_event[6]
-        
-        encode = "[{}]{}-{}-{}#{}-{}-{}#".format(lg,yy,mm,dd,h,m,s)
-        return encode
-    
-    def internal2external(self, eventID):
-        # [uq6]2018-05-01#20-13-26# to
-        # uq6-2018-05-01-20-13-26
-        lg = eventID.split(']')[0][1:]
-        yymmdd = eventID.split(']')[1].split('#')[0]
-        hms = eventID.split('#')[1]
-        encode = "{}-{}-{}".format(lg, yymmdd, hms)
-        return encode
-                            
-
-
-### Scheduler
 """
 Reference:
 https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa

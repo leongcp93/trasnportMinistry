@@ -1,0 +1,9 @@
+Event handling:
+- delete event
+- edit event
+
+Testing:
+- all event methods
+
+Event ID: Potential candidate
+- <LG><pc_from><pc_to><location><start_time>.csv

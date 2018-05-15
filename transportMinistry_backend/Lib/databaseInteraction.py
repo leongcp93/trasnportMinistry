@@ -54,17 +54,17 @@ class Person (object):
         
     
     # can implement in form of class later    
-    def edit_db(self, postcode):
+    def edit_db(self):
         lg = self.lg
         name= self.name
-        self.postcode = postcode # reverse edit to class        
+        postcode = self.postcode # reverse edit to class        
         
         # query
         q = "UPDATE {tb} \
          SET postcode = {pc}\
          WHERE lg = '{lg}' \
          AND name = '{nm}';".format(tb=table1_name, pc=postcode, lg=lg, nm = name)
-        msg = _sql(q)            
+        msg = _sql(q)
         return msg
             
     # can implement in form of class later    
