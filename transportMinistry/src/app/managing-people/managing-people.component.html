@@ -14,23 +14,38 @@
       <br>
       <div class="alert col-md-4 selection-design" style="color:brown" *ngIf="!managingForm.controls['name'].valid && managingForm.controls['name'].touched">No special characters and numbers.</div>
       <br>
-        <button (click)="getPassenger()" class="btn btn-primary selection-design col-md-4" [disabled]="!managingForm.valid"><i class="fa fa-search"></i> Search</button></div>
+        <button (click)="getName()" class="btn btn-primary selection-design col-md-4" [disabled]="!managingForm.valid"><i class="fa fa-search"></i> Search</button></div>
     <br>
 
-  
+    <div *ngIf="found" class="information-holder" >
 
-
-    <div *ngIf="found" class="profile-design" >
-
-      <span>Name: {{name}}<br>
-        Postcode: {{postcode}}<br>
-        Available space: {{space}}
+      <span>Name: {{resultname}}<br>
+        Postcode: {{resultpostcode}}<br>
         <div align="right">
         <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1"><i class="fa fa-edit"></i> Edit</button><button class="btn btn-danger selection-design col-md-1"><i class="fa fa-trash"></i> Delete</button>
       </div>
     </span>
 
     </div>
+
+
+    <div class="profile-design" *ngFor="let listname of name">
+
+      Name: {{listname}}<br>
+        <br>
+        
+      Postcode :<br>
+        
+      <br>
+        
+        <div align="right">
+        <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1"><i class="fa fa-edit"></i> Edit</button><button class="btn btn-danger selection-design col-md-1"><i class="fa fa-trash"></i> Delete</button>
+      </div>
+    
+      </div>
+   
+    <br>
+    <br>
     <br>
     
     

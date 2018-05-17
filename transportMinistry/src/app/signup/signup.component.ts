@@ -17,6 +17,8 @@ export class SignupComponent implements OnInit {
   errorMessage: string = '';
   postcode: number;
   isDriver: boolean;
+  numberOfSeats: number;
+  groupunit: string = 'QUT2';
 
   constructor(private fb: FormBuilder) {
 
@@ -25,6 +27,7 @@ export class SignupComponent implements OnInit {
       'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'postcode': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
       //'isDriver': [null, Validators.required], // this is default validation for checking
+      'numberOfSeats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(1), Validators.max(7)])],
       'validate': ''
     });
 

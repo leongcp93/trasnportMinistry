@@ -66,3 +66,11 @@
         transform: translateY(0);
     }
 }
+
+.information-holder{
+    padding: 15px;
+    border-radius: 25px;
+    background-color: #2f3ace;
+    color: whitesmoke;
+    animation: 2s backgDesign forwards;
+}

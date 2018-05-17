@@ -11,13 +11,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ManagingPeopleComponent implements OnInit {
 
   //declaring the variables
-  name: string = '';
-  postcode: number;
+  name: Array<string> = [''];
+  postcode: Array<string> = [''];
   found: boolean; 
+  resultname: string = '';
+  resultpostcode: string = '';
   managingForm: FormGroup;
   post: any;
   space: number;
   i: number;
+  dataMember: Array<string> = [''];
+  currentPost: any;
 
 
   constructor(private httpClient:HttpClient, private fb: FormBuilder) { 
@@ -34,17 +38,35 @@ export class ManagingPeopleComponent implements OnInit {
 
 //this is the event handeling
   onName(event:any){
-    this.name = event.target.value;
+    this.resultname = event.target.value;
     this.found=false;
   }
 
   getPassenger(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?name=${this.name}`)//change this when the legit url is there.
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
-          this.name = data[0].name;
-          this.postcode = data[0].postcode;
+          for (this.i=0; this.i<data.length; this.i++){
+          this.name[this.i] = data[this.i].name;
+          this.postcode[this.i] = data[this.i].postcode;
+          //this.space = data[0].space;
+          console.log(this.postcode);
+           
+          }
+         
+        }
+      }
+    )
+  }
+
+  getName(){
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?name=${this.resultname}`)//change this when the legit url is there.
+    .subscribe(
+      (data:any[])=>{
+        if (data.length) {
+          this.resultname = data[0].name;
+          this.resultpostcode = data[0].postcode;
           this.space = data[0].space;
           this.found = true;
         }
@@ -53,10 +75,11 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getPassenger();
   }
 
 
   addPost(post){
-    this.name = post.name;
+    this.resultname = post.resultname;
   }
 }
