@@ -15,6 +15,8 @@ import Lib.databaseInteraction as db
 import Lib.algorithms as alg
 import Lib.transportPlanning as plan
 import pandas as pd
+
+import base64
 app = Flask(__name__)
     
 ## Actual implementation
@@ -76,6 +78,20 @@ class CodeConverter(object):
         hms = eventID.split('#')[1]
         encode = "{}-{}-{}".format(lg, yymmdd, hms)
         return encode
+    
+    def encode(self, code):
+        """
+        String
+        """
+        e = base64.b64encode(code.encode()) 
+        return e.decode('utf-8')
+    
+    def decode(self, code):
+        """
+        String
+        """
+        d = base64.b64decode(code.encode()) 
+        return d.decode('utf-8')
 ## ---------------------- Converter class ----------------------------
 
 @app.route("{}/".format(url_prex), methods=['GET'])
@@ -252,20 +268,30 @@ def show_members():
     """
     # Parameters
     lg = request.args.get('lg', type = str)
+    name = request.args.get('name', type = str)
     passcode = request.args.get('passcode', type = str)
 
-    # call function
-    members = db.show_person(lg=lg)
-    
-    if passcode != auth_passcode:
+    # Function 1: Retrieve details of a person
+    if lg != None and name != None:
+        pc = db._sql("SELECT postcode FROM Person WHERE name = '{}' AND lg = '{}';".format(name, lg))
+        try:
+            return jsonify({"name":name, "postcode":pc[0][0]})
+        
+        except Exception as e:
+            return "No information is returned."
+        
+    # Function 2: Retreive member names
+    members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}';".format(lg))
+    if passcode == auth_passcode:
         ls = []
-        for name in members:
-            ls.append(name[1])
+        for pair in members:
+            n = [pair[0], str(pair[1])]
+            ls.append(n)
             
         return jsonify({"members":ls})
     
     else:
-        return jsonify({"members":members})
+        return jsonify({"msg":"Unauthorized action"})
 
 @app.route("{}/clear".format(url_prex), methods=['GET'])
 @requires_auth
@@ -325,6 +351,29 @@ def api_createEvent(): ##
     
     except Exception as e:
         return "Some internal error existed {}".format(e)
+    
+@app.route("{}/event/<eventID>".format(url_prex), methods=['GET'])
+def api_getEventInfo(eventID): ##
+    """
+    Retrieve the event details by a given eventid
+    """
+    try:
+        ## given event id -> event info
+        c = CodeConverter()
+        eventID = c.decode(eventID)
+        
+        # parse lg from eventid
+        info = eventID.split("-")
+        
+        # check whether this lg is in the system
+        if info[0] in db.show_all_lg():
+            return jsonify({"lg":info[0], "from":info[1],"to":info[2],"destination":info[3],"date":info[4],"time":info[5]})
+        
+        else:
+            return jsonify({"msg":"Lifegroup does not exist."})        
+    
+    except Exception as e:
+        return "This event is either deleted or not existed: {}".format(e)
     
 @app.route("{}/bestmatches".format(url_prex), methods=['POST'])
 def api_bestmatches(): ##

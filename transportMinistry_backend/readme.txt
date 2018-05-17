@@ -4,22 +4,26 @@
 ## readme password: badpassword
 ## --------------------------------------
 
+*1 = retrieve the personal info when lg = ? and name = ? / retrieve personal info lg
+*2 = url/'<event_id> return {"LG"} if fail {"msg"} / eventID is encoded by b64 algorithm
+
+
 ## ------- List of methods --------------
 ## 1. General
 ## |- / [get]
-## |- readme [get]
+## |- /readme [get]
 ## 
 ## 2. Permanent Database
-## |- member [put, post, delete, get]
-## |- lifegroup [put, delete]
-## |- clear [get]
+## |- /member [put, post, delete, get*1]
+## |- /lifegroup [put, delete]
+## |- /clear [get]
 ## 
 ## 3. Event handling (yet to be tested)
-## |- event [put, post]
-## |- bestmatches [post]
+## |- /event [put, post, get*2]
+## |- /bestmatches [post]
 ## 
 ## 4. Display info
-## |- attendees [get]
+## |- /attendees [get]
 ## ---------------------------------------
 
 --------------------General Info--------------------------
