@@ -20,6 +20,7 @@ export class ManagingPeopleComponent implements OnInit {
   post: any;
   space: number;
   i: number;
+  members: Array<Object> = [];
   dataMember: Array<string> = [''];
   currentPost: any;
 
@@ -50,6 +51,7 @@ export class ManagingPeopleComponent implements OnInit {
           for (this.i=0; this.i<data.length; this.i++){
           this.name[this.i] = data[this.i].name;
           this.postcode[this.i] = data[this.i].postcode;
+          this.members
           //this.space = data[0].space;
           console.log(this.postcode);
            
