@@ -15,6 +15,7 @@ import Lib.databaseInteraction as db
 import Lib.algorithms as alg
 import Lib.transportPlanning as plan
 import pandas as pd
+import os
 
 import base64
 app = Flask(__name__)
@@ -314,7 +315,8 @@ def api_submit(): ##
         ## receive file
         content = request.get_json()
         event = content.get('event_id')
-        #event = CodeConverter.external2internal(event)
+        event = CodeConverter().decode(event)
+        
         lg = content.get('lg')
         name = content.get('name')
         driver_flag = content.get('isDriver')
@@ -342,15 +344,18 @@ def api_createEvent(): ##
         lg = content.get('lg')
         pc_from = content.get('postcode_from')
         pc_to = content.get('postcode_to')
-        note = content.get('note')
+        destination = content.get('destination')
+        startingTime = content.get('starting_time')
+        #note = content.get('note')
         
         ## Event        
-        e = plan.Event(lg= lg, note=note)
-        e_id = e.create_event()
-        return e_id
+        e = plan.Event(lg= lg)
+        e_id = e.create_event(pc_from, pc_to, destination, startingTime)
+        e_id = CodeConverter().encode(e_id)
+        return "Your event ID: {}".format(e_id)
     
     except Exception as e:
-        return "Some internal error existed {}".format(e)
+        return "Err: {}".format(e)
     
 @app.route("{}/event/<eventID>".format(url_prex), methods=['GET'])
 def api_getEventInfo(eventID): ##
@@ -359,21 +364,21 @@ def api_getEventInfo(eventID): ##
     """
     try:
         ## given event id -> event info
-        c = CodeConverter()
-        eventID = c.decode(eventID)
+        eventID = CodeConverter().decode(eventID)
         
         # parse lg from eventid
         info = eventID.split("-")
         
-        # check whether this lg is in the system
-        if info[0] in db.show_all_lg():
+        # check if file already existed
+        path_here = "Events_temp"
+        if "{}.csv".format(eventID) in os.listdir(path_here):
             return jsonify({"lg":info[0], "from":info[1],"to":info[2],"destination":info[3],"date":info[4],"time":info[5]})
         
         else:
-            return jsonify({"msg":"Lifegroup does not exist."})        
+            return jsonify({"msg":"Event does not existed."})
     
     except Exception as e:
-        return "This event is either deleted or not existed: {}".format(e)
+        return jsonify({"err":"Event does not existed."})
     
 @app.route("{}/bestmatches".format(url_prex), methods=['POST'])
 def api_bestmatches(): ##
@@ -384,6 +389,7 @@ def api_bestmatches(): ##
         ## receive file
         content = request.get_json()
         event_id = content.get('event_id')
+        event_id = CodeConverter().decode(event_id)
         
         ## Get drivers / passengers
         event_file = "Events_temp/{}.csv".format(event_id)
@@ -432,7 +438,7 @@ def show_pplgoing():
     try:
         # Parameters
         event_id = request.args.get('eventID', type = str)
-        event_id = CodeConverter().external2internal(event_id)
+        event_id = CodeConverter().decode(event_id)
         
         # Call function: read eventID file first
         file = pd.read_csv('Events_temp/{}.csv'.format(event_id))

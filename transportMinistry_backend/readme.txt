@@ -5,8 +5,7 @@
 ## --------------------------------------
 
 *1 = retrieve the personal info when lg = ? and name = ? / retrieve personal info lg
-*2 = url/'<event_id> return {"LG"} if fail {"msg"} / eventID is encoded by b64 algorithm
-
+*2 = url/'<event_id> return {"LG"} if fail {"msg"} / eventID is encoded by b64 algorithm / not check whether the event exist or not
 
 ## ------- List of methods --------------
 ## 1. General
@@ -19,7 +18,7 @@
 ## |- /clear [get]
 ## 
 ## 3. Event handling (yet to be tested)
-## |- /event [put, post, get*2]
+## |- /event [put //, post //, get*2]
 ## |- /bestmatches [post]
 ## 
 ## 4. Display info
@@ -109,6 +108,7 @@ prefix url: transport.hope-church.co.au:3000/api
 					is no longer applicable. For example, Bruno lives in 4067. There is a touching heaven prayer tonight;
 					He will be leaving from city (4000) instead of his own house in the evening. So, his default postcode (4067)
 					has to be replaced by 4000 because 4067 is no longer useful. 
+	options: postcode<int>, none, def
 	required: {'event_id','lg','name','isDriver','postcode_vary'}
 	return: {'msg'}
 
