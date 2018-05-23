@@ -16,40 +16,40 @@ path = "Events_temp"
 
 ## Event file handling
 class Event(object):
-    def __init__(self, lg=None, unique_id=None, note=None):
+    def __init__(self, lg=None, unique_id=None):
         """
         This event object contains all the functions admin needs to 
         create / delete / listing all events
         """
         self.lg = lg
-        self.date = datetime.datetime.now().strftime("%Y-%m-%d")
-        self.time = datetime.datetime.now().strftime("%H-%M")
         self.unique_id = unique_id
-        self.note = note
         
-    def create_event(self):
+    def create_event(self, pc_from, pc_to, destination, startingTime):
         """
         Create a temp event with unique id.
         
-        Date format: DD-MM-YYYY
-        Time format: HHMM (24hr)
+        Format startingTime:
+        "YYYY_MM_DD-hhmm"
         
         Returns the uniqueID of the event
         """
         ## definition
         lg = self.lg
-        date = self.date
-        time = self.time        
         
         # define name
-        unique_id = "[{}]{}#{}#".format(lg,date, time)
+        unique_id = "{}-{}-{}-{}-{}".format(lg, pc_from, pc_to, destination, startingTime)
         
         # define file
         colm = {'name':[], 'postcode':[], 'driver':[]}
         file = pd.DataFrame(data=colm)
         
-        file.to_csv('{}/{}.csv'.format(path, unique_id), index=False)
-        return unique_id
+        # check if file already existed
+        if "{}.csv".format(unique_id) in os.listdir(path):
+            raise Exception("Same event already existed.")
+        
+        else:
+            file.to_csv('{}/{}.csv'.format(path, unique_id), index=False)
+            return unique_id
     
     def list_events(self):
         """
@@ -88,9 +88,6 @@ class Event(object):
             return "Delete successfully"
         except:
             return "Warning: event not found."
-        
-    def show_note(self):
-        return self.note
 
 ## event file handling ends
 
