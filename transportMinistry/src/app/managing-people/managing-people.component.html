@@ -17,7 +17,7 @@
         <button (click)="getName()" class="btn btn-primary selection-design col-md-4" [disabled]="!managingForm.valid"><i class="fa fa-search"></i> Search</button></div>
     <br>
 
-    <div *ngIf="found" class="information-holder" >
+    <div *ngIf="found" class="information-holder">
 
       <span>Name: {{resultname}}<br>
         Postcode: {{resultpostcode}}<br>
@@ -29,16 +29,10 @@
     </div>
 
 
-    <div class="profile-design" *ngFor="let listname of name">
+    <div class="profile-design" *ngFor="let member of members">
 
-      Name: {{listname}}<br>
-        <br>
-        <div class="profile-design" *ngFor="let post of postcode">
-          Postcode :{{post}}<br>
-        </div>
-      
-        
-      <br>
+      Name: {{member.name}}<br>
+      Postcode: {{member.postcode}}<br>
         
         <div align="right">
         <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1"><i class="fa fa-edit"></i> Edit</button><button class="btn btn-danger selection-design col-md-1"><i class="fa fa-trash"></i> Delete</button>

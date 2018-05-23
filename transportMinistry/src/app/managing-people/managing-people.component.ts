@@ -49,11 +49,17 @@ export class ManagingPeopleComponent implements OnInit {
       (data:any[])=>{
         if (data.length) {
           for (this.i=0; this.i<data.length; this.i++){
-          this.name[this.i] = data[this.i].name;
-          this.postcode[this.i] = data[this.i].postcode;
-          this.members
+            this.name[this.i] = data[this.i].name;
+            this.postcode[this.i] = data[this.i].postcode;
+
+            //this is where i group all the object into members
+            //youtube refrence on object (https://www.youtube.com/watch?v=B7IKiDWp1Qk)
+          this.members[this.i] = {
+          name: this.name[this.i],
+          postcode: this.postcode[this.i]
+        }
           //this.space = data[0].space;
-          console.log(this.postcode);
+          //console.log(this.members[this.i]);
            
           }
          
@@ -85,3 +91,5 @@ export class ManagingPeopleComponent implements OnInit {
     this.resultname = post.resultname;
   }
 }
+
+
