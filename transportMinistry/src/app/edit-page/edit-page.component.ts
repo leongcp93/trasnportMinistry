@@ -14,6 +14,8 @@ export class EditPageComponent implements OnInit {
   postcode: string='';
   editForm: FormGroup;
   post: any;
+  updatedName: string='';
+  updatedPostcode: string='';
 
 
   constructor(private fb: FormBuilder, private httpClient:HttpClient) {
@@ -26,6 +28,18 @@ export class EditPageComponent implements OnInit {
 
   ngOnInit() {
     this.getPassenger();
+  }
+
+
+  onEdit(){
+    this.name = this.updatedName;
+    this.postcode = this.updatedPostcode; 
+
+    this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`,{
+      name: this.name,
+      postcode: this.postcode
+    })
+    
   }
 
 

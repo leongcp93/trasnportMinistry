@@ -18,7 +18,7 @@
     <div class="alert col-md-4" *ngIf="!editForm.controls['postcode'].valid && editForm.controls['postcode'].touched">Only allow 4 digit numbers.</div>
     <br>
     <br>
-    <button routerLink="/edit-page-respond" class="btn btn-primary custome-button col-md-4" [disabled]="!editForm.valid">Update</button>
+    <button routerLink="/edit-page-respond" class="btn btn-primary custome-button col-md-4" [disabled]="!editForm.valid" (click)="onEdit()">Update</button>
     <br>
 
   </form>
