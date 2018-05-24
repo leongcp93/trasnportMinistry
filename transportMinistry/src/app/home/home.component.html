@@ -5,12 +5,12 @@
     <form [formGroup]="adminForm" (ngSubmit)="addPost(adminForm.value)">
      <br>
   <label>ID:</label><br>
-  <input formControlName="id" type="text" class="col-md-6" placeholder="Your ID..."><br>
+  <input formControlName="id" type="text" class="col-md-6" placeholder="Your ID..." (keyup)="setId($event)"><br>
   <div class="alert col-md-6" *ngIf="!adminForm.controls['id'].valid && adminForm.controls['id'].touched"> Please key in your ID.</div>
   <br>
   <br>
   <label>Password:</label><br>
-  <input formControlName="password" type="password" class="col-md-6" placeholder="Password..."><br>
+  <input formControlName="password" type="password" class="col-md-6" placeholder="Password..." (keyup)="setPassword($event)"><br>
   <div class="alert col-md-6" *ngIf="!adminForm.controls['password'].valid && adminForm.controls['password'].touched"> Please key in your password.</div>
   <br>
   <br>
