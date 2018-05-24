@@ -18,9 +18,9 @@ export class SignupComponent implements OnInit {
   postcode: number;
   isDriver: boolean;
   numberOfSeats: number;
-  groupunit: string = 'QUT2';
+  groupunit: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private httpClient:HttpClient,private fb: FormBuilder) {
 
     this.signupForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
@@ -36,14 +36,28 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
   }
 
-
-
-  addPassenger(post){
-    this.name=post.name;
-    this.lifegroup=post.lifegroup;
-    /*
-    add more method to send.
-    */
+  setName(event:any){
+    this.name=event.target.value;
   }
+
+  setPostcode(event:any){
+    this.postcode=event.target.value;
+  }
+
+  postSignUp(){
+    this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`,{
+      name: this.name,
+      postcode: this.postcode
+    })//change this when the legit url is there.
+    .subscribe(
+      (data:any[])=>{
+        console.log(data);
+          
+        }
+      
+    )
+  }
+
+ 
 
 }

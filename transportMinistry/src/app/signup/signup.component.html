@@ -10,10 +10,10 @@
       
       
       <label><strong>Name</strong></label><br>
-      <input class="txt col-md-6" formControlName="name" type="text"><br>
+      <input class="txt col-md-6" formControlName="name" type="text" (keyup)="setName($event)"><br>
       <div class="alert col-md-6" *ngIf="!signupForm.controls['name'].valid && signupForm.controls['name'].touched">Please do fill your name.</div><br>
       <label><strong>Postcode (Optional)</strong></label><br>
-      <input class="txt col-md-6" formControlName="postcode" type="text"><br>
+      <input class="txt col-md-6" formControlName="postcode" type="text" (keyup)="setPostcode($event)"><br>
       <div class="alert col-md-6" *ngIf="!signupForm.controls['postcode'].valid">Please key in the correct format.</div><br>
 
       
