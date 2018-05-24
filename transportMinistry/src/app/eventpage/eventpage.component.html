@@ -11,17 +11,17 @@
 <form [formGroup]="eventForm">
 <div class="content-align-default content-display">
   <label>Time:</label><br>
-  <input class="col-md-4" type="time" formControlName="setTime"><br>
+  <input class="col-md-4" type="time" formControlName="setTime" (keyup)="setTiming($event)"><br>
   <div class="alert col-md-4 selection-design" *ngIf="!eventForm.controls['setTime'].valid && eventForm.controls['setTime'].touched">Please fill in the time</div>
   <br>
 
   <label>From:</label><br>
-  <input class="col-md-4" type="text" formControlName="fromLocation"><br>
+  <input class="col-md-4" type="text" formControlName="fromLocation" (keyup)="setLocation($event)"><br>
   <div class="alert col-md-4 selection-design" *ngIf="!eventForm.controls['fromLocation'].valid && eventForm.controls['fromLocation'].touched">Please fill in location</div>
   <br>
 
   <label>To:</label><br>
-  <input class="col-md-4" type="text" formControlName="toLocation"><br>
+  <input class="col-md-4" type="text" formControlName="toLocation" (keyup)="setDestination($event)"><br>
   <div class="alert col-md-4 selection-design" *ngIf="!eventForm.controls['toLocation'].valid && eventForm.controls['toLocation'].touched">Please fill in destination</div>
   <br>
   <br>

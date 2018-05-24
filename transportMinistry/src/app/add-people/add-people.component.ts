@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-people',
@@ -14,7 +15,7 @@ export class AddPeopleComponent implements OnInit {
   postcode: number;
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private httpClient:HttpClient,private fb: FormBuilder) {
 
     //These are the validation condition
     this.addForm =  fb.group({
@@ -28,6 +29,27 @@ export class AddPeopleComponent implements OnInit {
   ngOnInit() {
   }
 
+  setName(event:any){
+    this.name=event.target.value;
+  }
+
+  setPostcode(event:any){
+    this.postcode=event.target.value;
+  }
+
+  postSignUp(){
+    this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`,{
+      name: this.name,
+      postcode: this.postcode
+    })//change this when the legit url is there.
+    .subscribe(
+      (data:any[])=>{
+        console.log(data);
+          
+        }
+      
+    )
+  }
 
   //post method for the retrieved result
   addPost(post){

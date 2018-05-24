@@ -17,7 +17,7 @@ export class EventpageComponent implements OnInit {
   eventForm: FormGroup;
 
 
-  constructor(private fb: FormBuilder) { 
+  constructor(private httpClient:HttpClient,private fb: FormBuilder) { 
     this.eventForm = fb.group ({
       'fromLocation':[null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'toLocation':[null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
@@ -29,4 +29,33 @@ export class EventpageComponent implements OnInit {
   ngOnInit() {
   }
 
+  setFromLocation(event: any){
+    this.fromLocation=event.target.value;
+  }
+
+  setDestination(event:any){
+    this.toLocation=event.target.value;
+  }
+
+  setTiming(event:any){
+    this.setTime=event.target.value;
+  }
+
+  postSignUp(){
+    this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`,{
+      from: this.fromLocation,
+      destination: this.toLocation,
+      time:this.setTime
+
+    })//change this when the legit url is there.
+    .subscribe(
+      (data:any[])=>{
+        console.log(data);
+          
+        }
+      
+    )
+  }
+
 }
+
