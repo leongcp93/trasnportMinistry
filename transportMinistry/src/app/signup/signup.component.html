@@ -10,18 +10,18 @@
       
       
       <label><strong>Name</strong></label><br>
-      <input class="txt col-md-6" formControlName="name" type="text" (keyup)="setName($event)"><br>
+      <input class="txt col-md-6" formControlName="name" type="text" #nameInput><br>
       <div class="alert col-md-6" *ngIf="!signupForm.controls['name'].valid && signupForm.controls['name'].touched">Please do fill your name.</div><br>
       <label><strong>Postcode (Optional)</strong></label><br>
-      <input class="txt col-md-6" formControlName="postcode" type="text" (keyup)="setPostcode($event)"><br>
+      <input class="txt col-md-6" formControlName="postcode" type="text" #postcodeInput><br>
       <div class="alert col-md-6" *ngIf="!signupForm.controls['postcode'].valid">Please key in the correct format.</div><br>
 
       
         <label> Are you a driver?</label><br>
-        <label>Yes <input type="radio" name="isDriver" required></label>
-        <label>No <input type="radio" name="isDriver" required></label><br>
+        <label>Yes <input type="radio" name="isDriver" value="" checked></label>
+        <label>No <input type="radio" name="isDriver" value="" checked="checked"></label><br>
         <div><strong>Number of seats: </strong><br>
-          <input class="col-md-6" type="number" formControlName="numberOfSeats">
+          <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput>
           <div class="alert col-md-6" *ngIf="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div><br>
         </div><br><br>
       

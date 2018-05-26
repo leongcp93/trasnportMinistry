@@ -30,7 +30,7 @@ export class EditPageComponent implements OnInit {
     this.getPassenger();
   }
 
-
+//this section havent finish yet for the editing
   onEdit(){
     this.name = this.updatedName;
     this.postcode = this.updatedPostcode; 
@@ -42,7 +42,7 @@ export class EditPageComponent implements OnInit {
     
   }
 
-
+//retreiving their information by calling API
   getPassenger(){
     this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?name=${this.name}`)//change this when the legit url is there.
     .subscribe(

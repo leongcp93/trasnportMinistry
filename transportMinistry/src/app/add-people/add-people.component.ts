@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
@@ -13,6 +13,8 @@ export class AddPeopleComponent implements OnInit {
   post: any;
   name: string = ''; //for sample of validation refer https://www.youtube.com/watch?v=bo1Wu0aiigU 
   postcode: number;
+  @ViewChild("nameInput") nameInput: ElementRef;
+  @ViewChild("postcodeInput") postcodeInput: ElementRef;
 
 
   constructor(private httpClient:HttpClient,private fb: FormBuilder) {
@@ -29,15 +31,12 @@ export class AddPeopleComponent implements OnInit {
   ngOnInit() {
   }
 
-  setName(event:any){
-    this.name=event.target.value;
-  }
-
-  setPostcode(event:any){
-    this.postcode=event.target.value;
-  }
-
   postSignUp(){
+
+    //setting value from the field 
+    this.name=this.nameInput.nativeElement.value;
+    this.postcode=this.postcodeInput.nativeElement.value;
+
     this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`,{
       name: this.name,
       postcode: this.postcode
@@ -51,12 +50,5 @@ export class AddPeopleComponent implements OnInit {
     )
   }
 
-  //post method for the retrieved result
-  addPost(post){
-
-    this.name = post.name;
-    this.postcode = post.postcode;
-
-  }
 
 }

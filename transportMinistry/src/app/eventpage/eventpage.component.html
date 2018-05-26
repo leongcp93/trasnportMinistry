@@ -11,20 +11,20 @@
 <form [formGroup]="eventForm">
 <div class="content-align-default content-display">
   <label>Time:</label><br>
-  <input class="col-md-4" type="time" formControlName="setTime" (keyup)="setTiming($event)"><br>
+  <input class="col-md-4" type="time" formControlName="setTime" #settimeInput><br>
   <div class="alert col-md-4 selection-design" *ngIf="!eventForm.controls['setTime'].valid && eventForm.controls['setTime'].touched">Please fill in the time</div>
   <br>
 
   <label>From:</label><br>
-  <input class="col-md-4" type="text" formControlName="fromLocation" (keyup)="setLocation($event)"><br>
+  <input class="col-md-4" type="text" formControlName="fromLocation" #fromlocationInput><br>
   <div class="alert col-md-4 selection-design" *ngIf="!eventForm.controls['fromLocation'].valid && eventForm.controls['fromLocation'].touched">Please fill in location</div>
   <br>
 
   <label>To:</label><br>
-  <input class="col-md-4" type="text" formControlName="toLocation" (keyup)="setDestination($event)"><br>
+  <input class="col-md-4" type="text" formControlName="toLocation" #tolocationInput><br>
   <div class="alert col-md-4 selection-design" *ngIf="!eventForm.controls['toLocation'].valid && eventForm.controls['toLocation'].touched">Please fill in destination</div>
   <br>
   <br>
-  <input routerLink="/create-event-responds" type="button" class="btn btn-primary col-md-4" value="Submit" [disabled]="!eventForm.valid">
+  <input routerLink="/create-event-responds" type="button" class="btn btn-primary col-md-4" value="Submit" [disabled]="!eventForm.valid" (click)="postSignUp($event)">
 </div>
 </form>

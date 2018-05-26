@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Subscriber } from 'rxjs/Subscriber';
@@ -15,10 +15,15 @@ export class SignupComponent implements OnInit {
   lifegroup: string = '';
   name: string = '';
   errorMessage: string = '';
-  postcode: number;
+  postcode: string = '';
   isDriver: boolean;
-  numberOfSeats: number;
+  numberOfSeats: string = '';
   groupunit: string = '';
+  
+  //refer the id in html from the textfield.
+  @ViewChild("nameInput") nameInput: ElementRef;
+  @ViewChild("postcodeInput") postcodeInput: ElementRef;
+  @ViewChild("seatsInput") seatsInput: ElementRef;
 
   constructor(private httpClient:HttpClient,private fb: FormBuilder) {
 
@@ -26,7 +31,7 @@ export class SignupComponent implements OnInit {
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'postcode': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
-      //'isDriver': [null, Validators.required], // this is default validation for checking
+      'isDriver': [true, Validators.required], // this is default validation for checking
       'numberOfSeats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(1), Validators.max(7)])],
       'validate': ''
     });
@@ -36,18 +41,18 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
   }
 
-  setName(event:any){
-    this.name=event.target.value;
-  }
-
-  setPostcode(event:any){
-    this.postcode=event.target.value;
-  }
 
   postSignUp(){
+    //this part collect all the value in the field and set to httpClient. 
+    this.name=this.nameInput.nativeElement.value;
+    this.postcode=this.postcodeInput.nativeElement.value;
+    this.numberOfSeats=this.seatsInput.nativeElement.value;
+
+    //passing 
     this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`,{
       name: this.name,
-      postcode: this.postcode
+      postcode: this.postcode,
+      space: this.numberOfSeats
     })//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{

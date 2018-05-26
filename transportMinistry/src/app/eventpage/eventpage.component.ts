@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Subscriber } from 'rxjs/Subscriber';
@@ -15,6 +15,11 @@ export class EventpageComponent implements OnInit {
   toLocation: string='';
   setTime: number;
   eventForm: FormGroup;
+  @ViewChild("tolocationInput") tolocationInput: ElementRef;
+  @ViewChild("fromlocationInput") fromlocationInput: ElementRef;
+  @ViewChild("settimeInput") settimeInput: ElementRef;
+  
+
 
 
   constructor(private httpClient:HttpClient,private fb: FormBuilder) { 
@@ -29,19 +34,14 @@ export class EventpageComponent implements OnInit {
   ngOnInit() {
   }
 
-  setFromLocation(event: any){
-    this.fromLocation=event.target.value;
-  }
+  
 
-  setDestination(event:any){
-    this.toLocation=event.target.value;
-  }
+  postSignUp(event: any){
 
-  setTiming(event:any){
-    this.setTime=event.target.value;
-  }
+    this.toLocation=this.tolocationInput.nativeElement.value;
+    this.fromLocation=this.fromlocationInput.nativeElement.value;
+    this.setTime=this.settimeInput.nativeElement.value;
 
-  postSignUp(){
     this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`,{
       from: this.fromLocation,
       destination: this.toLocation,
