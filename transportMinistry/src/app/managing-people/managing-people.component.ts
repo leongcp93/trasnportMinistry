@@ -17,6 +17,7 @@ export class ManagingPeopleComponent implements OnInit {
   resultname: string = '';
   resultpostcode: string = '';
   managingForm: FormGroup;
+  lifeGroup: Array<string> = [''];
   post: any;
   space: number;
   i: number;
@@ -29,6 +30,7 @@ export class ManagingPeopleComponent implements OnInit {
 //This is for validation on the name.
     this.managingForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
+      'lifeGroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'validate': ''
     });
     
@@ -43,8 +45,12 @@ export class ManagingPeopleComponent implements OnInit {
     this.found=false;
   }
 
+  onLifegroup(event:any){
+    this.lifeGroup = event.target.value;
+  }
+
   getPassenger(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`)//change this when the legit url is there.
+    this.httpClient.get(`http://www.transport.hope-church.com.au:3000/api/member?lg=`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
@@ -69,13 +75,17 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   getName(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?name=${this.resultname}`)//change this when the legit url is there.
+    this.httpClient.get(`http://www.transport.hope-church.com.au:3000/api/member?name=${this.resultname}&lg=${this.lifeGroup}`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
           this.resultname = data[0].name;
           this.resultpostcode = data[0].postcode;
-          this.space = data[0].space;
+          //this.lifeGroup = data[0].lg;
+          console.log(this.resultname);
+          console.log(this.resultpostcode);
+          //console.log(this.lifeGroup);
+          //this.space = data[0].space;
           this.found = true;
         }
       }

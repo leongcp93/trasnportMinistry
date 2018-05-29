@@ -14,6 +14,10 @@
       <br>
       <div class="alert col-md-4 selection-design" style="color:brown" *ngIf="!managingForm.controls['name'].valid && managingForm.controls['name'].touched">No special characters and numbers.</div>
       <br>
+      <input type="text" formControlName="lifeGroup" class="col-md-4 selection-design" (keyup)="onLifegroup($event)" placeholder="Please key in lifegroup unit...">
+      <br>
+      <div class="alert col-md-4 selection-design" style="color:brown" *ngIf="!managingForm.controls['lifeGroup'].valid && managingForm.controls['lifeGroup'].touched">No special characters and numbers.</div>
+      <br>
         <button (click)="getName()" class="btn btn-primary selection-design col-md-4" [disabled]="!managingForm.valid"><i class="fa fa-search"></i> Search</button></div>
     <br>
 
@@ -21,6 +25,7 @@
 
       <span>Name: {{resultname}}<br>
         Postcode: {{resultpostcode}}<br>
+        Lifegroup: {{lifeGroup}}<br>
         <div align="right">
         <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1"><i class="fa fa-edit"></i> Edit</button><button class="btn btn-danger selection-design col-md-1"><i class="fa fa-trash"></i> Delete</button>
       </div>
