@@ -4,5 +4,8 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  "Access-Control-Allow-Origin":"*",
+  "Access-Control-Allow-Headers":"Content-type",
+  "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS"
 };
