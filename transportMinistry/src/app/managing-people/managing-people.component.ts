@@ -50,7 +50,7 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   getPassenger(){
-    this.httpClient.get(`http://www.transport.hope-church.com.au:3000/api/member?`)//change this when the legit url is there.
+    this.httpClient.get(`http://www.transport.hope-church.com.au:3000/api/member`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
