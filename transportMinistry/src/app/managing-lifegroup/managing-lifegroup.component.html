@@ -9,20 +9,20 @@
 
 <div class="background-display" align="center">
   <div>
-    <input class="col-md-4" type="text">
+    <input class="col-md-4" type="text" #lifeGroup>
     <br>
     <br>
-    <button class="btn btn-success col-md-4"><i class="fa fa-plus"></i></button>
+    <button class="btn btn-success col-md-4"><i class="fa fa-plus" (click)="addLifeGroup($event)"></i></button>
     <br>
     <br>
 
-    <table class="col-md-6">
-      <tr>
+    <table class="col-md-6" *ngFor="let getUnits of getUnit">
+      <tr >
         <th align="center">Lifegroup</th>
-        <th> </th>
+        <th></th>
       </tr>
-      <td>UQ6</td>
-      <td><button class="btn btn-danger col-md-4">Delete</button></td>
+      <td >{{getUnits}}</td>
+      <td><button class="btn btn-danger col-md-4" (click)="delLifeGroup(i)">Delete</button></td>
     </table>
   </div>
 </div>

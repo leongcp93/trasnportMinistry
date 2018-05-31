@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit {
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'postcode': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
-      'isDriver': [true, Validators.required], // this is default validation for checking
+      //'isDriver': [true, Validators.required], // this is default validation for checking
       'numberOfSeats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(1), Validators.max(7)])],
       'validate': ''
     });
