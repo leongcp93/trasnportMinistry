@@ -50,7 +50,7 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   getPassenger(){
-    this.httpClient.get(`http://www.transport.hope-church.com.au:3000/api/member`)//change this when the legit url is there.
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
@@ -75,7 +75,7 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   getName(){
-    this.httpClient.get(`http://www.transport.hope-church.com.au:3000/api/member?name=${this.resultname}&lg=${this.lifeGroup}`)//change this when the legit url is there.
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?name=${this.resultname}&lg=${this.lifeGroup}`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {

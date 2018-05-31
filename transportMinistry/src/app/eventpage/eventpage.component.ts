@@ -13,7 +13,7 @@ export class EventpageComponent implements OnInit {
 
   fromLocation: string='';
   toLocation: string='';
-  setTime: number;
+  setTime: string='';
   eventForm: FormGroup;
   @ViewChild("tolocationInput") tolocationInput: ElementRef;
   @ViewChild("fromlocationInput") fromlocationInput: ElementRef;

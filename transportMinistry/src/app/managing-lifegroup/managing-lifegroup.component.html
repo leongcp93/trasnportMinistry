@@ -12,12 +12,12 @@
     <input class="col-md-4" type="text" #lifeGroup>
     <br>
     <br>
-    <button class="btn btn-success col-md-4"><i class="fa fa-plus" (click)="addLifeGroup($event)"></i></button>
+    <button class="btn btn-success col-md-4" (click)="addLifeGroup($event)"><i class="fa fa-plus" ></i></button>
     <br>
     <br>
 
     <table class="col-md-6" *ngFor="let getUnits of getUnit">
-      <tr >
+      <tr>
         <th align="center">Lifegroup</th>
         <th></th>
       </tr>

@@ -15,7 +15,7 @@ export class ManagingLifegroupComponent implements OnInit {
   getUnit: Array<string> = [''];
   i: number;
 
-  @ViewChild("lifeGroup") lifeGroupUnit:ElementRef;
+  @ViewChild("lifeGroup") lifeGroup:ElementRef;
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder) {
 
@@ -24,11 +24,12 @@ export class ManagingLifegroupComponent implements OnInit {
 
    addLifeGroup(event: any){
     
-    this.unit=this.lifeGroupUnit.nativeElement.value;
+    this.unit=this.lifeGroup.nativeElement.value;
     
     this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/groups`,{
       name: this.unit
-    }).subscribe(
+    })
+    .subscribe(
       (data:any[])=>{
         console.log(data);
         }
@@ -48,7 +49,7 @@ export class ManagingLifegroupComponent implements OnInit {
         if (data.length){
           for (this.i=0; this.i<data.length; this.i++){
             this.getUnit[this.i] = data[this.i].name;
-            console.log(this.getUnit);
+            //console.log(this.getUnit[this.i]);
           }
         }
         }
