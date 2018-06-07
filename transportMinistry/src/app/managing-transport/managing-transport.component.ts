@@ -106,10 +106,10 @@ export class ManagingTransportComponent implements OnInit {
     )
    }
 
-   addPost(post){
+   /*addPost(post){
      this.drivername = post.drivername;
      this.passengername = post.passengername;
-   }
+   }*/
 
    //this function is used to check the selection
    /*selectionCheck(){

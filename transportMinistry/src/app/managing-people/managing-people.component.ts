@@ -21,6 +21,7 @@ export class ManagingPeopleComponent implements OnInit {
   post: any;
   space: number;
   i: number;
+  counter: number;
   members: Array<Object> = [];
   dataMember: Array<string> = [''];
   currentPost: any;
@@ -30,7 +31,6 @@ export class ManagingPeopleComponent implements OnInit {
 //This is for validation on the name.
     this.managingForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
-      'lifeGroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'validate': ''
     });
     
@@ -45,12 +45,9 @@ export class ManagingPeopleComponent implements OnInit {
     this.found=false;
   }
 
-  onLifegroup(event:any){
-    this.lifeGroup = event.target.value;
-  }
 
   getPassenger(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`)//change this when the legit url is there.
+    this.httpClient.get(`http://www.transport.hope-church.com.au:4200/api/member?passcode=pw1234&lg=uq6`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
@@ -68,24 +65,23 @@ export class ManagingPeopleComponent implements OnInit {
           //console.log(this.members[this.i]);
            
           }
-         
         }
       }
     )
   }
 
+
+  
+
   getName(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?name=${this.resultname}&lg=${this.lifeGroup}`)//change this when the legit url is there.
+    this.httpClient.get(`http://www.transport.hope-church.com.au:4200/api/member?name=${this.resultname}&passcode=pw1234&lg=uq6`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
           this.resultname = data[0].name;
           this.resultpostcode = data[0].postcode;
-          //this.lifeGroup = data[0].lg;
           console.log(this.resultname);
           console.log(this.resultpostcode);
-          //console.log(this.lifeGroup);
-          //this.space = data[0].space;
           this.found = true;
         }
       }

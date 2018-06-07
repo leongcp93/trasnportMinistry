@@ -16,15 +16,15 @@
   <br>
 
   <label>From:</label><br>
-  <input class="col-md-4" type="text" formControlName="fromLocation" #fromlocationInput><br>
-  <div class="alert col-md-4 selection-design" *ngIf="!eventForm.controls['fromLocation'].valid && eventForm.controls['fromLocation'].touched">Please fill in location</div>
+  <input class="col-md-4" type="text" formControlName="fromPostcode" #frompostcodeInput><br>
+  <div class="alert col-md-4 selection-design" *ngIf="!eventForm.controls['fromPostcode'].valid && eventForm.controls['fromPostcode'].touched">Please fill in location</div>
   <br>
 
   <label>To:</label><br>
-  <input class="col-md-4" type="text" formControlName="toLocation" #tolocationInput><br>
-  <div class="alert col-md-4 selection-design" *ngIf="!eventForm.controls['toLocation'].valid && eventForm.controls['toLocation'].touched">Please fill in destination</div>
+  <input class="col-md-4" type="text" formControlName="toPostcode" #topostcodeInput><br>
+  <div class="alert col-md-4 selection-design" *ngIf="!eventForm.controls['toPostcode'].valid && eventForm.controls['toPostcode'].touched">Please fill in destination</div>
   <br>
   <br>
-  <input routerLink="/create-event-responds" type="button" class="btn btn-primary col-md-4" value="Submit" [disabled]="!eventForm.valid" (click)="postSignUp($event)">
+  <input routerLink="/create-event-responds" type="button" class="btn btn-primary col-md-4" value="Submit" [disabled]="!eventForm.valid" (click)="postEvent($event)">
 </div>
 </form>

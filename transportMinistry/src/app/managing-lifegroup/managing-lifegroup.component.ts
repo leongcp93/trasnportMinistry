@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Subscriber } from 'rxjs/Subscriber';
+import 'rxjs/add/operator/toPromise';
 
 @Component({
   selector: 'app-managing-lifegroup',
@@ -26,7 +27,7 @@ export class ManagingLifegroupComponent implements OnInit {
     
     this.unit=this.lifeGroup.nativeElement.value;
     
-    this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/groups`,{
+    this.httpClient.post(`http://www.transport.hope-church.com.au:4200/api/lifegroup?lg=${this.unit}&passcode=pw1234`,{
       name: this.unit
     })
     .subscribe(
@@ -36,14 +37,22 @@ export class ManagingLifegroupComponent implements OnInit {
     )
    }
 
-   delLifeGroup(index){
+   //this one is not fully function yet.
+   delLifeGroup(getUnit){
+    if(confirm("Are you sure delete this lifegroup?")){
+      const url = `${"http://www.transport.hope-church.com.au:4200/api/lifegroup"}/${getUnit}}`; //this is required the url
+      return this.httpClient.delete(url).toPromise()
+      .then(() => {
+        this.getLifeGroup();
+      })
 
+    }
     console.log("deleted");
 
    }
 
    getLifeGroup(){
-     this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/groups`)
+     this.httpClient.get(`http://www.transport.hope-church.com.au:4200/api/lifegroup`)
      .subscribe(
       (data:any[])=>{
         if (data.length){
