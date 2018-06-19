@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Subscriber } from 'rxjs/Subscriber';
+import { Response } from '@angular/http';
 
 @Component({
   selector: 'app-home',
@@ -11,9 +13,13 @@ export class HomeComponent implements OnInit {
 
   adminForm: FormGroup;
   post: any;
-  id: string = '';
   password: string = '';
   group: string = '';
+  dataId: string = '';
+  dataPassword: string ='';
+
+  @ViewChild("id") setId: ElementRef;
+  @ViewChild("password") setPassword: ElementRef;
 
   constructor(private httpClient:HttpClient,private fb: FormBuilder) {
 
@@ -28,20 +34,26 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  setId(event: any){
-    this.id=event.target.value;
-  }
-
-  setPassword(event: any){
-    this.password=event.target.value;
-  }
+  
 
 
   checkSignIn(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/logins?ID=${this.id}&&password=${this.password}`)//change this when the legit url is there.
+
+    this.group = this.setId.nativeElement.value;
+    this.password = this.setPassword.nativeElement.value;
+
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/logins?ID=${this.group}&&password=${this.password}`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
-        this.group=data[0].ID;
+        this.dataId = data[0].ID;
+        this.dataPassword=data[0].password;
+
+        if (this.group!=this.dataId && this.password!= this.dataPassword){
+          console.log("Id and/or password is not correct.");
+        } else{
+          console.log("Both id and password is correct");
+        }
+
         console.log(data);
           
         }

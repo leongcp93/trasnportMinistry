@@ -17,14 +17,16 @@ export class ManagingPeopleComponent implements OnInit {
   resultname: string = '';
   resultpostcode: string = '';
   managingForm: FormGroup;
-  lifeGroup: Array<string> = [''];
+  lifeGroup: string = 'uq6';
   post: any;
+  passcode: string ='pw1234';
   space: number;
   i: number;
   counter: number;
   members: Array<Object> = [];
   dataMember: Array<string> = [''];
   currentPost: any;
+  //private headers = new Headers({'Content-Type': 'application/json'}); 
 
 
   constructor(private httpClient:HttpClient, private fb: FormBuilder) { 
@@ -45,7 +47,18 @@ export class ManagingPeopleComponent implements OnInit {
     this.found=false;
   }
 
+  /*delPeople(event:any){
+    this.httpClient.delete(`http://www.transport.hope-church.com.au:4200/api/member`, {
+      lg: this.lifeGroup,
+      name: this.name[0],
+      auth: this.passcode
 
+    }).subscribe(
+      (data:any[])=>{
+        
+      })
+  }
+*/
   getPassenger(){
     this.httpClient.get(`http://www.transport.hope-church.com.au:4200/api/member?passcode=pw1234&lg=uq6`)//change this when the legit url is there.
     .subscribe(

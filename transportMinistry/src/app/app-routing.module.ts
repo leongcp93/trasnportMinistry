@@ -14,6 +14,8 @@ import { EditPageComponent } from './edit-page/edit-page.component';
 import { EditPageRespondComponent } from './edit-page-respond/edit-page-respond.component';
 import { CreateEventRespondsComponent } from './create-event-responds/create-event-responds.component';
 import { ManagingLifegroupComponent } from './managing-lifegroup/managing-lifegroup.component';
+import { ManagingEventComponent } from './managing-event/managing-event.component';
+import { EditEventComponent } from './edit-event/edit-event.component';
 
 //this is where i changed refer this https://www.youtube.com/watch?v=Nehk4tBxD4o&t=399s for sample
 const routes: Routes = [
@@ -31,6 +33,8 @@ const routes: Routes = [
   {path: 'edit-page-respond', component: EditPageRespondComponent},
   {path: 'create-event-responds', component: CreateEventRespondsComponent},
   {path: 'managing-lifegroup', component: ManagingLifegroupComponent},
+  {path: 'managing-event', component: ManagingEventComponent},
+  {path: 'edit-event', component: EditEventComponent},
   {path: '**', component:SignupComponent}
 
 ];

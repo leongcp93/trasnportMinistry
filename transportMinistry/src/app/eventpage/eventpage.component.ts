@@ -14,12 +14,16 @@ export class EventpageComponent implements OnInit {
   postcode_from: string='';
   postcode_to: string='';
   starting_Time: string='';
+  date: string='';
   lg: string='uq6';
+  description: string='';
   eventForm: FormGroup;
   isCreated: boolean = false;
   @ViewChild("topostcodeInput") topostcodeInput: ElementRef;
   @ViewChild("frompostcodeInput") frompostcodeInput: ElementRef;
   @ViewChild("settimeInput") settimeInput: ElementRef;
+  @ViewChild("description") setdescription: ElementRef;
+  @ViewChild("setdateInput") setdateInput: ElementRef;
   
 
 
@@ -29,6 +33,8 @@ export class EventpageComponent implements OnInit {
       'fromPostcode':[null, Validators.compose([Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
       'toPostcode':[null, Validators.compose([Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
       'setTime':[null, Validators.required],
+      'setDate':[null, Validators.required],
+      'description':[null, Validators.required],
       'validate': ''
     })
    }
@@ -38,19 +44,22 @@ export class EventpageComponent implements OnInit {
 
   
 
-  postSignUp(event: any){
+  postEvent(event: any){
 
     this.postcode_to=this.topostcodeInput.nativeElement.value;
     this.postcode_from=this.frompostcodeInput.nativeElement.value;
     this.starting_Time=this.settimeInput.nativeElement.value;
+    this.description=this.setdescription.nativeElement.value;
+    this.date=this.setdateInput.nativeElement.value;
 
     this.httpClient.put(`http://www.transport.hope-church.com.au:4200/api/event`,{
-      lifegroup: this.lg,
-      from: this.postcode_from,
-      destination: this.postcode_to,
-      time:this.starting_Time
+      lg: this.lg,
+      postcode_from: this.postcode_from,
+      postcode_to: this.postcode_to,
+      destination: this.description,
+      starting_date: this.date,
+      starting_time:this.starting_Time
       
-
     })//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{

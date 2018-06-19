@@ -1,0 +1,22 @@
+<div>
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/admin">Admin</a></li>
+      <li class="breadcrumb-item"><a routerLink="/managing-event">Managing Event</a></li>
+      <li class="breadcrumb-item active">Managing event</li>
+    </ol>
+</div>
+
+<form [formGroup]="editForm">
+
+<div class="bg-profile-design">
+  <div class="profile-design">
+    <input type="text" formControlName="name" class="col-md-4 selection-design" (keyup)="onName($event)" placeholder="Event name...">
+      <br>
+      <div class="alert col-md-4 selection-design" style="color:brown" *ngIf="!editForm.controls['name'].valid && editForm.controls['name'].touched">No special characters and numbers.</div>
+      <br>
+      <button (click)="getEvent()" class="btn btn-primary selection-design col-md-4" [disabled]="!editForm.valid"><i class="fa fa-search"></i> Search</button>
+      <br>
+  </div>
+</div>
+
+</form>

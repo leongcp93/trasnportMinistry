@@ -33,6 +33,8 @@ import { EditPageComponent } from './edit-page/edit-page.component';
 import { EditPageRespondComponent } from './edit-page-respond/edit-page-respond.component';
 import { CreateEventRespondsComponent } from './create-event-responds/create-event-responds.component';
 import { ManagingLifegroupComponent } from './managing-lifegroup/managing-lifegroup.component';
+import { ManagingEventComponent } from './managing-event/managing-event.component';
+import { EditEventComponent } from './edit-event/edit-event.component';
 
 
 
@@ -62,7 +64,11 @@ import { ManagingLifegroupComponent } from './managing-lifegroup/managing-lifegr
     
     CreateEventRespondsComponent,
     
-    ManagingLifegroupComponent
+    ManagingLifegroupComponent,
+    
+    ManagingEventComponent,
+    
+    EditEventComponent
     
   ],
   imports: [
