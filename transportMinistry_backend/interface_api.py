@@ -10,15 +10,17 @@ Notes:
 """
 from functools import wraps
 from flask import Flask, Response, request, jsonify, render_template
+from flask_cors import CORS
 
-import Lib.databaseInteraction as db
-import Lib.algorithms as alg
-import Lib.transportPlanning as plan
+import Lib.DatabaseInteraction as db
+import Lib.Algorithms as alg
+import Lib.TransportPlanning as plan
 import pandas as pd
 import os
 
 import base64
 app = Flask(__name__)
+CORS(app)
     
 ## Actual implementation
 global url_prex, auth_passcode
@@ -107,22 +109,18 @@ def index():
     body = body + "<p>Established on 15/05/2018 ; Developed by Patrick and Bruno.</p>"
     return body
 
+
 @app.route("{}/readme".format(url_prex), methods=['GET'])
 @requires_auth
 def secret_page():
     return render_template('readdoc.html')
+
 
 ## DB direct modify
 @app.route("{}/lifegroup".format(url_prex), methods=['PUT'])
 def add_LG(): ##
     """
     Register life group
-    
-    Requires:
-        - lifegroup name
-        
-    Returns:
-        - success / fail
     """
     try:
         ## receive file
@@ -147,13 +145,7 @@ def add_LG(): ##
 @app.route("{}/lifegroup".format(url_prex), methods=['DELETE'])
 def delete_LG(): ##
     """
-    Delete life group
-    
-    Requires:
-        - lifegroup name
-        
-    Returns:
-        - success / fail
+    Delete life group.
     """
     try:
         ## receive file
@@ -169,6 +161,28 @@ def delete_LG(): ##
     
     except Exception as e:
         return "Some internal error existed"
+    
+    
+@app.route("{}/lifegroup".format(url_prex), methods=['GET'])
+def list_LG(): ##
+    """
+    Show all the lifegroups.
+    """
+    try:        
+        ## Access from db        
+        ls = db.show_all_lg()            
+        
+        all_lg = []
+        for lg in ls:
+            d = {"name":lg}
+            all_lg.append(d)
+        
+        return jsonify(all_lg)
+        
+    
+    except Exception as e:
+        return "Some internal error existed"
+    
     
 @app.route("{}/member".format(url_prex), methods=['PUT'])
 def add_person(): ##
@@ -192,16 +206,16 @@ def add_person(): ##
         
         ## passcode
         if content.get('auth') != auth_passcode:
-            return "Un-authorized action"
+            return jsonify({"msg":"Un-authorized action"}), 401
         
         msg = db.Person(lg = lg, name = name, postcode = postcode).add_db()
-        return msg
+        return jsonify({"msg":msg}), 200
         #return "Added successfully"
     
     except Exception as e:
-        return "Some internal error existed"
+        return jsonify({"err": "Some internal error existed"}), 500
 
-@app.route("{}/member".format(url_prex), methods=['DELETE'])
+@app.route("{}/member".format(url_prex), methods=['POST'])
 def edit_person():
     """
     Register life group
@@ -223,14 +237,14 @@ def edit_person():
         
         ## passcode
         if content.get('auth') != auth_passcode:
-            return "Un-authorized action"
+            return jsonify({"msg":"Un-authorized action"}), 401
         
         msg = db.Person(lg = lg, name = name, postcode = postcode).edit_db()
-        return msg
+        return jsonify({"msg":msg}), 200
         #return "Edited successfully"
     
     except Exception as e:
-        return e
+        return jsonify({"err":e}), 500
     
 
 @app.route("{}/member".format(url_prex), methods=['DELETE'])
@@ -250,17 +264,17 @@ def delete_person():
         content = request.get_json()
         lg = content.get('lg')
         name = content.get('name')
+        auth = content.get('auth')
         
         ## passcode
-        if content.get('auth') != auth_passcode:
-            return "Un-authorized action"
+        if auth != auth_passcode:
+            return jsonify({"msg":"Un-authorized action"}), 401
         
         msg = db.Person(lg = lg, name = name).del_db()
-        return msg
-        #return "Deleted successfully"
+        return jsonify({"msg":msg}), 200
     
     except Exception as e:
-        return "Some internal error existed"
+        return jsonify({"err":"Some internal error existed {}".foramt(e)}), 500
 
 @app.route("{}/member".format(url_prex), methods=['GET'])
 def show_members():
@@ -271,28 +285,36 @@ def show_members():
     lg = request.args.get('lg', type = str)
     name = request.args.get('name', type = str)
     passcode = request.args.get('passcode', type = str)
-
-    # Function 1: Retrieve details of a person
-    if lg != None and name != None:
-        pc = db._sql("SELECT postcode FROM Person WHERE name = '{}' AND lg = '{}';".format(name, lg))
-        try:
-            return jsonify({"name":name, "postcode":pc[0][0]})
-        
-        except Exception as e:
-            return "No information is returned."
-        
-    # Function 2: Retreive member names
-    members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}';".format(lg))
+    
+    # Authorization required:
     if passcode == auth_passcode:
-        ls = []
-        for pair in members:
-            n = [pair[0], str(pair[1])]
-            ls.append(n)
+        
+        # Function 1: Retreive member names
+        if lg != None and name == None:
+            members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}';"
+                              .format(lg))
+            ls = []
+            for i, pair in enumerate(members):
+                n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "space":"4"}
+                ls.append(n)
+                
+            return jsonify(ls), 200
+        
+        else:
             
-        return jsonify({"members":ls})
+            # Function 2: Retrieve details of a person
+            members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}'\
+                              AND name = '{}';".format(lg, name))
+            ls = []
+            for i, pair in enumerate(members):
+                n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "space":"4"}
+                ls.append(n)
+                
+            return jsonify(ls), 200
     
     else:
-        return jsonify({"msg":"Unauthorized action"})
+        return jsonify({"msg":"Unauthorized action"}), 401
+    
 
 @app.route("{}/clear".format(url_prex), methods=['GET'])
 @requires_auth
@@ -325,13 +347,14 @@ def api_submit(): ##
         ## fetching the method
         msg = plan.submit(event, lg, name, driver_flag, pc_vary)
         if type(msg) == tuple:
-            return msg[0]
+            return jsonify({"msg":msg[0]}), 200
             
         else:
-            return msg
+            return jsonify({"msg":msg}), 200
     
     except Exception as e:
-        return "Some internal error existed {}".format(e)
+        return jsonify({"err":"Some internal error existed {}".format(e)}), 500
+
 
 @app.route("{}/event".format(url_prex), methods=['PUT'])
 def api_createEvent(): ##
@@ -348,14 +371,17 @@ def api_createEvent(): ##
         startingTime = content.get('starting_time')
         #note = content.get('note')
         
+        print([lg, pc_from, pc_to, destination, startingTime])
+        
         ## Event        
         e = plan.Event(lg= lg)
         e_id = e.create_event(pc_from, pc_to, destination, startingTime)
         e_id = CodeConverter().encode(e_id)
-        return "Your event ID: {}".format(e_id)
+        return jsonify({"msg":"event created successfully.", "event_id":"{}".format(e_id)}), 200
     
     except Exception as e:
-        return "Err: {}".format(e)
+        return jsonify({"err":"{}".format(e)}), 500
+    
     
 @app.route("{}/event/<eventID>".format(url_prex), methods=['GET'])
 def api_getEventInfo(eventID): ##
@@ -372,13 +398,14 @@ def api_getEventInfo(eventID): ##
         # check if file already existed
         path_here = "Events_temp"
         if "{}.csv".format(eventID) in os.listdir(path_here):
-            return jsonify({"lg":info[0], "from":info[1],"to":info[2],"destination":info[3],"date":info[4],"time":info[5]})
+            return jsonify({"lg":info[0], "from":info[1],"to":info[2],"destination":info[3],"date":info[4],"time":info[5]}), 200
         
         else:
-            return jsonify({"msg":"Event does not existed."})
+            return jsonify({"msg":"Event does not existed."}), 400
     
     except Exception as e:
-        return jsonify({"err":"Event does not existed."})
+        return jsonify({"err":"Event does not existed."}), 500
+
     
 @app.route("{}/bestmatches".format(url_prex), methods=['POST'])
 def api_bestmatches(): ##
@@ -417,10 +444,10 @@ def api_bestmatches(): ##
         
         ## trigger calculation
         mapping = alg.find_combinations(map_drivers, map_passengers)
-        return jsonify(mapping)
+        return jsonify(mapping), 200
     
     except Exception as e:
-        return "Error: Please check again the input of Event ID or Lifegroup{}".format(e)
+        return jsonify({"err":"please check again the input of Event ID or Lifegroup{}".format(e)}), 400
 
 
 ## ----------------End Event----------------------------------------
@@ -431,6 +458,7 @@ def api_bestmatches(): ##
 
 # Sending parameters via url
 # Example: url/api/whoisgoing?eventID=<value>
+
 
 @app.route("{}/attendees".format(url_prex), methods=['GET'])
 def show_pplgoing():
@@ -453,9 +481,9 @@ def show_pplgoing():
         ls_drivers = ["{} (driving)".format(i) for i in ls_drivers]
         ls_drivers.extend(ls_array)
         
-        return jsonify({"names":ls_drivers})
+        return jsonify({"attendees":ls_drivers}), 200
     except Exception as e:
-        return "Event ID does not exist {}".format(e)
+        return jsonify({"err":"event ID does not exist {}".format(e)}), 400
 
 
 
@@ -473,7 +501,7 @@ https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-
 if __name__ == "__main__":
     ## cd to absolute dir (depends on server)
     #os.chdir("/home/bruno1993/transport_api/")
-    app.run(host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=4200)
     
     
     
