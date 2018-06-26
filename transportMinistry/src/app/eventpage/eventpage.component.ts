@@ -15,7 +15,7 @@ export class EventpageComponent implements OnInit {
   postcode_to: string='';
   starting_Time: string='';
   date: string='';
-  lg: string='uq6';
+  lg: string='uq6'; //needed to read it globally
   description: string='';
   eventForm: FormGroup;
   isCreated: boolean = false;
