@@ -35,6 +35,8 @@ import { CreateEventRespondsComponent } from './create-event-responds/create-eve
 import { ManagingLifegroupComponent } from './managing-lifegroup/managing-lifegroup.component';
 import { ManagingEventComponent } from './managing-event/managing-event.component';
 import { EditEventComponent } from './edit-event/edit-event.component';
+import { EventEditPageComponent } from './event-edit-page/event-edit-page.component';
+import { ListParticipantsComponent } from './list-participants/list-participants.component';
 
 
 
@@ -68,7 +70,11 @@ import { EditEventComponent } from './edit-event/edit-event.component';
     
     ManagingEventComponent,
     
-    EditEventComponent
+    EditEventComponent,
+    
+    EventEditPageComponent,
+    
+    ListParticipantsComponent
     
   ],
   imports: [

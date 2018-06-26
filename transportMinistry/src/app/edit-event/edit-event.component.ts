@@ -47,18 +47,18 @@ export class EditEventComponent implements OnInit {
 
   //get method for every existing data in the database
   getEvent(){
-    this.httpClient.get(`http://www.transport.hope-church.com.au:4200/api/event?lg=${this.lg}&auth=${this.passcode}`)//change this when the legit url is there.
+    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Events`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
           for (this.i=0; this.i<data.length; this.i++){
-            this.name[this.i] = data[this.i].name;
-            this.date[this.i] = data[this.i].date;
-            this.startTime[this.i] = data[this.i].startingTime;
+            this.name[this.i] = data[this.i].destination;
+            //this.date[this.i] = data[this.i].date;
+            this.startTime[this.i] = data[this.i].time;
 
             this.events[this.i] = {
               name: this.name[this.i],
-              date: this.date[this.i],
+              //date: this.date[this.i],
               time: this.startTime[this.i]
             }
             console.log(this.events[this.i]);
@@ -75,9 +75,9 @@ export class EditEventComponent implements OnInit {
     .subscribe(
       (data:any[])=>{
         if(data.length){
-          this.resultname[0] = data[0].name;
-          this.resultdate[0] = data[0].date;
-          this.resultstartTime[0] = data[0].startingTime;
+          this.resultname[0] = data[0].destination;
+          //this.resultdate[0] = data[0].date;
+          this.resultstartTime[0] = data[0].time;
         }
       }
     )

@@ -1,0 +1,27 @@
+<div>
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/admin">Admin</a></li>
+      <li class="breadcrumb-item"><a routerLink="/managing-event">Managing Event</a></li>
+      <li class="breadcrumb-item"><a routerLink="/edit-event">Edit event</a></li>
+      <li class="breadcrumb-item active">Participants</li>
+    </ol>
+</div>
+
+<div class="participantContainer">
+<i class="fa fa-car"></i> Driver:
+<div class="passengerContainer">
+  <div *ngFor="let driverName of driverNames">
+   <ul>
+     <li>{{driverName}}</li>
+   </ul>
+  </div>
+</div>
+  <i class="fa fa-users"></i> Passenger:
+  <div class="passengerContainer">
+  <div *ngFor="let passengerName of passengerNames">
+    <ul>
+      <li>{{passengerName}}</li>
+    </ul>
+  </div>
+  </div>
+</div>

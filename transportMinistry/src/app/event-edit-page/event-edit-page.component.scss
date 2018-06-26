@@ -1,19 +1,18 @@
-.content-align-default{
-    padding: 15px;
-    
-
-}
-
-.custome-button{
+.container{
+    color:whitesmoke;
+    background-color:#4a39ad;
+    padding: 25px;
     border-radius: 25px;
 }
 
 .selection-design{
     border-radius: 25px;
 }
+
 .alert{
     background: #f2edda;
     padding: 7px;
+    color: red;
     font-size: .9em;
     margin-bottom: 20px;
     display: inline-block;
@@ -21,22 +20,6 @@
 }
 
 @keyframes alertAnim {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.content-display{
-    animation: 2s contDisplay forwards;
-}
-
-@keyframes contDisplay {
     from {
         opacity: 0;
         transform: translateY(-20px);

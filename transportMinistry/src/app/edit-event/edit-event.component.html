@@ -22,11 +22,13 @@
 <div class="profile-design" *ngFor="let event of events">
 
   Event: {{event.name}}<br>
-  Date: {{event.date}}<br>
   Time: {{event.time}}<br>
     
     <div align="right">
-    <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1"><i class="fa fa-edit"></i> Edit</button><button class="btn btn-danger selection-design col-md-1" (click)="delPeople(event)"><i class="fa fa-trash"></i> Delete</button>
+    <button routerLink="/event-edit-page" class="btn btn-primary selection-design col-md-1"><i class="fa fa-edit"></i> Edit</button>
+    <button class="btn btn-danger selection-design col-md-1" (click)="delEvent()"><i class="fa fa-trash"></i> Delete</button>
+    <button class="btn btn-secondary selection-design col-md-1" routerLink="/list-participants"><i class="fa fa-user"></i> Participants</button>
+    <br>
   </div>
 
   </div>

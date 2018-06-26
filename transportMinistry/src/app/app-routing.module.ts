@@ -16,6 +16,8 @@ import { CreateEventRespondsComponent } from './create-event-responds/create-eve
 import { ManagingLifegroupComponent } from './managing-lifegroup/managing-lifegroup.component';
 import { ManagingEventComponent } from './managing-event/managing-event.component';
 import { EditEventComponent } from './edit-event/edit-event.component';
+import { EventEditPageComponent } from './event-edit-page/event-edit-page.component';
+import { ListParticipantsComponent } from './list-participants/list-participants.component';
 
 //this is where i changed refer this https://www.youtube.com/watch?v=Nehk4tBxD4o&t=399s for sample
 const routes: Routes = [
@@ -35,6 +37,8 @@ const routes: Routes = [
   {path: 'managing-lifegroup', component: ManagingLifegroupComponent},
   {path: 'managing-event', component: ManagingEventComponent},
   {path: 'edit-event', component: EditEventComponent},
+  {path: 'event-edit-page', component:EventEditPageComponent},
+  {path: 'list-participants', component: ListParticipantsComponent},
   {path: '**', component:SignupComponent}
 
 ];
