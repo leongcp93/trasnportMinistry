@@ -19,6 +19,8 @@ export class EventpageComponent implements OnInit {
   description: string='';
   eventForm: FormGroup;
   isCreated: boolean = false;
+
+  //refering IDs
   @ViewChild("topostcodeInput") topostcodeInput: ElementRef;
   @ViewChild("frompostcodeInput") frompostcodeInput: ElementRef;
   @ViewChild("settimeInput") settimeInput: ElementRef;
