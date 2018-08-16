@@ -17,15 +17,12 @@
 
       
         <label> Are you a driver?</label><br>
-        <label>Yes <input (click) = "checkingDriver()" type="radio" name="checkDriver" value="yes" checked #isDriver formControlName="checkDriver"></label>
-        <label>No <input (click) = "checkingDriver()" type="radio" name="checkDriver" value="no" checked="checked" #isNotDriver formControlName="checkDriver"></label><br>
-        <div #seats *ngIf="isDriver" [style.display] = "isDriver ? 'display' : 'block'"><strong>Number of seats: </strong><br>
+        <label>Yes <input (click) = "checkingDriver()" type="radio" name="isDriver" value="yes" checked #isDriver formControlName="checkDriver"></label>
+        <label>No <input (click) = "checkingDriver()" type="radio" name="isDriver" value="no" checked="checked" #isNotDriver formControlName="checkDriver"></label><br>
+        <div #seats *ngIf="isDriver"><strong>Number of seats: </strong><br>
           <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput [disabled]="">
           <div class="alert col-md-6" *ngIf="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div><br>
         </div><br><br>
-      
-      
-       
       
       <button routerLink="/submit-responds" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid"><i class="fa fa-check-circle"></i> Submit</button><br>
       <!--<input type="button" class="btn btn-primary col-md-6" value="Submit" [disabled]="!signupForm.valid"><br>-->

@@ -29,8 +29,6 @@ export class SignupComponent implements OnInit {
   @ViewChild("isDriver") isDriverInput: ElementRef;
   @ViewChild("isNotDriver") isNotDriverInput: ElementRef;
 
-  @ViewChild("seats") seats: ElementRef;
-
   constructor(private httpClient:HttpClient,private fb: FormBuilder) {
 
     this.signupForm = fb.group({
