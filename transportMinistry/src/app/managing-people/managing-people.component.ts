@@ -28,18 +28,13 @@ export class ManagingPeopleComponent implements OnInit {
   currentPost: any;
   //private headers = new Headers({'Content-Type': 'application/json'}); 
 
-
   constructor(private httpClient:HttpClient, private fb: FormBuilder) { 
 //This is for validation on the name.
     this.managingForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'validate': ''
     });
-    
-
    }
-
- 
 
 //this is the event handeling
   onName(event:any){
@@ -60,7 +55,7 @@ export class ManagingPeopleComponent implements OnInit {
   }
 */
   getPassenger(){
-    this.httpClient.get(`http://www.transport.hope-church.com.au:4200/api/member?passcode=pw1234&lg=uq6`)//change this when the legit url is there.
+    this.httpClient.get(`http://localhost:4300/api/member?passcode=pw1234&lg=uq6`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
@@ -83,11 +78,8 @@ export class ManagingPeopleComponent implements OnInit {
     )
   }
 
-
-  
-
   getName(){
-    this.httpClient.get(`http://www.transport.hope-church.com.au:4200/api/member?name=${this.resultname}&passcode=pw1234&lg=uq6`)//change this when the legit url is there.
+    this.httpClient.get(`http://localhost:4300/api/member?passcode=pw1234&lg=uq6&name=${this.resultname}`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
@@ -105,10 +97,6 @@ export class ManagingPeopleComponent implements OnInit {
     this.getPassenger();
   }
 
-
-  addPost(post){
-    this.resultname = post.resultname;
-  }
 }
 
 

@@ -8,7 +8,6 @@
     <div>
       <label><strong>Lifegroup Unit: {{groupunit}}</strong></label><br>
       
-      
       <label><strong>Name</strong></label><br>
       <input class="txt col-md-6" formControlName="name" type="text" #nameInput><br>
       <div class="alert col-md-6" *ngIf="!signupForm.controls['name'].valid && signupForm.controls['name'].touched">Please do fill your name.</div><br>
@@ -18,9 +17,9 @@
 
       
         <label> Are you a driver?</label><br>
-        <label>Yes <input type="radio" name="isDriver" value="yes" checked #isDriver formControlName="checkDriver"></label>
-        <label>No <input type="radio" name="isDriver" value="no" checked="checked" #isNotDriver formControlName="checkDriver"></label><br>
-        <div><strong>Number of seats: </strong><br>
+        <label>Yes <input (click) = "checkingDriver()" type="radio" name="checkDriver" value="yes" checked #isDriver formControlName="checkDriver"></label>
+        <label>No <input (click) = "checkingDriver()" type="radio" name="checkDriver" value="no" checked="checked" #isNotDriver formControlName="checkDriver"></label><br>
+        <div #seats *ngIf="isDriver" [style.display] = "isDriver ? 'display' : 'block'"><strong>Number of seats: </strong><br>
           <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput [disabled]="">
           <div class="alert col-md-6" *ngIf="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div><br>
         </div><br><br>

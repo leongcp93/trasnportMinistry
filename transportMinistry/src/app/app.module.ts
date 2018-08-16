@@ -15,8 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import animation module in here
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-//http client module to get and post 
-import { HttpClientModule } from '@angular/common/http';
+
 
 //below are all of the components of each page 
 import { AppComponent } from './app.component';
@@ -38,7 +37,8 @@ import { EditEventComponent } from './edit-event/edit-event.component';
 import { EventEditPageComponent } from './event-edit-page/event-edit-page.component';
 import { ListParticipantsComponent } from './list-participants/list-participants.component';
 
-
+//http client module to get and post 
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -75,7 +75,6 @@ import { ListParticipantsComponent } from './list-participants/list-participants
     EventEditPageComponent,
     
     ListParticipantsComponent
-    
   ],
   imports: [
     BrowserModule,
@@ -83,10 +82,10 @@ import { ListParticipantsComponent } from './list-participants/list-participants
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
     FormsModule,
-    AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

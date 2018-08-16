@@ -12,9 +12,9 @@ from functools import wraps
 from flask import Flask, Response, request, jsonify, render_template
 from flask_cors import CORS
 
-import Lib.DatabaseInteraction as db
-import Lib.Algorithms as alg
-import Lib.TransportPlanning as plan
+import Lib.databaseInteraction as db
+import Lib.algorithms as alg
+import Lib.transportPlanning as plan
 import pandas as pd
 import os
 
@@ -117,7 +117,7 @@ def secret_page():
 
 
 ## DB direct modify
-@app.route("{}/lifegroup".format(url_prex), methods=['PUT'])
+@app.route("{}/lifegroup".format(url_prex), methods=['POST'])
 def add_LG(): ##
     """
     Register life group
@@ -149,11 +149,11 @@ def delete_LG(): ##
     """
     try:
         ## receive file
-        content = request.get_json()
-        lg = content.get('lg')
+        lg = request.args.get('lg', type = str)
+        auth = request.args.get('passcode', type = str)
         
         ## passcode
-        if content.get('auth') != auth_passcode:
+        if auth != auth_passcode:
             return "Un-authorized action"
         
         msg = db.LifeGroup(lg).del_lg()
@@ -501,7 +501,7 @@ https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-
 if __name__ == "__main__":
     ## cd to absolute dir (depends on server)
     #os.chdir("/home/bruno1993/transport_api/")
-    app.run(host="0.0.0.0", port=4200)
+    app.run(host="localhost", port=4300)
     
     
     

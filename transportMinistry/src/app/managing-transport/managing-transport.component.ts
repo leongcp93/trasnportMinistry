@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subscriber } from 'rxjs/Subscriber';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DISABLED } from '@angular/forms/src/model';
-import { trigger,state,style,transition,animate,keyframes } from '@angular/animations';
+import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-managing-transport',
@@ -47,9 +47,9 @@ import { trigger,state,style,transition,animate,keyframes } from '@angular/anima
 export class ManagingTransportComponent implements OnInit {
 
   //driver: string = '';
-  passengername: Array<string>=[''];
+  passengername: Array<string> = [''];
   transportForm: FormGroup;
-  drivername: Array<string>=[''];
+  drivername: Array<string> = [''];
   i: number;
   checking: boolean = false;
   disable: boolean = true;
@@ -57,72 +57,67 @@ export class ManagingTransportComponent implements OnInit {
   visibility: boolean = true;
   display: boolean = true;
 
-  constructor(private httpClient:HttpClient, private fb: FormBuilder) {
+  constructor(private httpClient: HttpClient, private fb: FormBuilder) {
 
     this.transportForm = fb.group({
       'passengername': [null, Validators.required],
       'validate': ''
     });
-    
-   }
 
+  }
 
-   ngOnInit() {
-     
-     this.getDriver();
+  ngOnInit() {
+    this.getDriver();
     this.getPassenger();
-    
+  }
+
+  //getter for drivers data
+  getDriver() {
+    this.httpClient.get(`http://localhost:4300/api/member?passcode=pw1234&lg=uq6&space=${this.passengerSpace}`)//change this when the legit url is there.
+      .subscribe(
+        (data: any[]) => {
+          if (data.length) {
+            for (this.i = 0; this.i < data.length; this.i++) {
+              this.passengername[this.i] = data[this.i].name;
+              console.log(this.passengername[this.i]+" in "+this.i+" as passenger");
+            }
+          }
+        }
+      )
   }
 
 
-   //getter for drivers data
-   getDriver(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?space=${this.passengerSpace}`)//change this when the legit url is there.
-    .subscribe(
-      (data:any[])=>{
-        if (data.length) {
-          for (this.i=0; this.i<data.length; this.i++){
-            this.passengername[this.i] = data[this.i].name;
-            //console.log(this.passengername[this.i]+" in "+this.i+" as passenger");
+  //getter for passengers data
+  getPassenger() {
+    this.httpClient.get(`http://localhost:4300/api/member?passcode=pw1234&lg=uq6&space=1&&space=2&&space=3&&space=4&&space=5&&space=6&&space=7`)
+      .subscribe(
+        (data: any[]) => {
+          if (data.length) {
+            for (this.i = 0; this.i < data.length; this.i++) {
+              this.drivername[this.i] = data[this.i].name;
+              // console.log(this.drivername[this.i]+" in "+this.i+" as driver");
+            }
           }
         }
-      }
-    )
-   }
-  
+      )
+  }
 
-   //getter for passengers data
-   getPassenger(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?space=1&&space=2&&space=3&&space=4&&space=5&&space=6&&space=7`)
-    .subscribe(
-      (data:any[])=>{
-        if (data.length){
-          for (this.i=0; this.i<data.length; this.i++){
-            this.drivername[this.i] = data[this.i].name;
-           // console.log(this.drivername[this.i]+" in "+this.i+" as driver");
-          }
-        }
-      }
-    )
-   }
+  /*addPost(post){
+    this.drivername = post.drivername;
+    this.passengername = post.passengername;
+  }*/
 
-   /*addPost(post){
-     this.drivername = post.drivername;
-     this.passengername = post.passengername;
-   }*/
-
-   //this function is used to check the selection
-   /*selectionCheck(){
-      this.checking = true;
-      this.disable = false;
-      console.log("disable value is "+this.disable+" and checking value is "+this.checking); 
-   }*/
+  //this function is used to check the selection
+  /*selectionCheck(){
+     this.checking = true;
+     this.disable = false;
+     console.log("disable value is "+this.disable+" and checking value is "+this.checking); 
+  }*/
 
 
-   animatePassenger(){
-     console.log("im work");
-      this.visibility = (this.visibility=== true ? false: true);
-   }
-  
+  animatePassenger() {
+    alert("im work");
+    
+  }
 
 }

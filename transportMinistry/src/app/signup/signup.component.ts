@@ -16,9 +16,8 @@ export class SignupComponent implements OnInit {
   name: string = '';
   errorMessage: string = '';
   postcode: string = '';
-  isDriver: boolean;
-  isNotDriver: boolean;
-  numberOfSeats: string = '';
+  isDriver: boolean = false;
+  numberOfSeats: number = 0;
   groupunit: string = '';
   
   //refer the id in html from the textfield.
@@ -30,13 +29,15 @@ export class SignupComponent implements OnInit {
   @ViewChild("isDriver") isDriverInput: ElementRef;
   @ViewChild("isNotDriver") isNotDriverInput: ElementRef;
 
+  @ViewChild("seats") seats: ElementRef;
+
   constructor(private httpClient:HttpClient,private fb: FormBuilder) {
 
     this.signupForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'postcode': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
-      'checkDriver': [null, Validators.required], // this is default validation for checking
+      'checkDriver': [false, Validators.required], // this is default validation for checking
       'numberOfSeats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(1), Validators.max(7)])],
       'validate': ''
     });
@@ -70,20 +71,17 @@ export class SignupComponent implements OnInit {
 
   //this function is to settle check driver
   checkingDriver(){
-
-    this.isDriver = this.isDriverInput.nativeElement.value;
-    this.isNotDriver = this.isNotDriverInput.nativeElement.value;
-
-    if (this.isDriver = true){
-      this.isNotDriver = false;
-
-    }else{
-      this.isNotDriver=true;
-      this.numberOfSeats= "0";
-      console.log(this.numberOfSeats);
+    if (this.isDriverInput.nativeElement.value == 'yes') {
+      this.isDriver = true;
+      this.numberOfSeats = this.seatsInput.nativeElement.value;
+      console.log('yes');
     }
+    if (this.isNotDriverInput.nativeElement.value == 'no') {
+      this.isDriver = false;
+      this.numberOfSeats = 0;
+      console.log('no');
+    }
+    console.log(this.isDriver);
   }
-
- 
 
 }

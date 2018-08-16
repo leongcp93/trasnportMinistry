@@ -1,50 +1,63 @@
 <div>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a routerLink="/admin">Admin</a></li>
-        <li class="breadcrumb-item active">Managing people</li>
-      </ol>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/admin">Admin</a>
+    </li>
+    <li class="breadcrumb-item active">Managing people</li>
+  </ol>
 </div>
 
 <form [formGroup]="managingForm">
-<div class="container-fluid">
-  <div class="bg-profile-design">
-    <div class="profile-design">
+  <div class="container-fluid">
+    <div class="bg-profile-design">
+      <div class="profile-design">
 
-      <input type="text" formControlName="name" class="col-md-4 selection-design" (keyup)="onName($event)" placeholder="passenger's/driver's name...">
-      <br>
-      <div class="alert col-md-4 selection-design" style="color:brown" *ngIf="!managingForm.controls['name'].valid && managingForm.controls['name'].touched">No special characters and numbers.</div>
-      <br>
-        <button (click)="getName()" class="btn btn-primary selection-design col-md-4" [disabled]="!managingForm.valid"><i class="fa fa-search"></i> Search</button></div>
-    <br>
-
-    <div *ngIf="found" class="information-holder">
-
-      <span>Name: {{resultname}}<br>
-        Postcode: {{resultpostcode}}<br>
-        <div align="right">
-        <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1"><i class="fa fa-edit"></i> Edit</button><button class="btn btn-danger selection-design col-md-1"><i class="fa fa-trash"></i> Delete</button>
+        <input type="text" formControlName="name" class="col-md-4 selection-design" (keyup)="onName($event)" placeholder="passenger's/driver's name...">
+        <br>
+        <div class="alert col-md-4 selection-design" style="color:brown" *ngIf="!managingForm.controls['name'].valid && managingForm.controls['name'].touched">No special characters and numbers.</div>
+        <br>
+        <button (click)="getName()" class="btn btn-primary selection-design col-md-4" [disabled]="!managingForm.valid">
+          <i class="fa fa-search"></i> Search</button>
       </div>
-    </span>
+      <br>
+
+      <div *ngIf="found" class="information-holder">
+
+        <span>Name: {{resultname}}
+          <br> Postcode: {{resultpostcode}}
+          <br>
+          <div align="right">
+            <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1">
+              <i class="fa fa-edit"></i> Edit</button>
+            <button class="btn btn-danger selection-design col-md-1">
+              <i class="fa fa-trash"></i> Delete</button>
+          </div>
+        </span>
+
+      </div>
+
+
+      <div class="profile-design" *ngFor="let member of members">
+
+        Name: {{member.name}}
+        <br> Postcode: {{member.postcode}}
+        <br>
+
+        <div align="right">
+          <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1">
+            <i class="fa fa-edit"></i> Edit</button>
+          <button class="btn btn-danger selection-design col-md-1" (click)="delPeople(event)">
+            <i class="fa fa-trash"></i> Delete</button>
+        </div>
+
+      </div>
+
+      <br>
+      <br>
+      <br>
+
 
     </div>
 
-
-    <div class="profile-design" *ngFor="let member of members">
-
-      Name: {{member.name}}<br>
-      Postcode: {{member.postcode}}<br>
-        
-        <div align="right">
-        <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1"><i class="fa fa-edit"></i> Edit</button><button class="btn btn-danger selection-design col-md-1" (click)="delPeople(event)"><i class="fa fa-trash"></i> Delete</button>
-      </div>
-    
-      </div>
-   
-    <br>
-    <br>
-    <br>
-    
-    
   </div>
-
-</div>
+</form>

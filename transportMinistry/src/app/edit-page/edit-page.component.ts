@@ -35,7 +35,7 @@ export class EditPageComponent implements OnInit {
     this.name = this.updatedName;
     this.postcode = this.updatedPostcode; 
 
-    this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`,{
+    this.httpClient.post(`http://localhost:4300/api/member?passcode=pw1234&lg=uq6`,{
       name: this.name,
       postcode: this.postcode
     })
@@ -44,14 +44,13 @@ export class EditPageComponent implements OnInit {
 
 //retreiving their information by calling API
   getPassenger(){
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members?name=${this.name}`)//change this when the legit url is there.
+    this.httpClient.get(`http://localhost:4300/api/member?passcode=pw1234&name=${this.name}&lg=uq6`)//change this when the legit url is there.
     .subscribe(
       (data:any[])=>{
         if (data.length) {
             this.name = data[0].name;
             this.postcode = data[0].postcode;
             console.log("got information of "+this.name+" and "+this.postcode);
-          
         }
       }
     )
