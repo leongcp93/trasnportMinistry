@@ -48,9 +48,9 @@ export class HomeComponent implements OnInit {
         this.dataId = data[0].ID;
         this.dataPassword=data[0].password;
 
-        if (this.group!=this.dataId && this.password!= this.dataPassword){
-          console.log("Id and/or password is not correct.");
-        } else{
+        if (this.group!=this.dataId || this.password!= this.dataPassword){
+          console.log("Id or password is not correct.");
+        } else if (this.group!=this.dataId && this.password!= this.dataPassword){
           console.log("Both id and password is correct");
         }
 

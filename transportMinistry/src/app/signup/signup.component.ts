@@ -17,6 +17,7 @@ export class SignupComponent implements OnInit {
   errorMessage: string = '';
   postcode: string = '';
   isDriver: boolean;
+  isNotDriver: boolean;
   numberOfSeats: string = '';
   groupunit: string = '';
   
@@ -25,13 +26,17 @@ export class SignupComponent implements OnInit {
   @ViewChild("postcodeInput") postcodeInput: ElementRef;
   @ViewChild("seatsInput") seatsInput: ElementRef;
 
+  //this section is to check drivers and passengers status
+  @ViewChild("isDriver") isDriverInput: ElementRef;
+  @ViewChild("isNotDriver") isNotDriverInput: ElementRef;
+
   constructor(private httpClient:HttpClient,private fb: FormBuilder) {
 
     this.signupForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'postcode': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
-      //'isDriver': [true, Validators.required], // this is default validation for checking
+      'checkDriver': [null, Validators.required], // this is default validation for checking
       'numberOfSeats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(1), Validators.max(7)])],
       'validate': ''
     });
@@ -61,6 +66,22 @@ export class SignupComponent implements OnInit {
         }
       
     )
+  }
+
+  //this function is to settle check driver
+  checkingDriver(){
+
+    this.isDriver = this.isDriverInput.nativeElement.value;
+    this.isNotDriver = this.isNotDriverInput.nativeElement.value;
+
+    if (this.isDriver = true){
+      this.isNotDriver = false;
+
+    }else{
+      this.isNotDriver=true;
+      this.numberOfSeats= "0";
+      console.log(this.numberOfSeats);
+    }
   }
 
  

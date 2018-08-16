@@ -18,10 +18,10 @@
 
       
         <label> Are you a driver?</label><br>
-        <label>Yes <input type="radio" name="isDriver" value="" checked></label>
-        <label>No <input type="radio" name="isDriver" value="" checked="checked"></label><br>
+        <label>Yes <input type="radio" name="isDriver" value="yes" checked #isDriver formControlName="checkDriver"></label>
+        <label>No <input type="radio" name="isDriver" value="no" checked="checked" #isNotDriver formControlName="checkDriver"></label><br>
         <div><strong>Number of seats: </strong><br>
-          <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput>
+          <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput [disabled]="">
           <div class="alert col-md-6" *ngIf="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div><br>
         </div><br><br>
       

@@ -21,25 +21,26 @@ import { ListParticipantsComponent } from './list-participants/list-participants
 
 //this is where i changed refer this https://www.youtube.com/watch?v=Nehk4tBxD4o&t=399s for sample
 const routes: Routes = [
-  {path: 'signup', component: SignupComponent},
-  {path: 'submit-responds', component: SubmitRespondsComponent},
-  {path: 'admin', component: AdminComponent},
-  {path: 'profile-info', component: ProfileInfoComponent},
-  {path: 'managing-transport', component: ManagingTransportComponent},
-  {path: 'managing-people', component: ManagingPeopleComponent},
-  {path: 'home', component: HomeComponent},
-  {path: 'add-people', component: AddPeopleComponent},
-  {path: 'add-people-responds', component: AddPeopleRespondsComponent},
-  {path: 'eventpage', component: EventpageComponent},
-  {path: 'edit-page', component: EditPageComponent},
-  {path: 'edit-page-respond', component: EditPageRespondComponent},
-  {path: 'create-event-responds', component: CreateEventRespondsComponent},
-  {path: 'managing-lifegroup', component: ManagingLifegroupComponent},
-  {path: 'managing-event', component: ManagingEventComponent},
-  {path: 'edit-event', component: EditEventComponent},
-  {path: 'event-edit-page', component:EventEditPageComponent},
-  {path: 'list-participants', component: ListParticipantsComponent},
-  {path: '**', component:SignupComponent}
+  { path: '', redirectTo: 'signup', pathMatch:'full' },
+  { path: 'signup', component: SignupComponent },
+  { path: 'submit-responds', component: SubmitRespondsComponent },
+  { path: 'admin', component: AdminComponent },
+  { path: 'profile-info', component: ProfileInfoComponent },
+  { path: 'managing-transport', component: ManagingTransportComponent },
+  { path: 'managing-people', component: ManagingPeopleComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'add-people', component: AddPeopleComponent },
+  { path: 'add-people-responds', component: AddPeopleRespondsComponent },
+  { path: 'eventpage', component: EventpageComponent },
+  { path: 'edit-page', component: EditPageComponent },
+  { path: 'edit-page-respond', component: EditPageRespondComponent },
+  { path: 'create-event-responds', component: CreateEventRespondsComponent },
+  { path: 'managing-lifegroup', component: ManagingLifegroupComponent },
+  { path: 'managing-event', component: ManagingEventComponent },
+  { path: 'edit-event', component: EditEventComponent },
+  { path: 'event-edit-page', component: EventEditPageComponent },
+  { path: 'list-participants', component: ListParticipantsComponent },
+  { path: '**', component: SignupComponent }
 
 ];
 //above is what i changed
@@ -51,14 +52,14 @@ const routes: Routes = [
 export class AppRoutingModule { }
 export const routingComponent = [
   //below is add the component to link it together
-  SignupComponent, 
+  SignupComponent,
   SubmitRespondsComponent,
   AdminComponent,
-  ProfileInfoComponent, 
-  ManagingTransportComponent, 
-  ManagingPeopleComponent, 
-  HomeComponent, 
-  AddPeopleComponent, 
+  ProfileInfoComponent,
+  ManagingTransportComponent,
+  ManagingPeopleComponent,
+  HomeComponent,
+  AddPeopleComponent,
   AddPeopleRespondsComponent,
   EventpageComponent
 ]
