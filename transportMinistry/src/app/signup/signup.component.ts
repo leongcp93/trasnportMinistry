@@ -8,6 +8,7 @@ import { Subscriber } from 'rxjs/Subscriber';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
+
 export class SignupComponent implements OnInit {
 
   signupForm: FormGroup;
@@ -16,10 +17,10 @@ export class SignupComponent implements OnInit {
   name: string = '';
   errorMessage: string = '';
   postcode: string = '';
-  isDriver: boolean = false;
+  driver: boolean = false;
   numberOfSeats: number = 0;
   groupunit: string = '';
-  
+
   //refer the id in html from the textfield.
   @ViewChild("nameInput") nameInput: ElementRef;
   @ViewChild("postcodeInput") postcodeInput: ElementRef;
@@ -29,7 +30,7 @@ export class SignupComponent implements OnInit {
   @ViewChild("isDriver") isDriverInput: ElementRef;
   @ViewChild("isNotDriver") isNotDriverInput: ElementRef;
 
-  constructor(private httpClient:HttpClient,private fb: FormBuilder) {
+  constructor(private httpClient: HttpClient, private fb: FormBuilder) {
 
     this.signupForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
@@ -40,46 +41,40 @@ export class SignupComponent implements OnInit {
       'validate': ''
     });
 
-   }
+  }
 
   ngOnInit() {
   }
 
-
-  postSignUp(){
+  postSignUp() {
     //this part collect all the value in the field and set to httpClient. 
-    this.name=this.nameInput.nativeElement.value;
-    this.postcode=this.postcodeInput.nativeElement.value;
-    this.numberOfSeats=this.seatsInput.nativeElement.value;
+    this.name = this.nameInput.nativeElement.value;
+    this.postcode = this.postcodeInput.nativeElement.value;
+    this.numberOfSeats = this.seatsInput.nativeElement.value;
 
     //passing 
-    this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`,{
+    this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`, {
       name: this.name,
       postcode: this.postcode,
       space: this.numberOfSeats
     })//change this when the legit url is there.
-    .subscribe(
-      (data:any[])=>{
-        console.log(data);
-          
+      .subscribe(
+        (data: any[]) => {
+          console.log(data);
+
         }
-      
-    )
+      )
   }
 
   //this function is to settle check driver
-  checkingDriver(){
-    if (this.isDriverInput.nativeElement.value == 'yes') {
-      this.isDriver = true;
+  checkDriver() {
+    if (this.isDriverInput.nativeElement.checked) {
+      this.driver = true;
       this.numberOfSeats = this.seatsInput.nativeElement.value;
-      console.log('yes');
     }
-    if (this.isNotDriverInput.nativeElement.value == 'no') {
-      this.isDriver = false;
+    if (this.isNotDriverInput.nativeElement.checked) {
+      this.driver = false;
       this.numberOfSeats = 0;
-      console.log('no');
     }
-    console.log(this.isDriver);
   }
-
 }

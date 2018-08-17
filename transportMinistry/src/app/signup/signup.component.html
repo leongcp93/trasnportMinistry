@@ -1,33 +1,57 @@
- <div class="container-fluid content-align-default" align="center">
+<div class="container-fluid content-align-default" align="center">
   <div align="right">
     <a routerLink="/home" class="btn btn-link nav-item">Admin login</a>
-    </div>
+  </div>
 
-<div class="content-display" *ngIf="!name; else forminfo" ng-app="signup" ng-controller="signupCtrl">
-  <form [formGroup]="signupForm" (ngSubmit)="addPassenger(signupForm.value)">
-    <div>
-      <label><strong>Lifegroup Unit: {{groupunit}}</strong></label><br>
-      
-      <label><strong>Name</strong></label><br>
-      <input class="txt col-md-6" formControlName="name" type="text" #nameInput><br>
-      <div class="alert col-md-6" *ngIf="!signupForm.controls['name'].valid && signupForm.controls['name'].touched">Please do fill your name.</div><br>
-      <label><strong>Postcode (Optional)</strong></label><br>
-      <input class="txt col-md-6" formControlName="postcode" type="text" #postcodeInput><br>
-      <div class="alert col-md-6" *ngIf="!signupForm.controls['postcode'].valid">Please key in the correct format.</div><br>
+  <div class="content-display" *ngIf="!name; else forminfo" ng-app="signup" ng-controller="signupCtrl">
+    <form [formGroup]="signupForm" (ngSubmit)="addPassenger(signupForm.value)">
+      <div>
+        <label>
+          <strong>Lifegroup Unit: {{groupunit}}</strong>
+        </label>
+        <br>
 
-      
-        <label> Are you a driver?</label><br>
-        <label>Yes <input (click) = "checkingDriver()" type="radio" name="isDriver" value="yes" checked #isDriver formControlName="checkDriver"></label>
-        <label>No <input (click) = "checkingDriver()" type="radio" name="isDriver" value="no" checked="checked" #isNotDriver formControlName="checkDriver"></label><br>
-        <div #seats *ngIf="isDriver"><strong>Number of seats: </strong><br>
+        <label>
+          <strong>Name</strong>
+        </label>
+        <br>
+        <input class="txt col-md-6" formControlName="name" type="text" #nameInput>
+        <br>
+        <div class="alert col-md-6" *ngIf="!signupForm.controls['name'].valid && signupForm.controls['name'].touched">Please do fill your name.</div>
+        <br>
+        <label>
+          <strong>Postcode (Optional)</strong>
+        </label>
+        <br>
+        <input class="txt col-md-6" formControlName="postcode" type="text" #postcodeInput>
+        <br>
+        <div class="alert col-md-6" *ngIf="!signupForm.controls['postcode'].valid">Please key in the correct format.</div>
+        <br>
+        <label> Are you a driver?</label>
+        <br>
+        <label>Yes
+          <input #isDriver (click)="checkDriver()" type="radio" name="isDriver" formControlName="checkDriver">
+        </label>
+        <label>No
+          <input #isNotDriver (click)="checkDriver()" type="radio" name="isDriver" formControlName="checkDriver" checked>
+        </label>
+        <br>
+        <div *ngIf="driver">
+          <strong>Number of seats: </strong>
+          <br>
           <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput [disabled]="">
-          <div class="alert col-md-6" *ngIf="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div><br>
-        </div><br><br>
-      
-      <button routerLink="/submit-responds" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid"><i class="fa fa-check-circle"></i> Submit</button><br>
-      <!--<input type="button" class="btn btn-primary col-md-6" value="Submit" [disabled]="!signupForm.valid"><br>-->
-   <a routerLink="/add-people" class="btn btn-link col-md-6">New Friend?</a>
-</div>
-</form>
-</div>
+          <div class="alert col-md-6" *ngIf="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div>
+          <br>
+        </div>
+        <br>
+        <br>
+
+        <button routerLink="/submit-responds" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid">
+          <i class="fa fa-check-circle"></i> Submit</button>
+        <br>
+        <!--<input type="button" class="btn btn-primary col-md-6" value="Submit" [disabled]="!signupForm.valid"><br>-->
+        <a routerLink="/add-people" class="btn btn-link col-md-6">New Friend?</a>
+      </div>
+    </form>
+  </div>
 </div>
