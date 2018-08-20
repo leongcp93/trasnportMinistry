@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subscriber } from 'rxjs/Subscriber';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators , FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-managing-people',
@@ -28,7 +28,7 @@ export class ManagingPeopleComponent implements OnInit {
   currentPost: any;
   //private headers = new Headers({'Content-Type': 'application/json'}); 
 
-  constructor(private httpClient:HttpClient, private fb: FormBuilder) { 
+  constructor(private httpClient:HttpClient, private fb: FormBuilder, private changeDetector: ChangeDetectorRef) { 
 //This is for validation on the name.
     this.managingForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
@@ -40,6 +40,7 @@ export class ManagingPeopleComponent implements OnInit {
   onName(event:any){
     this.resultname = event.target.value;
     this.found=false;
+    this.changeDetector.detectChanges();
   }
 
   /*delPeople(event:any){

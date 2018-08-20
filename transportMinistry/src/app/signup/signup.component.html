@@ -17,7 +17,7 @@
         <br>
         <input class="txt col-md-6" formControlName="name" type="text" #nameInput>
         <br>
-        <div class="alert col-md-6" *ngIf="!signupForm.controls['name'].valid && signupForm.controls['name'].touched">Please do fill your name.</div>
+        <div class="alert col-md-6" [class.d-block]="!signupForm.controls['name'].valid">Please do fill your name.</div>
         <br>
         <label>
           <strong>Postcode (Optional)</strong>
@@ -25,22 +25,22 @@
         <br>
         <input class="txt col-md-6" formControlName="postcode" type="text" #postcodeInput>
         <br>
-        <div class="alert col-md-6" *ngIf="!signupForm.controls['postcode'].valid">Please key in the correct format.</div>
+        <div class="alert col-md-6" [class.d-block]="!signupForm.controls['postcode'].valid">Please key in the correct format.</div>
         <br>
         <label> Are you a driver?</label>
         <br>
         <label>Yes
-          <input #isDriver (click)="checkDriver()" type="radio" name="isDriver" formControlName="checkDriver">
+          <input #isDriver (click)="checkDriver()" type="radio" name="driver" formControlName="checkDriver">
         </label>
         <label>No
-          <input #isNotDriver (click)="checkDriver()" type="radio" name="isDriver" formControlName="checkDriver" checked>
+          <input #isNotDriver (click)="checkDriver()" type="radio" name="driver" formControlName="checkDriver">
         </label>
         <br>
-        <div *ngIf="driver">
+        <div id="driverInfo" [class.d-block]="driver">
           <strong>Number of seats: </strong>
           <br>
           <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput [disabled]="">
-          <div class="alert col-md-6" *ngIf="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div>
+          <div class="alert col-md-6" [class.d-blcok]="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div>
           <br>
         </div>
         <br>
