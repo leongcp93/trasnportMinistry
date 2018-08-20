@@ -61,16 +61,17 @@ export class SignupComponent implements OnInit {
       .subscribe(
         (data: any[]) => {
           console.log(data);
-
         }
       )
   }
 
   //this function is to settle check driver
   checkDriver() {
+    setTimeout(() => {}, 100);
     if (this.isDriverInput.nativeElement.checked) {
       this.driver = true;
       this.numberOfSeats = this.seatsInput.nativeElement.value;
+      return;
     }
     if (this.isNotDriverInput.nativeElement.checked) {
       this.driver = false;

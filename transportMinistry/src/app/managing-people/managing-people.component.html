@@ -12,7 +12,7 @@
     <div class="bg-profile-design">
       <div class="profile-design">
 
-        <input type="text" formControlName="name" class="col-md-4 selection-design" (keyup)="onName($event)" placeholder="passenger's/driver's name...">
+        <input type="text" [(ngModel)] = "query" formControlName="name" class="col-md-4 selection-design" (keyup)="onName($event)" placeholder="passenger's/driver's name...">
         <br>
         <div class="alert col-md-4 selection-design" style="color:brown" *ngIf="!managingForm.controls['name'].valid && managingForm.controls['name'].touched">No special characters and numbers.</div>
         <br>
@@ -37,7 +37,7 @@
       </div>
 
 
-      <div class="profile-design" *ngFor="let member of members">
+      <div class="profile-design" *ngFor="let member of (members | searchMembers: query)">
 
         Name: {{member.name}}
         <br> Postcode: {{member.postcode}}

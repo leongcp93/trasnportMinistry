@@ -39,6 +39,7 @@ import { ListParticipantsComponent } from './list-participants/list-participants
 
 //http client module to get and post 
 import { HttpClientModule } from '@angular/common/http';
+import { SearchMembersPipe } from './search-members.pipe';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,9 @@ import { HttpClientModule } from '@angular/common/http';
     
     EventEditPageComponent,
     
-    ListParticipantsComponent
+    ListParticipantsComponent,
+    
+    SearchMembersPipe
   ],
   imports: [
     BrowserModule,
