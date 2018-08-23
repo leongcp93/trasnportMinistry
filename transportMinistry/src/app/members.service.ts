@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { SearchMembersPipe } from './search-members.pipe';
+import { Filter } from './filter.pipe';
 @Injectable()
 
 export class MembersService {
@@ -9,7 +9,7 @@ export class MembersService {
   i: number;
   members: Array<Object> = [];
 
-  constructor(private httpClient: HttpClient, private pipe: SearchMembersPipe) {
+  constructor(private httpClient: HttpClient, private pipe: Filter) {
 
   }
 

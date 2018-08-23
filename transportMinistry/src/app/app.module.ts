@@ -37,7 +37,7 @@ import { ListParticipantsComponent } from './list-participants/list-participants
 
 //http client module to get and post 
 import { HttpClientModule } from '@angular/common/http';
-import { SearchMembersPipe } from './search-members.pipe';
+import { Filter } from './filter.pipe';
 import { MembersService } from './members.service';
 
 @NgModule({
@@ -76,7 +76,7 @@ import { MembersService } from './members.service';
     
     ListParticipantsComponent,
     
-    SearchMembersPipe
+    Filter
   ],
   imports: [
     BrowserModule,
@@ -89,7 +89,7 @@ import { MembersService } from './members.service';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [MembersService, SearchMembersPipe],
+  providers: [MembersService, Filter],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

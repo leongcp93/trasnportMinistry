@@ -1,17 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'searchMembers'
+  name: 'filter'
 })
-export class SearchMembersPipe implements PipeTransform {
+export class Filter implements PipeTransform {
 
   transform(pipeData, pipeModifier): any {
-    /*return pipeData.filter(eachItem => {
-      console.log("modifier: " + pipeModifier);
-      return ( 
-        eachItem['name'].toLowerCase().includes(pipeModifier.toLowerCase())
-      )
-    });*/
     if (pipeData.length === 0 || pipeModifier === '') {
       return pipeData;
     }
