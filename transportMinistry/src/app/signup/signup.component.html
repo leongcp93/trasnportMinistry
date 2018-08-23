@@ -12,12 +12,20 @@
         <br>
 
         <label>
-          <strong>Name</strong>
+          <strong>First name</strong>
         </label>
         <br>
-        <input class="txt col-md-6" formControlName="name" type="text" #nameInput>
+        <input class="txt col-md-6" formControlName="firstname" type="text" #firstName>
         <br>
-        <div class="alert col-md-6" [class.d-block]="!signupForm.controls['name'].valid">Please do fill your name.</div>
+        <div class="alert col-md-6" *ngIf="!signupForm.controls['firstname'].valid && signupForm.controls['firstname'].touched">Please do fill your first name.</div>
+        <br>
+        <label>
+          <strong>Last name</strong>
+        </label>
+        <br>
+        <input class="txt col-md-6" formControlName="lastname" type="text" #lastName>
+        <br>
+        <div class="alert col-md-6" *ngIf="!signupForm.controls['lastname'].valid && signupForm.controls['lastname'].touched">Please do fill your last name.</div>
         <br>
         <label>
           <strong>Postcode (Optional)</strong>
@@ -25,7 +33,7 @@
         <br>
         <input class="txt col-md-6" formControlName="postcode" type="text" #postcodeInput>
         <br>
-        <div class="alert col-md-6" [class.d-block]="!signupForm.controls['postcode'].valid">Please key in the correct format.</div>
+        <div class="alert col-md-6" *ngIf="!signupForm.controls['postcode'].valid">Please key in the correct format.</div>
         <br>
         <label> Are you a driver?</label>
         <br>
@@ -36,11 +44,11 @@
           <input #isNotDriver (click)="checkDriver()" type="radio" name="driver" formControlName="checkDriver">
         </label>
         <br>
-        <div id="driverInfo" [class.d-block]="driver">
+        <div *ngIf="driver">
           <strong>Number of seats: </strong>
           <br>
-          <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput [disabled]="">
-          <div class="alert col-md-6" [class.d-blcok]="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div>
+          <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput>
+          <div class="alert col-md-6" *ngIf="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div>
           <br>
         </div>
         <br>
@@ -49,7 +57,6 @@
         <button routerLink="/submit-responds" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid">
           <i class="fa fa-check-circle"></i> Submit</button>
         <br>
-        <!--<input type="button" class="btn btn-primary col-md-6" value="Submit" [disabled]="!signupForm.valid"><br>-->
         <a routerLink="/add-people" class="btn btn-link col-md-6">New Friend?</a>
       </div>
     </form>

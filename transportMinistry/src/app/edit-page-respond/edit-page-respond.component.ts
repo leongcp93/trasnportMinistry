@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Subscriber } from 'rxjs/Subscriber';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-edit-page-respond',

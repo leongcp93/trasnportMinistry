@@ -11,7 +11,7 @@
     padding: 7px;
     font-size: .9em;
     margin-bottom: 20px;
-    display: none;
+    display: block;
     animation: 2s alertAnim forwards;
 }
 
@@ -41,12 +41,4 @@
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-#seats {
-    display: none;
-}
-
-#driverInfo {
-    display: none;
 }

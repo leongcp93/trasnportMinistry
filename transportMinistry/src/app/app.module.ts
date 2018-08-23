@@ -15,8 +15,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import animation module in here
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
-
 //below are all of the components of each page 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -40,6 +38,7 @@ import { ListParticipantsComponent } from './list-participants/list-participants
 //http client module to get and post 
 import { HttpClientModule } from '@angular/common/http';
 import { SearchMembersPipe } from './search-members.pipe';
+import { MembersService } from './members.service';
 
 @NgModule({
   declarations: [
@@ -90,7 +89,7 @@ import { SearchMembersPipe } from './search-members.pipe';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [MembersService, SearchMembersPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

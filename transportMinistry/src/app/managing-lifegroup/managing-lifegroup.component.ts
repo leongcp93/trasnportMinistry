@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import 'rxjs/add/operator/toPromise';
 import { RouterLink } from '@angular/router';
 import { Observable} from 'rxjs';
 
@@ -30,28 +29,20 @@ export class ManagingLifegroupComponent implements OnInit {
     this.httpClient.post(url, {
       "lg": this.unit,
       "auth": 'pw1234'
-    }, {responseType: 'text'}).toPromise()
-    .then(() => {
+    }, {responseType: 'text'}).subscribe(() => {
       this.getLifeGroup();
     })
-    .catch((err) => {
-      console.log(err);
-    });
   }
 
   //this one is not fully function yet.
   delLifeGroup(getUnit) {
     if (confirm("Are you sure delete this lifegroup?")) {
       const url = "http://localhost:4300/api/lifegroup?passcode=pw1234&lg=" + getUnit; //this is required the url
-      this.httpClient.delete(url, {responseType: 'text'}).toPromise()
-      .then(() => {
+      this.httpClient.delete(url, {responseType: 'text'}).subscribe(()=>{
         this.getLifeGroup();
         var index = this.getUnit.indexOf(this.unit);
         this.getUnit.splice(index, 1)
       })
-      .catch((err) => {
-        console.log(err);
-      });
     }
   }
 

@@ -13,7 +13,8 @@ export class AddPeopleComponent implements OnInit {
   post: any;
   name: string = ''; //for sample of validation refer https://www.youtube.com/watch?v=bo1Wu0aiigU 
   postcode: number;
-  @ViewChild("nameInput") nameInput: ElementRef;
+  @ViewChild("firstName") firstName: ElementRef;
+  @ViewChild("lastName") lastName: ElementRef;
   @ViewChild("postcodeInput") postcodeInput: ElementRef;
 
 
@@ -21,7 +22,8 @@ export class AddPeopleComponent implements OnInit {
 
     //These are the validation condition
     this.addForm =  fb.group({
-      'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
+      'firstname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
+      'lastname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'postcode': [null, Validators.compose([Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4) ])],
       'validate' : ''
     });
@@ -34,7 +36,7 @@ export class AddPeopleComponent implements OnInit {
   postSignUp(){
 
     //setting value from the field 
-    this.name=this.nameInput.nativeElement.value;
+    this.name=this.firstName.nativeElement.value + this.lastName.nativeElement.value;
     this.postcode=this.postcodeInput.nativeElement.value;
 
     this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`,{

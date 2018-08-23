@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, NgModule } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Subscriber } from 'rxjs/Subscriber';
+import { Observable} from 'rxjs';
+
 
 @Component({
   selector: 'app-signup',
@@ -22,7 +23,8 @@ export class SignupComponent implements OnInit {
   groupunit: string = '';
 
   //refer the id in html from the textfield.
-  @ViewChild("nameInput") nameInput: ElementRef;
+  @ViewChild("firstName") firstName: ElementRef;
+  @ViewChild("lastName") lastName: ElementRef;
   @ViewChild("postcodeInput") postcodeInput: ElementRef;
   @ViewChild("seatsInput") seatsInput: ElementRef;
 
@@ -33,14 +35,14 @@ export class SignupComponent implements OnInit {
   constructor(private httpClient: HttpClient, private fb: FormBuilder) {
 
     this.signupForm = fb.group({
-      'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
+      'firstname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
+      'lastname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'postcode': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
-      'checkDriver': [false, Validators.required], // this is default validation for checking
+      'checkDriver': [null, Validators.required], // this is default validation for checking
       'numberOfSeats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(1), Validators.max(7)])],
       'validate': ''
     });
-
   }
 
   ngOnInit() {
@@ -48,7 +50,7 @@ export class SignupComponent implements OnInit {
 
   postSignUp() {
     //this part collect all the value in the field and set to httpClient. 
-    this.name = this.nameInput.nativeElement.value;
+    this.name = this.firstName.nativeElement.value + " " + this.lastName.nativeElement.value;
     this.postcode = this.postcodeInput.nativeElement.value;
     this.numberOfSeats = this.seatsInput.nativeElement.value;
 
@@ -67,10 +69,8 @@ export class SignupComponent implements OnInit {
 
   //this function is to settle check driver
   checkDriver() {
-    setTimeout(() => {}, 100);
     if (this.isDriverInput.nativeElement.checked) {
       this.driver = true;
-      this.numberOfSeats = this.seatsInput.nativeElement.value;
       return;
     }
     if (this.isNotDriverInput.nativeElement.checked) {
