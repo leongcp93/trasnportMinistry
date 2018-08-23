@@ -1,6 +1,6 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators , FormsModule} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { MembersService } from '../members.service'
 
 @Component({
@@ -17,7 +17,7 @@ export class ManagingPeopleComponent implements OnInit {
   managingForm: FormGroup;
   lifeGroup: string = 'uq6';
   post: any;
-  passcode: string ='pw1234';
+  passcode: string = 'pw1234';
   space: number;
   i: number;
   counter: number;
@@ -27,32 +27,29 @@ export class ManagingPeopleComponent implements OnInit {
   query = '';
   //private headers = new Headers({'Content-Type': 'application/json'}); 
 
-  constructor(private httpClient:HttpClient, private fb: FormBuilder, private ms: MembersService) { 
-//This is for validation on the name.
+  constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
+    //This is for validation on the name.
     this.managingForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'validate': ''
     });
-   }
+  }
 
-//this is the event handeling
-  onName(event:any){
+  //this is the event handeling
+  onName(event: any) {
     this.members = null;
     this.members = this.ms.filterPassengers(event.target.value);
   }
 
-  /*delPeople(event:any){
-    this.httpClient.delete(`http://www.transport.hope-church.com.au:4200/api/member`, {
-      lg: this.lifeGroup,
-      name: this.name[0],
-      auth: this.passcode
-
-    }).subscribe(
-      (data:any[])=>{
-        
-      })
+  delPeople(name) {
+    const url = "http://localhost:4300/api/member?passcode=pw1234&lg="
+      + this.lifeGroup + "&name=" + name + "&auth=" + this.passcode;
+    this.httpClient.delete(url, { responseType: 'text' }).subscribe(() => {
+      this.members = null;
+      this.members = this.ms.getPassenger();
+      console.log(url);
+    })
   }
-*/
 
   ngOnInit() {
     this.members = this.ms.getPassenger();

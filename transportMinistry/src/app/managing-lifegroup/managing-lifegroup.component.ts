@@ -40,8 +40,6 @@ export class ManagingLifegroupComponent implements OnInit {
       const url = "http://localhost:4300/api/lifegroup?passcode=pw1234&lg=" + getUnit; //this is required the url
       this.httpClient.delete(url, {responseType: 'text'}).subscribe(()=>{
         this.getLifeGroup();
-        var index = this.getUnit.indexOf(this.unit);
-        this.getUnit.splice(index, 1)
       })
     }
   }

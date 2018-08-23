@@ -185,7 +185,7 @@ def list_LG(): ##
     
     
 @app.route("{}/member".format(url_prex), methods=['PUT'])
-def add_person(): ##
+def edit_person(): ##
     """
     Register person
     
@@ -208,7 +208,7 @@ def add_person(): ##
         if content.get('auth') != auth_passcode:
             return jsonify({"msg":"Un-authorized action"}), 401
         
-        msg = db.Person(lg = lg, name = name, postcode = postcode).add_db()
+        msg = db.Person(lg = lg, name = name, postcode = postcode).edit_db()
         return jsonify({"msg":msg}), 200
         #return "Added successfully"
     
@@ -216,7 +216,7 @@ def add_person(): ##
         return jsonify({"err": "Some internal error existed"}), 500
 
 @app.route("{}/member".format(url_prex), methods=['POST'])
-def edit_person():
+def add_person():
     """
     Register life group
     
@@ -227,6 +227,7 @@ def edit_person():
         
     Returns:
         - success / fail
+    
     """
     try:
         ## receive file
@@ -234,12 +235,11 @@ def edit_person():
         lg = content.get('lg')
         name = content.get('name')
         postcode = content.get('postcode')
-        
         ## passcode
         if content.get('auth') != auth_passcode:
             return jsonify({"msg":"Un-authorized action"}), 401
         
-        msg = db.Person(lg = lg, name = name, postcode = postcode).edit_db()
+        msg = db.Person(lg = lg, name = name, postcode = postcode).add_db()
         return jsonify({"msg":msg}), 200
         #return "Edited successfully"
     
@@ -261,10 +261,9 @@ def delete_person():
     """
     try:
         ## receive file
-        content = request.get_json()
-        lg = content.get('lg')
-        name = content.get('name')
-        auth = content.get('auth')
+        lg = request.args.get('lg', type = str)
+        auth = request.args.get('auth', type = str)
+        name = request.args.get('name', type = str)
         
         ## passcode
         if auth != auth_passcode:
@@ -288,7 +287,6 @@ def show_members():
     
     # Authorization required:
     if passcode == auth_passcode:
-        
         # Function 1: Retreive member names
         if lg != None and name == None:
             members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}';"
@@ -501,7 +499,7 @@ https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-
 if __name__ == "__main__":
     ## cd to absolute dir (depends on server)
     #os.chdir("/home/bruno1993/transport_api/")
-    app.run(host="localhost", port=4300)
+    app.run(host="localhost", port=4300, debug=True)
     
     
     

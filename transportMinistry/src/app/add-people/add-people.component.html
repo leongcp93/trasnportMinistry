@@ -5,19 +5,19 @@
 <!--Validation this part is completed and required to seperate the condition-->
 
 <div class="container-fluid add-people-align content-display" align="center">
-  <form [formGroup]="addForm" (ngSubmit)="addPost(addForm.value)">
+  <form [formGroup]="addForm" (ngSubmit)="postSignUp()">
     <label><strong>First name</strong></label><br>
   <input formControlName="firstname" type="text" class="txt col-md-6" placeholder="Your first name..." #firstName><br>
-  <div class="alert col-md-6" *ngIf="!addForm.controls['firstname'].valid && addForm.controls['firstname'].touched">Name is required</div><br>
+  <div class="alert col-md-6" *ngIf="!addForm.controls['firstname'].valid && addForm.controls['firstname'].touched">first name is required</div><br>
   <label><strong>Last name</strong></label><br>
   <input formControlName="lastname" type="text" class="txt col-md-6" placeholder="Your last name..." #lastName><br>
-  <div class="alert col-md-6" *ngIf="!addForm.controls['lastname'].valid && addForm.controls['lastname'].touched">Name is required</div><br>
+  <div class="alert col-md-6" *ngIf="!addForm.controls['lastname'].valid && addForm.controls['lastname'].touched">last name is required</div><br>
   <label><strong>Postcode</strong></label><br>
   <input formControlName="postcode" type="text" class="txt col-md-6" placeholder="Your postcode..." #postcodeInput><br>
   <div class="alert col-md-6" *ngIf="!addForm.controls['postcode'].valid && addForm.controls['postcode'].touched">Postcode is required</div>
   <br>
   <br>
-  <input routerLink="/add-people-responds" type="submit" class="btn btn-primary col-md-6 button-design" value="Submit" [disabled]="!addForm.valid">
+  <input type="submit" class="btn btn-primary col-md-6 button-design" value="Submit" [disabled]="!addForm.valid">
   <!--<a routerLink="/add-people-responds" class="btn btn-primary col-md-6 button-design">Submit</a>-->
   </form>
   
