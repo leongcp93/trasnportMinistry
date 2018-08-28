@@ -8,12 +8,15 @@ export class MembersService {
   postcode: Array<string> = [''];
   i: number;
   members: Array<Object> = [];
+  personToEdit: Object;
+  abc: String = "efg";
 
   constructor(private httpClient: HttpClient, private pipe: Filter) {
 
   }
 
   getPassenger() {
+    this.members = [];
     this.httpClient.get(`http://localhost:4300/api/member?passcode=pw1234&lg=uq6`)//change this when the legit url is there.
       .subscribe(
         (data: any[]) => {

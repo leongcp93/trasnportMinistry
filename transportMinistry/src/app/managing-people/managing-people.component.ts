@@ -37,18 +37,19 @@ export class ManagingPeopleComponent implements OnInit {
 
   //this is the event handeling
   onName(event: any) {
-    this.members = null;
     this.members = this.ms.filterPassengers(event.target.value);
   }
 
-  delPeople(name) {
-    const url = "http://localhost:4300/api/member?passcode=pw1234&lg="
+  delPerson(name) {
+    const url = "http://localhost:4300/api/member?lg="
       + this.lifeGroup + "&name=" + name + "&auth=" + this.passcode;
     this.httpClient.delete(url, { responseType: 'text' }).subscribe(() => {
-      this.members = null;
       this.members = this.ms.getPassenger();
-      console.log(url);
     })
+  }
+
+  editPerson(member) {
+    this.ms.personToEdit = member;
   }
 
   ngOnInit() {
