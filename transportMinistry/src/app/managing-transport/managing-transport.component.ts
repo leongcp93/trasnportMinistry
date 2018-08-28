@@ -50,6 +50,7 @@ export class ManagingTransportComponent implements OnInit {
   passengername: Array<string> = [''];
   transportForm: FormGroup;
   drivername: Array<string> = [''];
+  selectedPassengers: object = {};
   i: number;
   checking: boolean = false;
   disable: boolean = true;
@@ -63,7 +64,6 @@ export class ManagingTransportComponent implements OnInit {
       'passengername': [null, Validators.required],
       'validate': ''
     });
-
   }
 
   ngOnInit() {
@@ -79,6 +79,7 @@ export class ManagingTransportComponent implements OnInit {
           if (data.length) {
             for (this.i = 0; this.i < data.length; this.i++) {
               this.passengername[this.i] = data[this.i].name;
+              this.selectedPassengers[this.passengername[this.i]] = [];
               console.log(this.passengername[this.i]+" in "+this.i+" as passenger");
             }
           }
@@ -114,10 +115,16 @@ export class ManagingTransportComponent implements OnInit {
      console.log("disable value is "+this.disable+" and checking value is "+this.checking); 
   }*/
 
+  animatePassenger(driver, passenger) {
+    this.selectedPassengers[driver].push(passenger);
+    const index = this.passengername.indexOf(passenger);
+    this.passengername.splice(index, 1);
+  }
 
-  animatePassenger() {
-    alert("im work");
-    
+  cancelAlloc(driver, passenger) {
+    const index = this.selectedPassengers[driver].indexOf(passenger);
+    this.selectedPassengers[driver].splice(index, 1);
+    this.passengername.push(passenger);
   }
 
 }

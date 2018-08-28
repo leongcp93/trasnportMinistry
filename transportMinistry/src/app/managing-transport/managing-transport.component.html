@@ -16,18 +16,23 @@
     
     <div class="passenger-container">
       <strong>Passenger:</strong>
+      <!---
       <ul>
         <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
         <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
         <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
         <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
       </ul>
+      -->
+      <ul *ngFor="let passenger of selectedPassengers[driver]" >
+            <li><div>{{passenger}}<button (click)="cancelAlloc(driver, passenger)" class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
+          </ul>
     </div>
     <p>List of available passengers:</p>
     <div class="container">
         <div >
           <ul *ngFor="let passenger of passengername" >
-            <button class="btn btn-link" (click)="animatePassenger()"><li>{{passenger}}</li></button> <br>
+            <button class="btn btn-link" (click)="animatePassenger(driver, passenger)"><li>{{passenger}}</li></button> <br>
           </ul>
 
           <!--[@passengerVisibility]="visibility" [@passengerDisplay]="display" this is use for animation-->
