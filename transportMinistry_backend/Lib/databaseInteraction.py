@@ -26,13 +26,15 @@ global table1_name,table2_name,table3_name
 table1_name = "Person"
 table2_name = "PostCodeAddress"
 table3_name = "LifeGroups"
+table4_name = "IsDriver"
 
 ## Helper Person Info class
 class Person (object):
-    def __init__(self, lg = None, name = None, postcode = None):
+    def __init__(self, lg = None, name = None, postcode = None, isDriver = None):
         self.lg = lg.lower()
         self.name = name.lower()
         self.postcode = postcode
+        self.isDriver = isDriver
     
     # can implement in form of class later    
     def add_db(self):

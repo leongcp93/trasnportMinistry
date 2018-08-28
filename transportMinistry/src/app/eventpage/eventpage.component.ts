@@ -57,7 +57,7 @@ export class EventpageComponent implements OnInit {
       lg: this.lg,
       postcode_from: this.postcode_from,
       postcode_to: this.postcode_to,
-      destination: this.description,
+      description: this.description,
       starting_date: this.date,
       starting_time:this.starting_Time
     })

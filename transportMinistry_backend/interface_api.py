@@ -365,15 +365,14 @@ def api_createEvent(): ##
         lg = content.get('lg')
         pc_from = content.get('postcode_from')
         pc_to = content.get('postcode_to')
-        destination = content.get('destination')
+        description = content.get('description')
         startingTime = content.get('starting_time')
         #note = content.get('note')
-        
-        print([lg, pc_from, pc_to, destination, startingTime])
+        print([lg, pc_from, pc_to, description, startingTime])
         
         ## Event        
         e = plan.Event(lg= lg)
-        e_id = e.create_event(pc_from, pc_to, destination, startingTime)
+        e_id = e.create_event(pc_from, pc_to, description, startingTime)
         e_id = CodeConverter().encode(e_id)
         return jsonify({"msg":"event created successfully.", "event_id":"{}".format(e_id)}), 200
     
@@ -384,19 +383,18 @@ def api_createEvent(): ##
 def api_getEvents():
     e = plan.Event(lg = 'uq6')
     events = e.list_events()
-    '''
-    # Function 1: Retreive event names
-    if lg != None and name == None:
-        members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}';".format(lg))
-        ls = []
-        for i, pair in enumerate(members):
-            n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "space":"4"}
-            ls.append(n)
-    '''         
-
-
+    result = []
+    for event in events:
+        time = event.split('#')[1].replace('-', ':')
+        string = event.split('-')[2]
+        i = string.index('#')
+        eventName = string[0:i]
+        dict = {}
+        dict["event"] = eventName
+        dict["time"] = time
+        result.append(dict)
     
-    return jsonify(events)
+    return jsonify(result)
 
     
 @app.route("{}/event/<eventID>".format(url_prex), methods=['GET'])
@@ -414,7 +412,7 @@ def api_getEventInfo(eventID): ##
         # check if file already existed
         path_here = "Events_temp"
         if "{}.csv".format(eventID) in os.listdir(path_here):
-            return jsonify({"lg":info[0], "from":info[1],"to":info[2],"destination":info[3],"date":info[4],"time":info[5]}), 200
+            return jsonify({"lg":info[0], "from":info[1],"to":info[2],"description":info[3],"date":info[4],"time":info[5]}), 200
         
         else:
             return jsonify({"msg":"Event does not existed."}), 400

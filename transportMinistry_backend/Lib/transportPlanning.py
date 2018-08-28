@@ -24,7 +24,7 @@ class Event(object):
         self.lg = lg
         self.unique_id = unique_id
         
-    def create_event(self, pc_from, pc_to, destination, startingTime):
+    def create_event(self, pc_from, pc_to, description, startingTime):
         """
         Create a temp event with unique id.
         
@@ -37,7 +37,7 @@ class Event(object):
         lg = self.lg
         # define name
         time = startingTime.replace(':', '-')
-        unique_id = "[{}]{}-{}-{}#{}#".format(lg, pc_from, pc_to, destination, time)
+        unique_id = "[{}]{}-{}-{}#{}#".format(lg, pc_from, pc_to, description, time)
         
         # define file
         colm = {'name':[], 'postcode':[], 'driver':[]}
