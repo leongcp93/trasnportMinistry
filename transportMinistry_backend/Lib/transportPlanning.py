@@ -35,9 +35,9 @@ class Event(object):
         """
         ## definition
         lg = self.lg
-        
         # define name
-        unique_id = "{}-{}-{}-{}-{}".format(lg, pc_from, pc_to, destination, startingTime)
+        time = startingTime.replace(':', '-')
+        unique_id = "[{}]{}-{}-{}#{}#".format(lg, pc_from, pc_to, destination, time)
         
         # define file
         colm = {'name':[], 'postcode':[], 'driver':[]}
@@ -148,8 +148,7 @@ def _submit_confirm(lg_unit, name, event_id, code_vary, driver_flag):
         
     else:
         df = df.append({'name':name, 'postcode':code_vary, 'driver':driver_flag}, ignore_index=True)
-    
-    df.to_csv('{}/{}.csv'.format(path, event_id), index=False)
+        df.to_csv('{}/{}.csv'.format(path, event_id), index=False)
     
     #### Registering done
     # return flag also event id

@@ -47,29 +47,25 @@ export class EventpageComponent implements OnInit {
   
 
   postEvent(event: any){
-
-    this.postcode_to=this.topostcodeInput.nativeElement.value;
-    this.postcode_from=this.frompostcodeInput.nativeElement.value;
     this.starting_Time=this.settimeInput.nativeElement.value;
-    this.description=this.setdescription.nativeElement.value;
     this.date=this.setdateInput.nativeElement.value;
+    this.postcode_from=this.frompostcodeInput.nativeElement.value;
+    this.postcode_to=this.topostcodeInput.nativeElement.value;
+    this.description=this.setdescription.nativeElement.value;
 
-    this.httpClient.put(`http://www.transport.hope-church.com.au:4200/api/event`,{
+    this.httpClient.put('http://localhost:4300/api/event', {
       lg: this.lg,
       postcode_from: this.postcode_from,
       postcode_to: this.postcode_to,
       destination: this.description,
       starting_date: this.date,
       starting_time:this.starting_Time
-      
-    })//change this when the legit url is there.
+    })
     .subscribe(
       (data:any[])=>{
         console.log(data);
         this.isCreated = true;
-          
         }
-      
     )
   }
 

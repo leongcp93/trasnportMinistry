@@ -380,6 +380,24 @@ def api_createEvent(): ##
     except Exception as e:
         return jsonify({"err":"{}".format(e)}), 500
     
+@app.route("{}/event".format(url_prex), methods=['GET'])
+def api_getEvents():
+    e = plan.Event(lg = 'uq6')
+    events = e.list_events()
+    '''
+    # Function 1: Retreive event names
+    if lg != None and name == None:
+        members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}';".format(lg))
+        ls = []
+        for i, pair in enumerate(members):
+            n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "space":"4"}
+            ls.append(n)
+    '''         
+
+
+    
+    return jsonify(events)
+
     
 @app.route("{}/event/<eventID>".format(url_prex), methods=['GET'])
 def api_getEventInfo(eventID): ##

@@ -16,14 +16,6 @@
     
     <div class="passenger-container">
       <strong>Passenger:</strong>
-      <!---
-      <ul>
-        <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
-        <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
-        <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
-        <li><div><button class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
-      </ul>
-      -->
       <ul *ngFor="let passenger of selectedPassengers[driver]" >
             <li><div>{{passenger}}<button (click)="cancelAlloc(driver, passenger)" class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
           </ul>
