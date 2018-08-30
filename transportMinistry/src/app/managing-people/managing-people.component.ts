@@ -11,20 +11,11 @@ import { MembersService } from '../members.service'
 export class ManagingPeopleComponent implements OnInit {
 
   //declaring the variables
-  name: Array<string> = [''];
-  postcode: Array<string> = [''];
-  resultpostcode: string = '';
+ 
   managingForm: FormGroup;
   lifeGroup: string = 'uq6';
-  post: any;
   passcode: string = 'pw1234';
-  space: number;
-  i: number;
-  counter: number;
-  members: Array<Object> = [];
-  dataMember: Array<string> = [''];
-  currentPost: any;
-  query = '';
+  members: Array<object> = [];
   //private headers = new Headers({'Content-Type': 'application/json'}); 
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
@@ -44,7 +35,7 @@ export class ManagingPeopleComponent implements OnInit {
     const url = "http://localhost:4300/api/member?lg="
       + this.lifeGroup + "&name=" + name + "&auth=" + this.passcode;
     this.httpClient.delete(url, { responseType: 'text' }).subscribe(() => {
-      this.members = this.ms.getPassenger();
+      this.members = this.ms.getPeople();
     })
   }
 
@@ -52,8 +43,13 @@ export class ManagingPeopleComponent implements OnInit {
     this.ms.personToEdit = member;
   }
 
+  mark(member) {
+    this.ms.markMember(member);
+  }
+
   ngOnInit() {
-    this.members = this.ms.getPassenger();
+    this.members = this.ms.getPeople();
+
   }
 
 }

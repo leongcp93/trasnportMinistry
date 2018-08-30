@@ -11,7 +11,7 @@
 <form>
 <div class="content-display" >
   
-  <div class="special-container" *ngFor="let driver of drivername">
+  <div class="special-container" *ngFor="let driver of drivers">
     <strong>Driver: {{driver}}</strong>
     
     <div class="passenger-container">
@@ -23,7 +23,7 @@
     <p>List of available passengers:</p>
     <div class="container">
         <div >
-          <ul *ngFor="let passenger of passengername" >
+          <ul *ngFor="let passenger of passengers" >
             <button class="btn btn-link" (click)="animatePassenger(driver, passenger)"><li>{{passenger}}</li></button> <br>
           </ul>
 

@@ -19,20 +19,25 @@
 
       <div class="profile-design" *ngFor="let member of members">
         <div *ngIf="member.seats > 0">
-          Driver: {{member.name}}<br>
-          Seats: {{member.seats}}<br>
-          Postcode: {{member.postcode}}
+          Driver: {{member.name}}
+          <br> Seats: {{member.seats}}
+          <br> Postcode: {{member.postcode}}
         </div>
         <div *ngIf="member.seats == 0">
-          Passenger: {{member.name}}<br>
-          Postcode: {{member.postcode}}
+          Passenger: {{member.name}}
+          <br> Postcode: {{member.postcode}}
         </div>
 
         <div align="right">
+          <button class="btn btn-success selection-design col-md-1" (click)="mark(member)">
+            <i class="fas fa-check"></i> Tick
+          </button>
           <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1" (click)="editPerson(member)">
-            <i class="fa fa-edit"></i> Edit</button>
+            <i class="fa fa-edit"></i> Edit
+          </button>
           <button class="btn btn-danger selection-design col-md-1" (click)="delPerson(member.name)">
-            <i class="fa fa-trash"></i> Delete</button>
+            <i class="fa fa-trash"></i> Delete
+          </button>
         </div>
 
       </div>

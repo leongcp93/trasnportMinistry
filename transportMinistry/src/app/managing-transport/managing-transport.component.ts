@@ -4,6 +4,7 @@ import { Observable} from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DISABLED } from '@angular/forms/src/model';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
+import { MembersService } from '../members.service'
 
 @Component({
   selector: 'app-managing-transport',
@@ -47,10 +48,10 @@ import { trigger, state, style, transition, animate, keyframes } from '@angular/
 export class ManagingTransportComponent implements OnInit {
 
   //driver: string = '';
-  passengername: Array<string> = [];
+  passengers: Array<string> = this.ms.passengers;
   transportForm: FormGroup;
-  drivername: Array<string> = [];
-  selectedPassengers: object = {};
+  drivers: Array<string> = this.ms.drivers;
+  selectedPassengers: object = this.ms.selectedPassengers;
   i: number;
   checking: boolean = false;
   disable: boolean = true;
@@ -58,7 +59,7 @@ export class ManagingTransportComponent implements OnInit {
   visibility: boolean = true;
   display: boolean = true;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder) {
+  constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
 
     this.transportForm = fb.group({
       'passengername': [null, Validators.required],
@@ -67,27 +68,12 @@ export class ManagingTransportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPeople();
+   /* this.passengers = this.ms.passengers;
+    this.drivers = this.ms.drivers;
+    this.selectedPassengers = this.ms.selectedPassengers;*/
   }
 
-  //getter for drivers data
-  getPeople() {
-    this.httpClient.get(`http://localhost:4300/api/member?passcode=pw1234&lg=uq6&space=${this.passengerSpace}`)//change this when the legit url is there.
-      .subscribe(
-        (data: any[]) => {
-          if (data.length) {
-            for (this.i = 0; this.i < data.length; this.i++) {
-              if (data[this.i].seats > 0) {
-                this.drivername.push(data[this.i].name);
-                this.selectedPassengers[data[this.i].name] = [];
-              } else {
-                this.passengername.push(data[this.i].name);
-              }              
-            }
-          }
-        }
-      )
-  }
+
 
   /*addPost(post){
     this.drivername = post.drivername;
@@ -103,14 +89,13 @@ export class ManagingTransportComponent implements OnInit {
 
   animatePassenger(driver, passenger) {
     this.selectedPassengers[driver].push(passenger);
-    const index = this.passengername.indexOf(passenger);
-    this.passengername.splice(index, 1);
+    const index = this.passengers.indexOf(passenger);
+    this.passengers.splice(index, 1);
   }
 
   cancelAlloc(driver, passenger) {
     const index = this.selectedPassengers[driver].indexOf(passenger);
     this.selectedPassengers[driver].splice(index, 1);
-    this.passengername.push(passenger);
+    this.passengers.push(passenger);
   }
-
 }
