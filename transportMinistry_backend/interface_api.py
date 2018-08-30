@@ -19,6 +19,7 @@ import pandas as pd
 import os
 
 import base64
+import sys
 app = Flask(__name__)
 CORS(app)
     
@@ -203,12 +204,12 @@ def edit_person(): ##
         lg = content.get('lg')
         name = content.get('name')
         postcode = content.get('postcode')
+        seats = content.get('seats')
         
         ## passcode
         if content.get('auth') != auth_passcode:
             return jsonify({"msg":"Un-authorized action"}), 401
-        
-        msg = db.Person(lg = lg, name = name, postcode = postcode).edit_db()
+        msg = db.Person(lg = lg, name = name, postcode = postcode, seats = seats).edit_db()
         return jsonify({"msg":msg}), 200
         #return "Added successfully"
     
@@ -235,11 +236,11 @@ def add_person():
         lg = content.get('lg')
         name = content.get('name')
         postcode = content.get('postcode')
+        seats = content.get('seats')
         ## passcode
         if content.get('auth') != auth_passcode:
             return jsonify({"msg":"Un-authorized action"}), 401
-        
-        msg = db.Person(lg = lg, name = name, postcode = postcode).add_db()
+        msg = db.Person(lg = lg, name = name, postcode = postcode, seats = seats).add_db()
         return jsonify({"msg":msg}), 200
         #return "Edited successfully"
     
@@ -289,11 +290,11 @@ def show_members():
     if passcode == auth_passcode:
         # Function 1: Retreive member names
         if lg != None and name == None:
-            members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}';"
+            members = db._sql("SELECT name, postcode, seats FROM Person WHERE lg = '{}';"
                               .format(lg))
             ls = []
             for i, pair in enumerate(members):
-                n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "space":"4"}
+                n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "seats":pair[2]}
                 ls.append(n)
                 
             return jsonify(ls), 200
@@ -305,7 +306,7 @@ def show_members():
                               AND name = '{}';".format(lg, name))
             ls = []
             for i, pair in enumerate(members):
-                n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "space":"4"}
+                n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "seats":"4"}
                 ls.append(n)
                 
             return jsonify(ls), 200

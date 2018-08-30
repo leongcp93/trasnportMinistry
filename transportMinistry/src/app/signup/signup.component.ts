@@ -37,10 +37,10 @@ export class SignupComponent implements OnInit {
     this.signupForm = fb.group({
       'firstname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'lastname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
-      'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
+      /*
+      'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],*/
       'postcode': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
-      'checkDriver': [null, Validators.required], // this is default validation for checking
-      'numberOfSeats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(1), Validators.max(7)])],
+      'numberOfSeats': [],
       'validate': ''
     });
   }
@@ -52,13 +52,17 @@ export class SignupComponent implements OnInit {
     //this part collect all the value in the field and set to httpClient. 
     this.name = this.firstName.nativeElement.value + " " + this.lastName.nativeElement.value;
     this.postcode = this.postcodeInput.nativeElement.value;
-    this.numberOfSeats = this.seatsInput.nativeElement.value;
-
+    if (this.driver) {
+      this.numberOfSeats = this.seatsInput.nativeElement.value;
+    }
+  
     //passing 
-    this.httpClient.post(`https://my-json-server.typicode.com/leongcp93/dummieDB/Members`, {
+    this.httpClient.post('http://localhost:4300/api/member', {
+      lg: "uq6",
       name: this.name,
       postcode: this.postcode,
-      space: this.numberOfSeats
+      auth: "pw1234",
+      seats: this.numberOfSeats
     })//change this when the legit url is there.
       .subscribe(
         (data: any[]) => {
@@ -71,11 +75,11 @@ export class SignupComponent implements OnInit {
   checkDriver() {
     if (this.isDriverInput.nativeElement.checked) {
       this.driver = true;
+      this.signupForm.controls['numberOfSeats'].setValidators(Validators.compose([Validators.required, Validators.pattern('^[0-9]+$'), Validators.min(1), Validators.max(7)]));
       return;
     }
     if (this.isNotDriverInput.nativeElement.checked) {
       this.driver = false;
-      this.numberOfSeats = 0;
     }
   }
 }

@@ -11,17 +11,15 @@ import { MembersService } from '../members.service'
 })
 
 export class EditPageComponent implements OnInit {
-
-  name: string='';
-  postcode: string='';
   editForm: FormGroup;
   member: Object;
   @ViewChild("postcode") inputPostcode: ElementRef;
-  
+  @ViewChild("seats") inputSeats: ElementRef;
+
   constructor(private fb: FormBuilder, private httpClient:HttpClient, private ms: MembersService) {
     this.editForm = fb.group ({
       'postcode':[null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
-      'checkDriver': [null, Validators.required],
+      'seats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(0), Validators.max(7)])],
       'validate': ''
     })
    }
@@ -30,27 +28,15 @@ export class EditPageComponent implements OnInit {
     this.member = this.ms.personToEdit;
   }
 
-//this section havent finish yet for the editing
   onEdit(){
-    this.postcode = this.inputPostcode.nativeElement.value; 
 
-    this.httpClient.put(`http://localhost:4300/api/member?passcode=pw1234&lg=uq6`,{
-      name: this.name,
-      postcode: this.postcode
+    this.httpClient.put('http://localhost:4300/api/member',{
+      lg: "uq6",
+      name: this.member['name'],
+      postcode: this.inputPostcode.nativeElement.value,
+      seats: this.inputSeats.nativeElement.value,
+      auth: "pw1234"
     })
+    .subscribe()
   }
-
-//retreiving their information by calling API
-  getPassenger(){
-    this.httpClient.get(`http://localhost:4300/api/member?passcode=pw1234&name=${this.name}&lg=uq6`)//change this when the legit url is there.
-    .subscribe(
-      (data:any[])=>{
-        if (data.length) {
-            this.name = data[0].name;
-            this.postcode = data[0].postcode;
-            console.log("got information of "+this.name+" and "+this.postcode);
-        }
-      }
-    )
-   }
 }

@@ -18,10 +18,15 @@
       <br>
 
       <div class="profile-design" *ngFor="let member of members">
-
-        Name: {{member.name}}
-        <br> Postcode: {{member.postcode}}
-        <br>
+        <div *ngIf="member.seats > 0">
+          Driver: {{member.name}}<br>
+          Seats: {{member.seats}}<br>
+          Postcode: {{member.postcode}}
+        </div>
+        <div *ngIf="member.seats == 0">
+          Passenger: {{member.name}}<br>
+          Postcode: {{member.postcode}}
+        </div>
 
         <div align="right">
           <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1" (click)="editPerson(member)">

@@ -11,11 +11,11 @@
 <form>
 <div class="content-display" >
   
-  <div class="special-container" *ngFor="let driver of drivername" >
+  <div class="special-container" *ngFor="let driver of drivername">
     <strong>Driver: {{driver}}</strong>
     
     <div class="passenger-container">
-      <strong>Passenger:</strong>
+      <strong>Passenger(s):</strong>
       <ul *ngFor="let passenger of selectedPassengers[driver]" >
             <li><div>{{passenger}}<button (click)="cancelAlloc(driver, passenger)" class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
           </ul>

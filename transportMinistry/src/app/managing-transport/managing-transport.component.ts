@@ -47,9 +47,9 @@ import { trigger, state, style, transition, animate, keyframes } from '@angular/
 export class ManagingTransportComponent implements OnInit {
 
   //driver: string = '';
-  passengername: Array<string> = [''];
+  passengername: Array<string> = [];
   transportForm: FormGroup;
-  drivername: Array<string> = [''];
+  drivername: Array<string> = [];
   selectedPassengers: object = {};
   i: number;
   checking: boolean = false;
@@ -67,36 +67,22 @@ export class ManagingTransportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDriver();
-    this.getPassenger();
+    this.getPeople();
   }
 
   //getter for drivers data
-  getDriver() {
+  getPeople() {
     this.httpClient.get(`http://localhost:4300/api/member?passcode=pw1234&lg=uq6&space=${this.passengerSpace}`)//change this when the legit url is there.
       .subscribe(
         (data: any[]) => {
           if (data.length) {
             for (this.i = 0; this.i < data.length; this.i++) {
-              this.passengername[this.i] = data[this.i].name;
-              this.selectedPassengers[this.passengername[this.i]] = [];
-              console.log(this.passengername[this.i]+" in "+this.i+" as passenger");
-            }
-          }
-        }
-      )
-  }
-
-
-  //getter for passengers data
-  getPassenger() {
-    this.httpClient.get(`http://localhost:4300/api/member?passcode=pw1234&lg=uq6&space=1&&space=2&&space=3&&space=4&&space=5&&space=6&&space=7`)
-      .subscribe(
-        (data: any[]) => {
-          if (data.length) {
-            for (this.i = 0; this.i < data.length; this.i++) {
-              this.drivername[this.i] = data[this.i].name;
-              // console.log(this.drivername[this.i]+" in "+this.i+" as driver");
+              if (data[this.i].seats > 0) {
+                this.drivername.push(data[this.i].name);
+                this.selectedPassengers[data[this.i].name] = [];
+              } else {
+                this.passengername.push(data[this.i].name);
+              }              
             }
           }
         }

@@ -12,19 +12,12 @@
     <br>
     <label>Postcode:</label><br>
     <input #postcode class="col-md-4" formControlName="postcode" type="text" value="{{member['postcode']}}"><br>
-    <div class="alert col-md-4" *ngIf="!editForm.controls['postcode'].valid && editForm.controls['postcode'].touched">Only allow 4 digit numbers.</div><br>
-    <!---
-    <label>Driver:</label><br>
-    <label>Yes 
-      <input #isDriver type="radio" name="driver" formControlName="checkDriver">
-    </label>
-    <label>No 
-      <input #isNotDriver type="radio" name="driver" formControlName="checkDriver">
-    </label>
+    <div class="alert col-md-4" *ngIf="!editForm.controls['postcode'].valid">Only allow 4 digit numbers.</div><br>
+    <label>Seats</label><br>
+    <input #seats class="col-md-4" formControlName="seats" type="number" value="{{member['seats']}}"><br>
+    <div class="alert col-md-6" *ngIf="!editForm.controls['seats'].valid">No negative value.</div>
     <br>
-    -->
-    <br>
-    <button routerLink="/edit-page-respond" class="btn btn-primary custome-button col-md-4" [disabled]="!editForm.valid" (click)="onEdit()">Update</button>
+    <button (click)="onEdit()" routerLink="/edit-page-respond" class="btn btn-primary custome-button col-md-4" [disabled]="!editForm.valid">Update</button>
     <br>
 
   </form>

@@ -21,26 +21,27 @@ Class:
         del_lg
 """
 import sqlite3
+import sys
 
 global table1_name,table2_name,table3_name
 table1_name = "Person"
 table2_name = "PostCodeAddress"
 table3_name = "LifeGroups"
-table4_name = "IsDriver"
 
 ## Helper Person Info class
 class Person (object):
-    def __init__(self, lg = None, name = None, postcode = None, isDriver = None):
+    def __init__(self, lg = None, name = None, postcode = None, seats = None):
         self.lg = lg.lower()
-        self.name = name.lower()
+        self.name = name
         self.postcode = postcode
-        self.isDriver = isDriver
+        self.seats = seats
     
     # can implement in form of class later    
     def add_db(self):
         unit = self.lg
         name= self.name
         postcode = self.postcode
+        seats = self.seats
         
         # manual rule 
         ls = show_all_lg()
@@ -49,9 +50,10 @@ class Person (object):
         
         
         # query
-        q = "INSERT INTO {tb} (name, lg, postcode) \
-        VALUES ('{nm}', '{lg}', {pc});".format(tb=table1_name, nm = name, lg=unit, pc=postcode)
-        msg = _sql(q)        
+        q = "INSERT INTO {tb} (name, lg, postcode, seats) \
+        VALUES ('{nm}', '{lg}', {pc}, {st});".format(tb=table1_name, nm = name, lg=unit, pc=postcode, st=seats)
+        msg = _sql(q)
+        sys.stderr.write(msg)
         return msg
         
     
@@ -60,12 +62,13 @@ class Person (object):
         lg = self.lg
         name= self.name
         postcode = self.postcode # reverse edit to class        
+        seats = self.seats
         
         # query
         q = "UPDATE {tb} \
-         SET postcode = {pc}\
+         SET postcode = {pc}, seats = {st}\
          WHERE lg = '{lg}' \
-         AND name = '{nm}';".format(tb=table1_name, pc=postcode, lg=lg, nm = name)
+         AND name = '{nm}';".format(tb=table1_name, pc=postcode, st=seats, lg=lg, nm = name)
         msg = _sql(q)
         return msg
             

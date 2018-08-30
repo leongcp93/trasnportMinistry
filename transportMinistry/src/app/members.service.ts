@@ -9,7 +9,6 @@ export class MembersService {
   i: number;
   members: Array<Object> = [];
   personToEdit: Object;
-  abc: String = "efg";
 
   constructor(private httpClient: HttpClient, private pipe: Filter) {
 
@@ -25,12 +24,8 @@ export class MembersService {
               this.name[this.i] = data[this.i].name;
               this.postcode[this.i] = data[this.i].postcode;
               //this is where i group all the object into members
-              this.members[this.i] = {
-                name: this.name[this.i],
-                postcode: this.postcode[this.i]
-              }
+              this.members[this.i] = data[this.i]
               //this.space = data[0].space;
-              //console.log(this.members[this.i]);
             }
           }
         }

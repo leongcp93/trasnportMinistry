@@ -4,7 +4,7 @@
   </div>
 
   <div class="content-display" *ngIf="!name; else forminfo" ng-app="signup" ng-controller="signupCtrl">
-    <form [formGroup]="signupForm" (ngSubmit)="addPassenger(signupForm.value)">
+    <form [formGroup]="signupForm">
       <div>
         <label>
           <strong>Lifegroup Unit: {{groupunit}}</strong>
@@ -37,24 +37,26 @@
         <br>
         <label> Are you a driver?</label>
         <br>
+
         <label>Yes
-          <input #isDriver (click)="checkDriver()" type="radio" name="driver" formControlName="checkDriver">
+          <input #isDriver (click)="checkDriver()" type="radio" name="driver">
         </label>
         <label>No
-          <input #isNotDriver (click)="checkDriver()" type="radio" name="driver" formControlName="checkDriver">
+          <input #isNotDriver (click)="checkDriver()" type="radio" name="driver" checked>
         </label>
+
         <br>
         <div *ngIf="driver">
           <strong>Number of seats: </strong>
           <br>
           <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput>
-          <div class="alert col-md-6" *ngIf="!signupForm.controls['numberOfSeats'].valid">No zero and negative value.</div>
+          <div class="alert col-md-6" *ngIf="!signupForm.controls['numberOfSeats'].valid && signupForm.controls['numberOfSeats'].touched">No zero and negative value.</div>
           <br>
         </div>
         <br>
         <br>
 
-        <button routerLink="/submit-responds" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid">
+        <button (click)="postSignUp()" routerLink="/submit-responds" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid">
           <i class="fa fa-check-circle"></i> Submit</button>
         <br>
         <a routerLink="/add-people" class="btn btn-link col-md-6">New Friend?</a>
