@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormsModule, NgForm} from '@angular
 import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { MembersService } from '../members.service'
+import { forEach } from '@angular/router/src/utils/collection';
 
 
 @Component({
@@ -17,16 +18,18 @@ export class SignupComponent implements OnInit {
   driver: boolean = false;
   numberOfSeats: number = 0;
   units: Array<string> = [];
+  suburbs: Array<string> = [];
 
   //refer the id in html from the textfield.
   @ViewChild("firstName") firstName: ElementRef;
   @ViewChild("lastName") lastName: ElementRef;
-  @ViewChild("postcodeInput") postcodeInput: ElementRef;
+  @ViewChild("suburbInput") suburbInput: ElementRef;
   @ViewChild("seatsInput") seatsInput: ElementRef;
 
   //this section is to check drivers and passengers status
   @ViewChild("isDriver") isDriverInput: ElementRef;
   @ViewChild("isNotDriver") isNotDriverInput: ElementRef;
+  @ViewChild("lg") lg: ElementRef;
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
 
@@ -35,7 +38,7 @@ export class SignupComponent implements OnInit {
       'lastname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       /*
       'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],*/
-      'postcode': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
+      //'suburb': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'numberOfSeats': [],
       'validate': ''
     });
@@ -48,14 +51,15 @@ export class SignupComponent implements OnInit {
   postSignUp() {
     //this part collect all the value in the field and set to httpClient. 
     const name = this.firstName.nativeElement.value + " " + this.lastName.nativeElement.value;
-    const postcode = this.postcodeInput.nativeElement.value;
+    const postcode = this.suburbInput.nativeElement.value.slice(-4);
+    //const postcode = this.postcodeInput.nativeElement.value;
     if (this.driver) {
       this.numberOfSeats = this.seatsInput.nativeElement.value;
     }
-  
+    console.log(this.lg.nativeElement.value);
     //passing 
     this.httpClient.post('http://localhost:4300/api/member', {
-      lg: "uq6",
+      lg: this.lg.nativeElement.value,
       name: name,
       postcode: postcode,
       auth: "pw1234",
@@ -79,4 +83,25 @@ export class SignupComponent implements OnInit {
       this.driver = false;
     }
   }
+
+  searchPostcode() {
+    this.suburbs = [];
+    const suburb = this.suburbInput.nativeElement.value;
+    this.httpClient.get('http://v0.postcodeapi.com.au/suburbs.json?name='+suburb)
+    .subscribe(
+      (data: any[]) => {
+        if (data.length > 10) {
+          const arr = data.reverse().slice(0, 10);
+          data = [];
+          data = arr;
+        }
+        var i = 0;
+        data.forEach((location)=>{
+          this.suburbs.push(location.name + ", " + location.state.abbreviation + " " + location.postcode);
+          i++;  
+        })
+      }
+    )
+  }
+
 }

@@ -9,8 +9,8 @@
         <label>
           <strong>Lifegroup Unit:</strong>
         </label>
-        <select>
-          <option *ngFor="let unit of units" value=unit>{{unit}}</option>
+        <select #lg>
+          <option *ngFor="let unit of units" value={{unit}}>{{unit}}</option>
         </select>
         <br>
 
@@ -31,12 +31,14 @@
         <div class="alert col-md-6" *ngIf="!signupForm.controls['lastname'].valid && signupForm.controls['lastname'].touched">Please do fill your last name.</div>
         <br>
         <label>
-          <strong>Postcode (Optional)</strong>
+          <strong>Suburb</strong>
         </label>
         <br>
-        <input class="txt col-md-6" formControlName="postcode" type="text" #postcodeInput>
+        <input list="matchPostcode" (keyup)="searchPostcode()" class="txt col-md-6" type="text" #suburbInput><br>
+        <datalist id="matchPostcode">
+          <option *ngFor="let sub of suburbs">{{sub}}</option>
+        </datalist>
         <br>
-        <div class="alert col-md-6" *ngIf="!signupForm.controls['postcode'].valid">Please key in the correct format.</div>
         <br>
         <label> Are you a driver?</label>
         <br>
