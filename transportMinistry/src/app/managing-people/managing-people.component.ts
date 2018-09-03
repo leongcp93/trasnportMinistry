@@ -13,7 +13,7 @@ export class ManagingPeopleComponent implements OnInit {
   //declaring the variables
  
   managingForm: FormGroup;
-  lifeGroup: string = 'uq6';
+  lifeGroup: string;
   passcode: string = 'pw1234';
   members: Array<object> = [];
   //private headers = new Headers({'Content-Type': 'application/json'}); 
@@ -48,8 +48,8 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.lifeGroup = this.ms.adminLg;
     this.members = this.ms.getPeople();
-
   }
 
 }

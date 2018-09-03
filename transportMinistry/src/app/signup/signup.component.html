@@ -8,11 +8,11 @@
       <div>
         <label>
           <strong>Lifegroup Unit:</strong>
-        </label>
-        <select #lg>
+        </label><br>
+        <select class="txt col-md-6" #lg formControlName="lifegroup">
           <option *ngFor="let unit of units" value={{unit}}>{{unit}}</option>
         </select>
-        <br>
+        <br><br>
 
         <label>
           <strong>First name</strong>

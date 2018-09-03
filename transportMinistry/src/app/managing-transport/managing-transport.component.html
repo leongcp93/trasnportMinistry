@@ -21,7 +21,7 @@
           </ul>
     </div>
     <p>List of available passengers:</p>
-    <div class="container">
+    <div class="container passenger">
         <div >
           <ul *ngFor="let passenger of passengers" >
             <button class="btn btn-link" (click)="animatePassenger(driver, passenger)"><li>{{passenger}}</li></button> <br>
@@ -40,8 +40,18 @@
   <!--this is the end of the container-->
   
    
-    <button type="submit" class="btn btn-primary button-align" >Submit</button>
-  
+    <button type="submit" (click)="generatePlan()" class="btn btn-primary button-align" >Submit</button>
+
+    <div *ngIf="displayPlan" class="container">
+      <div *ngFor="let driver of drivers">
+        <strong>{{driver}}</strong><br>
+        <div *ngFor="let passenger of selectedPassengers[driver]" >
+          • {{passenger}}<br>
+        </div>
+        <br>
+      </div>
+    </div>
+
   </div>
 <br>
 <br>

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { Response } from '@angular/http';
+import { MembersService } from '../members.service'
 
 @Component({
   selector: 'app-home',
@@ -17,26 +18,32 @@ export class HomeComponent implements OnInit {
   group: string = '';
   dataId: string = '';
   dataPassword: string ='';
+  units: Array<string> = [];
 
   @ViewChild("id") setId: ElementRef;
   @ViewChild("password") setPassword: ElementRef;
+  @ViewChild("lg") lg: ElementRef;
 
-  constructor(private httpClient:HttpClient,private fb: FormBuilder) {
+  constructor(private httpClient:HttpClient,private fb: FormBuilder, private ms: MembersService) {
 
     this.adminForm = fb.group({
-      'id': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
-      'password': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
+     /* 'id': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
+      'password': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],*/
+      'lifegroup': [null, Validators.compose([Validators.required])],
       'validate' : ''
     });
 
    }
 
   ngOnInit() {
+    this.units = this.ms.getLifeGroup();
   }
 
-  
+  signIn() {
+    this.ms.adminLg = this.lg.nativeElement.value.toLowerCase();
+  }
 
-
+/*
   checkSignIn(){
 
     this.group = this.setId.nativeElement.value;
@@ -59,6 +66,6 @@ export class HomeComponent implements OnInit {
         }
       
     )
-  }
+  }*/
 
 }

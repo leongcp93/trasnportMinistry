@@ -31,7 +31,7 @@ export class EditPageComponent implements OnInit {
   onEdit(){
 
     this.httpClient.put('http://localhost:4300/api/member',{
-      lg: "uq6",
+      lg: this.ms.adminLg,
       name: this.member['name'],
       postcode: this.inputPostcode.nativeElement.value,
       seats: this.inputSeats.nativeElement.value,

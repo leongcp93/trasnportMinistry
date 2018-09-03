@@ -52,12 +52,7 @@ export class ManagingTransportComponent implements OnInit {
   transportForm: FormGroup;
   drivers: Array<string> = this.ms.drivers;
   selectedPassengers: object = this.ms.selectedPassengers;
-  i: number;
-  checking: boolean = false;
-  disable: boolean = true;
-  passengerSpace: number = 0;
-  visibility: boolean = true;
-  display: boolean = true;
+  displayPlan: boolean = false;
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
 
@@ -67,25 +62,7 @@ export class ManagingTransportComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-   /* this.passengers = this.ms.passengers;
-    this.drivers = this.ms.drivers;
-    this.selectedPassengers = this.ms.selectedPassengers;*/
-  }
-
-
-
-  /*addPost(post){
-    this.drivername = post.drivername;
-    this.passengername = post.passengername;
-  }*/
-
-  //this function is used to check the selection
-  /*selectionCheck(){
-     this.checking = true;
-     this.disable = false;
-     console.log("disable value is "+this.disable+" and checking value is "+this.checking); 
-  }*/
+  ngOnInit() {}
 
   animatePassenger(driver, passenger) {
     this.selectedPassengers[driver].push(passenger);
@@ -97,5 +74,11 @@ export class ManagingTransportComponent implements OnInit {
     const index = this.selectedPassengers[driver].indexOf(passenger);
     this.selectedPassengers[driver].splice(index, 1);
     this.passengers.push(passenger);
+    this.displayPlan = false;
   }
+
+  generatePlan() {
+    this.displayPlan = true;
+  }
+
 }

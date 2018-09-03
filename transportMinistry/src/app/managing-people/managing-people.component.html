@@ -19,13 +19,13 @@
 
       <div class="profile-design" *ngFor="let member of members">
         <div *ngIf="member.seats > 0">
-          Driver: {{member.name}}
-          <br> Seats: {{member.seats}}
-          <br> Postcode: {{member.postcode}}
+          Driver: {{member.name}}<br>
+          Postcode: {{member.postcode}}<br>
+          Seats: {{member.seats}}
         </div>
         <div *ngIf="member.seats == 0">
-          Passenger: {{member.name}}
-          <br> Postcode: {{member.postcode}}
+          Passenger: {{member.name}}<br>
+          Postcode: {{member.postcode}}
         </div>
 
         <div align="right">

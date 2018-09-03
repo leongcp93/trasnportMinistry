@@ -9,13 +9,14 @@ export class MembersService {
   passengers: Array<string> = [];
   selectedPassengers: object = {};
   members: Array<object> = [];
+  adminLg: string;
   constructor(private httpClient: HttpClient, private pipe: Filter) {
 
   }
 
   getPeople() {
     this.members = [];
-    this.httpClient.get('http://localhost:4300/api/member?passcode=pw1234&lg=uq6')//change this when the legit url is there.
+    this.httpClient.get('http://localhost:4300/api/member?passcode=pw1234&lg=' + this.adminLg)//change this when the legit url is there.
       .subscribe(
         (data: any[]) => {
           if (data.length) {
@@ -55,7 +56,7 @@ export class MembersService {
         (data: any[]) => {
           if (data.length) {
             for (var i = 0; i < data.length; i++) {
-              units.push(data[i].name);
+              units.push(data[i].name.toUpperCase());
             }
           }
         }

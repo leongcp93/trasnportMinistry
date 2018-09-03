@@ -36,8 +36,7 @@ export class SignupComponent implements OnInit {
     this.signupForm = fb.group({
       'firstname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'lastname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
-      /*
-      'lifegroup': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],*/
+      'lifegroup': [null, Validators.compose([Validators.required])],
       //'suburb': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
       'numberOfSeats': [],
       'validate': ''
@@ -77,11 +76,12 @@ export class SignupComponent implements OnInit {
     if (this.isDriverInput.nativeElement.checked) {
       this.driver = true;
       this.signupForm.controls['numberOfSeats'].setValidators(Validators.compose([Validators.required, Validators.pattern('^[0-9]+$'), Validators.min(1), Validators.max(7)]));
-      return;
-    }
-    if (this.isNotDriverInput.nativeElement.checked) {
+    } else if (this.isNotDriverInput.nativeElement.checked) {
       this.driver = false;
+      this.signupForm.controls['numberOfSeats'].clearValidators();
+      console.log(this.signupForm.controls['numberOfSeats']);
     }
+    this.signupForm.controls['numberOfSeats'].updateValueAndValidity();
   }
 
   searchPostcode() {
