@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, NgModule } from '@angular/cor
 import { FormBuilder, FormGroup, Validators, FormsModule, NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
+import { MembersService } from '../members.service'
 
 
 @Component({
@@ -13,14 +14,9 @@ import { Observable} from 'rxjs';
 export class SignupComponent implements OnInit {
 
   signupForm: FormGroup;
-  post: any;
-  lifegroup: string = '';
-  name: string = '';
-  errorMessage: string = '';
-  postcode: string = '';
   driver: boolean = false;
   numberOfSeats: number = 0;
-  groupunit: string = '';
+  units: Array<string> = [];
 
   //refer the id in html from the textfield.
   @ViewChild("firstName") firstName: ElementRef;
@@ -32,7 +28,7 @@ export class SignupComponent implements OnInit {
   @ViewChild("isDriver") isDriverInput: ElementRef;
   @ViewChild("isNotDriver") isNotDriverInput: ElementRef;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder) {
+  constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
 
     this.signupForm = fb.group({
       'firstname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
@@ -46,12 +42,13 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.units = this.ms.getLifeGroup();
   }
 
   postSignUp() {
     //this part collect all the value in the field and set to httpClient. 
-    this.name = this.firstName.nativeElement.value + " " + this.lastName.nativeElement.value;
-    this.postcode = this.postcodeInput.nativeElement.value;
+    const name = this.firstName.nativeElement.value + " " + this.lastName.nativeElement.value;
+    const postcode = this.postcodeInput.nativeElement.value;
     if (this.driver) {
       this.numberOfSeats = this.seatsInput.nativeElement.value;
     }
@@ -59,8 +56,8 @@ export class SignupComponent implements OnInit {
     //passing 
     this.httpClient.post('http://localhost:4300/api/member', {
       lg: "uq6",
-      name: this.name,
-      postcode: this.postcode,
+      name: name,
+      postcode: postcode,
       auth: "pw1234",
       seats: this.numberOfSeats
     })//change this when the legit url is there.

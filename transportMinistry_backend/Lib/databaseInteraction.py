@@ -122,7 +122,8 @@ def show_person(lg = None, postcode= None):
 
 
 def show_all_lg():
-    q = "select * from LifeGroups"
+    q = "select * from LifeGroups \
+     ORDER BY lg"
     r = _sql(q)
     l = []
     

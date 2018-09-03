@@ -45,5 +45,22 @@ export class MembersService {
 
   ngOnInit() {
     this.getPeople();
+    this.getLifeGroup;
   }
+
+  getLifeGroup() {
+    var units = [];
+    this.httpClient.get('http://localhost:4300/api/lifegroup?passcode=pw1234')
+      .subscribe(
+        (data: any[]) => {
+          if (data.length) {
+            for (var i = 0; i < data.length; i++) {
+              units.push(data[i].name);
+            }
+          }
+        }
+      )
+    return units;
+  }
+
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { Observable} from 'rxjs';
+import { MembersService } from '../members.service'
 
 @Component({
   selector: 'app-managing-lifegroup',
@@ -12,25 +13,23 @@ import { Observable} from 'rxjs';
 export class ManagingLifegroupComponent implements OnInit {
 
   lifeGroupForm: FormGroup;
-  unit: string = '';
-  getUnit: Array<string> = [''];
-  i: number;
+  units: Array<string> = [];
 
   @ViewChild("lifeGroup") lifeGroup: ElementRef;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder) {
+  constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
 
 
   }
 
   addLifeGroup(event: any) {
-    this.unit = this.lifeGroup.nativeElement.value;
     const url = "http://localhost:4300/api/lifegroup";
     this.httpClient.post(url, {
-      "lg": this.unit,
+      "lg": this.lifeGroup.nativeElement.value,
       "auth": 'pw1234'
     }, {responseType: 'text'}).subscribe(() => {
-      this.getLifeGroup();
+      this.units = this.ms.getLifeGroup();
+      
     })
   }
 
@@ -39,26 +38,12 @@ export class ManagingLifegroupComponent implements OnInit {
     if (confirm("Are you sure delete this lifegroup?")) {
       const url = "http://localhost:4300/api/lifegroup?passcode=pw1234&lg=" + getUnit; //this is required the url
       this.httpClient.delete(url, {responseType: 'text'}).subscribe(()=>{
-        this.getLifeGroup();
+        this.units = this.ms.getLifeGroup();
       })
     }
   }
 
-  getLifeGroup() {
-    this.httpClient.get(`http://localhost:4300/api/lifegroup?passcode=pw1234`)
-      .subscribe(
-        (data: any[]) => {
-          if (data.length) {
-            this.getUnit = [''];
-            for (this.i = 0; this.i < data.length; this.i++) {
-              this.getUnit[this.i] = data[this.i].name;
-              //console.log(this.getUnit[this.i]);
-            }
-          }
-        }
-      )
-  }
   ngOnInit() {
-    this.getLifeGroup();
+    this.units = this.ms.getLifeGroup();
   }
 }

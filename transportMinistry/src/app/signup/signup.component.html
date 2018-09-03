@@ -7,8 +7,11 @@
     <form [formGroup]="signupForm">
       <div>
         <label>
-          <strong>Lifegroup Unit: {{groupunit}}</strong>
+          <strong>Lifegroup Unit:</strong>
         </label>
+        <select>
+          <option *ngFor="let unit of units" value=unit>{{unit}}</option>
+        </select>
         <br>
 
         <label>
