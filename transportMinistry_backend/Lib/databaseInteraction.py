@@ -30,18 +30,19 @@ table3_name = "LifeGroups"
 
 ## Helper Person Info class
 class Person (object):
-    def __init__(self, lg = None, name = None, postcode = None, seats = None):
+    def __init__(self, lg = None, name = None, seats = None,
+                 suburb = None):
         self.lg = lg.lower()
         self.name = name
-        self.postcode = postcode
         self.seats = seats
+        self.suburb = suburb
     
     # can implement in form of class later    
     def add_db(self):
         unit = self.lg
         name= self.name
-        postcode = self.postcode
         seats = self.seats
+        sub = self.suburb
         
         # manual rule 
         ls = show_all_lg()
@@ -50,8 +51,9 @@ class Person (object):
         
         
         # query
-        q = "INSERT INTO {tb} (name, lg, postcode, seats) \
-        VALUES ('{nm}', '{lg}', {pc}, {st});".format(tb=table1_name, nm = name, lg=unit, pc=postcode, st=seats)
+        q = "INSERT INTO {tb} (name, lg, seats, suburb) \
+        VALUES ('{nm}', '{lg}', {st}, '{sub}');".format(tb=table1_name,
+                nm = name, lg=unit, st=seats, sub = sub)
         msg = _sql(q)
         sys.stderr.write(msg)
         return msg
@@ -61,14 +63,14 @@ class Person (object):
     def edit_db(self):
         lg = self.lg
         name= self.name
-        postcode = self.postcode # reverse edit to class        
+        sub = self.suburb # reverse edit to class        
         seats = self.seats
         
         # query
         q = "UPDATE {tb} \
-         SET postcode = {pc}, seats = {st}\
+         SET suburb = '{sub}', seats = {st}\
          WHERE lg = '{lg}' \
-         AND name = '{nm}';".format(tb=table1_name, pc=postcode, st=seats, lg=lg, nm = name)
+         AND name = '{nm}';".format(tb=table1_name, sub=sub, st=seats, lg=lg, nm = name)
         msg = _sql(q)
         return msg
             

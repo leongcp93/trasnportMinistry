@@ -1,58 +1,67 @@
 <div>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a routerLink="/admin">Admin</a></li>
-        <li class="breadcrumb-item active">Managing Transport</li>
-      </ol>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/admin">Admin</a>
+    </li>
+    <li class="breadcrumb-item active">Managing Transport</li>
+  </ol>
 </div>
 
-    
-    
+
+
 <!-- start of the container -->
-<form>
-<div class="content-display" >
-  
-  <div class="special-container" *ngFor="let driver of drivers">
-    <strong>Driver: {{driver}}</strong>
-    
-    <div class="passenger-container">
-      <strong>Passenger(s):</strong>
-      <ul *ngFor="let passenger of selectedPassengers[driver]" >
-            <li><div>{{passenger}}<button (click)="cancelAlloc(driver, passenger)" class="btn btn-link"><i class="fa fa-times-circle"></i></button></div></li>
-          </ul>
-    </div>
-    <p>List of available passengers:</p>
-    <div class="container passenger">
-        <div >
-          <ul *ngFor="let passenger of passengers" >
-            <button class="btn btn-link" (click)="animatePassenger(driver, passenger)"><li>{{passenger}}</li></button> <br>
-          </ul>
+<h3 *ngIf="drivers.length == 0 && passengers.length != 0">No driver is selected</h3>
+<h3 title="navigate to admin and click managing people"*ngIf="drivers.length == 0 && passengers.length == 0">Please select members first</h3>
 
-          <!--[@passengerVisibility]="visibility" [@passengerDisplay]="display" this is use for animation-->
-          
-        </div>
-      
+<form *ngIf="drivers.length != 0 && passengers.length != 0">
+  <div class="content-display">
+    <div class="special-container" *ngFor="let driver of drivers">
+      <strong>Driver: {{driver.name}}</strong>
+      <br> has {{driver.seats}} seats, stays at {{driver.suburb.slice(0, driver.suburb.indexOf(','))}}
+
+
+      <div class="passenger-container">
+        <strong>Passenger(s):</strong>
+        <ul *ngFor="let passenger of selectedPassengers[driver.name]">
+          <li>
+            <div>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})
+              <button (click)="cancelAlloc(driver, passenger)"
+                class="btn btn-link">
+                <i class="fa fa-times-circle"></i>
+              </button>
+            </div>
+          </li>
+        </ul>
       </div>
-  </div>
+      <p>List of available passengers:</p>
+      <div class="container passenger">
+        <div>
+          <ul *ngFor="let passenger of sortedPassengers[driver.name]">
+            <button class="btn btn-link" (click)="animatePassenger(driver, passenger)">
+              <li>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})</li>
+            </button>
+            <br>
+          </ul>
+        </div>
 
-  <br>
-  <br>
-  <br>
-  <!--this is the end of the container-->
-  
-   
-    <button type="submit" (click)="generatePlan()" class="btn btn-primary button-align" >Submit</button>
+      </div>
+    </div>
+
+    <br><br><br>
+
+    <button type="submit" (click)="generatePlan()" class="btn btn-primary button-align">Submit</button>
 
     <div *ngIf="displayPlan" class="container">
       <div *ngFor="let driver of drivers">
-        <strong>{{driver}}</strong><br>
-        <div *ngFor="let passenger of selectedPassengers[driver]" >
-          • {{passenger}}<br>
+        <strong>{{driver.name}}</strong>
+        <br>
+        <div *ngFor="let passenger of selectedPassengers[driver.name]">
+          • {{passenger.name}}
+          <br>
         </div>
         <br>
       </div>
     </div>
 
   </div>
-<br>
-<br>
-
+</form>

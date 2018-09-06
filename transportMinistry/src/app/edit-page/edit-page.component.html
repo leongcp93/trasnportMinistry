@@ -10,13 +10,15 @@
   <form [formGroup]=editForm> 
     <strong>Edit  {{member['name']}}</strong><br>
     <br>
-    <label>Postcode:</label><br>
-    <input #postcode class="col-md-4" formControlName="postcode" type="text" value="{{member['postcode']}}"><br>
-    <div class="alert col-md-4" *ngIf="!editForm.controls['postcode'].valid">Only allow 4 digit numbers.</div><br>
+    <label>Suburb:</label><br>
+    <input list="matchPostcode" (keyup)="searchPostcode()" class="txt col-md-4" type="text" #suburbInput value="{{member['suburb']}}"><br>
+        <datalist id="matchPostcode">
+          <option *ngFor="let sub of suburbs">{{sub}}</option>
+        </datalist><br>
     <label>Seats</label><br>
     <input #seats class="col-md-4" formControlName="seats" type="number" value="{{member['seats']}}"><br>
-    <div class="alert col-md-6" *ngIf="!editForm.controls['seats'].valid">No negative value.</div>
-    <br>
+    <div class="alert col-md-4" *ngIf="!editForm.controls['seats'].valid">No negative value.</div>
+    <br><br>
     <button (click)="onEdit()" routerLink="/edit-page-respond" class="btn btn-primary custome-button col-md-4" [disabled]="!editForm.valid">Update</button>
     <br>
 

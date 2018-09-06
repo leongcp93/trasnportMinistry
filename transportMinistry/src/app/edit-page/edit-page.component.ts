@@ -13,12 +13,12 @@ import { MembersService } from '../members.service'
 export class EditPageComponent implements OnInit {
   editForm: FormGroup;
   member: Object;
-  @ViewChild("postcode") inputPostcode: ElementRef;
+  suburbs: Array<string> = [];
+  @ViewChild("suburbInput") suburbInput: ElementRef;
   @ViewChild("seats") inputSeats: ElementRef;
 
   constructor(private fb: FormBuilder, private httpClient:HttpClient, private ms: MembersService) {
     this.editForm = fb.group ({
-      'postcode':[null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.minLength(4), Validators.maxLength(4)])],
       'seats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(0), Validators.max(7)])],
       'validate': ''
     })
@@ -28,12 +28,17 @@ export class EditPageComponent implements OnInit {
     this.member = this.ms.personToEdit;
   }
 
+  searchPostcode() {
+    const suburb = this.suburbInput.nativeElement.value;
+    this.suburbs = this.ms.searchPostCode(suburb);
+  }
+
   onEdit(){
 
     this.httpClient.put('http://localhost:4300/api/member',{
       lg: this.ms.adminLg,
       name: this.member['name'],
-      postcode: this.inputPostcode.nativeElement.value,
+      suburb: this.suburbInput.nativeElement.value,
       seats: this.inputSeats.nativeElement.value,
       auth: "pw1234"
     })

@@ -5,11 +5,12 @@ import { Filter } from './filter.pipe';
 
 export class MembersService {
   personToEdit: Object;
-  drivers: Array<string> = [];
-  passengers: Array<string> = [];
+  drivers: Array<object> = [];
+  passengers: Array<object> = [];
   selectedPassengers: object = {};
   members: Array<object> = [];
   adminLg: string;
+  selected: Array<string> = [];
   constructor(private httpClient: HttpClient, private pipe: Filter) {
 
   }
@@ -21,7 +22,7 @@ export class MembersService {
         (data: any[]) => {
           if (data.length) {
             for (var i = 0; i < data.length; i++) {
-              this.members.push(data[i]);        
+              this.members.push(data[i]); 
             }
           }
         }
@@ -35,10 +36,10 @@ export class MembersService {
 
   markMember(member) {
     if (member.seats > 0) {
-      this.drivers.push(member.name);
+      this.drivers.push(member);
       this.selectedPassengers[member.name] = [];
     } else {
-      this.passengers.push(member.name);
+      this.passengers.push(member);
     }
     const i = this.members.indexOf(member);
     this.members.splice(i, 1);
@@ -62,6 +63,26 @@ export class MembersService {
         }
       )
     return units;
+  }
+
+  searchPostCode(suburb) {
+    var suburbs = [];
+    this.httpClient.get('http://v0.postcodeapi.com.au/suburbs.json?name='+suburb)
+    .subscribe(
+      (data: any[]) => {
+        if (data.length > 10) {
+          const arr = data.reverse().slice(0, 10);
+          data = [];
+          data = arr;
+        }
+        var i = 0;
+        data.forEach((location)=>{
+          suburbs.push(location.name + ", " + location.state.abbreviation + " " + location.postcode);
+          i++;  
+        })
+      }
+    )
+    return suburbs;
   }
 
 }

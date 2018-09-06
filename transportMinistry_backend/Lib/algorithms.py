@@ -4,7 +4,7 @@ Created on Thu Apr 12 12:08:54 2018
 
 @author: BrunoAdmin
 """
-
+import sys
 def find_combinations(drivers={}, passengers={}):
     """
     Graph mining method:
@@ -21,9 +21,9 @@ def find_combinations(drivers={}, passengers={}):
         - combinations = {driver1: [p1, p2, p5], 
                           driver2: [p3, p4] ...}
     """
+    
     from scipy.spatial import KDTree
     import numpy as np
-    
     # Ref: https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.spatial.KDTree.query.html
     # retrieve the lat, long of one lg -> data
     list_postcode_driver = []
@@ -32,38 +32,15 @@ def find_combinations(drivers={}, passengers={}):
     map_postcode_passenger = {}
     
     # list out all driver keys
-    for dv, postcode in drivers.items():
-        postcode = postcode[1]
-        if postcode not in list_postcode_driver:
-            list_postcode_driver.append(postcode)
-            
-        # mapping postcode -> driver
-        arr = map_postcode_driver.get(postcode)
-        if arr == None:
-            map_postcode_driver.update({postcode:[dv]})
-        else:
-            arr.append(dv)
-            map_postcode_driver.update({postcode:arr})
-            
+    listDrivers(list_postcode_driver, map_postcode_driver, drivers)
+        
     # list out all passengers keys
-    for ps, postcode in passengers.items():
-        postcode = postcode
-        if postcode not in list_postcode_passenger:
-            list_postcode_passenger.append(postcode)
-            
-        # mapping postcode -> passengers
-        arr = map_postcode_passenger.get(postcode)
-        if arr == None:
-            map_postcode_passenger.update({postcode:[ps]})
-        else:
-            arr.append(ps)
-            map_postcode_passenger.update({postcode:arr})
+    listPassengers(list_postcode_passenger, map_postcode_passenger, passengers)
     
     # mapping postcodes with lat/long
     ## Format: reverse format {(lat, long): postcode}
     dict_post_passenger = {}
     dict_post_passenger = _map_postcode(list_postcode_passenger)
-    
     
     # Define k for each driver, according to their locaiton / size
     # dict format: {driver: }
@@ -148,8 +125,34 @@ def find_combinations(drivers={}, passengers={}):
         ls.append(i)
     dict_drive_passenger_map.update({'Not assigned': ls})
     return dict_drive_passenger_map
-
+    
 ## Helpers
+def listDrivers(list_postcode_driver, map_postcode_driver, drivers):
+    for dv, pair in drivers.items():
+        postcode = pair[0]
+        if postcode not in list_postcode_driver:
+            list_postcode_driver.append(postcode)
+            
+        # mapping postcode -> driver
+        arr = map_postcode_driver.get(postcode)
+        if arr == None:
+            map_postcode_driver.update({postcode:[dv]})
+        else:
+            arr.append(dv)
+            map_postcode_driver.update({postcode:arr})
+
+def listPassengers(list_postcode_passenger, map_postcode_passenger, passengers):
+    for ps, postcode in passengers.items():
+        if postcode not in list_postcode_passenger:
+            list_postcode_passenger.append(postcode)
+            
+        # mapping postcode -> passengers
+        arr = map_postcode_passenger.get(postcode)
+        if arr == None:
+            map_postcode_passenger.update({postcode:[ps]})
+        else:
+            arr.append(ps)
+            map_postcode_passenger.update({postcode:arr})
 def _map_postcode(list_postcode):
     """
     Pass in a set of postcode (no duplicate).

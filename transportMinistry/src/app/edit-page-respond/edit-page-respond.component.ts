@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MembersService } from '../members.service'
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-edit-page-respond',
@@ -10,7 +12,8 @@ import { Observable } from 'rxjs';
 })
 export class EditPageRespondComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(private ms: MembersService) { }
 
   ngOnInit() {
   }

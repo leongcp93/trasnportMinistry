@@ -203,13 +203,13 @@ def edit_person(): ##
         content = request.get_json()
         lg = content.get('lg')
         name = content.get('name')
-        postcode = content.get('postcode')
+        suburb = content.get('suburb')
         seats = content.get('seats')
         
         ## passcode
         if content.get('auth') != auth_passcode:
             return jsonify({"msg":"Un-authorized action"}), 401
-        msg = db.Person(lg = lg, name = name, postcode = postcode, seats = seats).edit_db()
+        msg = db.Person(lg = lg, name = name, seats = seats, suburb = suburb).edit_db()
         return jsonify({"msg":msg}), 200
         #return "Added successfully"
     
@@ -235,12 +235,13 @@ def add_person():
         content = request.get_json()
         lg = content.get('lg')
         name = content.get('name')
-        postcode = content.get('postcode')
         seats = content.get('seats')
+        suburb = content.get('suburb')
         ## passcode
         if content.get('auth') != auth_passcode:
             return jsonify({"msg":"Un-authorized action"}), 401
-        msg = db.Person(lg = lg, name = name, postcode = postcode, seats = seats).add_db()
+        msg = db.Person(lg = lg, name = name   ,
+                        seats = seats, suburb = suburb).add_db()
         return jsonify({"msg":msg}), 200
         #return "Edited successfully"
     
@@ -290,11 +291,12 @@ def show_members():
     if passcode == auth_passcode:
         # Function 1: Retreive member names
         if lg != None and name == None:
-            members = db._sql("SELECT name, postcode, seats FROM Person WHERE lg = '{}';"
-                              .format(lg))
+            members = db._sql("SELECT name, seats, suburb \
+                    FROM Person WHERE lg = '{}';".format(lg))
             ls = []
             for i, pair in enumerate(members):
-                n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "seats":pair[2]}
+                n = {"id":str(i), "name":pair[0], "group":lg,
+                         "seats":pair[1], "suburb":pair[2]}
                 ls.append(n)
                 
             return jsonify(ls), 200
@@ -422,13 +424,14 @@ def api_getEventInfo(eventID): ##
         return jsonify({"err":"Event does not existed."}), 500
 
     
-@app.route("{}/bestmatches".format(url_prex), methods=['POST'])
+@app.route("{}/bestmatches".format(url_prex), methods=['GET'])
 def api_bestmatches(): ##
     """
     Submit the person info that are going to one particular event.
     """
     try:
         ## receive file
+        """
         content = request.get_json()
         event_id = content.get('event_id')
         event_id = CodeConverter().decode(event_id)
@@ -441,10 +444,24 @@ def api_bestmatches(): ##
         condition_isPassenger = file['driver'] == 0
         drivers = file[condition_isDriver]
         passengers = file[condition_isPassenger]
-        
+        """
+        lg = request.args.get('lg', type = str)
+        members = db._sql("SELECT name, seats, suburb \
+                    FROM Person WHERE lg = '{}';".format(lg))
         map_drivers = {}
         map_passengers = {}
+
+        for member in members:
+            pc = int(member[2][-4:])
+            name = member[0]
+            seats = int(member[1])
+            if seats > 0:
+                map_drivers[name] = (pc, seats)
+            else:
+                map_passengers[name] = pc
+
         
+        """
         for i, row in drivers.iterrows():
             ## Append drive into the dictionary
             name = row['name']
@@ -456,7 +473,7 @@ def api_bestmatches(): ##
             name = row['name']
             postcode = row['postcode']
             map_passengers.update({name: postcode})        
-        
+        """        
         ## trigger calculation
         mapping = alg.find_combinations(map_drivers, map_passengers)
         return jsonify(mapping), 200

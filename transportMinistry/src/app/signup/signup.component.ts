@@ -50,19 +50,16 @@ export class SignupComponent implements OnInit {
   postSignUp() {
     //this part collect all the value in the field and set to httpClient. 
     const name = this.firstName.nativeElement.value + " " + this.lastName.nativeElement.value;
-    const postcode = this.suburbInput.nativeElement.value.slice(-4);
-    //const postcode = this.postcodeInput.nativeElement.value;
     if (this.driver) {
       this.numberOfSeats = this.seatsInput.nativeElement.value;
     }
-    console.log(this.lg.nativeElement.value);
     //passing 
     this.httpClient.post('http://localhost:4300/api/member', {
       lg: this.lg.nativeElement.value,
       name: name,
-      postcode: postcode,
       auth: "pw1234",
-      seats: this.numberOfSeats
+      seats: this.numberOfSeats,
+      suburb: this.suburbInput.nativeElement.value
     })//change this when the legit url is there.
       .subscribe(
         (data: any[]) => {
@@ -79,29 +76,13 @@ export class SignupComponent implements OnInit {
     } else if (this.isNotDriverInput.nativeElement.checked) {
       this.driver = false;
       this.signupForm.controls['numberOfSeats'].clearValidators();
-      console.log(this.signupForm.controls['numberOfSeats']);
     }
     this.signupForm.controls['numberOfSeats'].updateValueAndValidity();
   }
 
   searchPostcode() {
-    this.suburbs = [];
     const suburb = this.suburbInput.nativeElement.value;
-    this.httpClient.get('http://v0.postcodeapi.com.au/suburbs.json?name='+suburb)
-    .subscribe(
-      (data: any[]) => {
-        if (data.length > 10) {
-          const arr = data.reverse().slice(0, 10);
-          data = [];
-          data = arr;
-        }
-        var i = 0;
-        data.forEach((location)=>{
-          this.suburbs.push(location.name + ", " + location.state.abbreviation + " " + location.postcode);
-          i++;  
-        })
-      }
-    )
+    this.suburbs = this.ms.searchPostCode(suburb);
   }
 
 }

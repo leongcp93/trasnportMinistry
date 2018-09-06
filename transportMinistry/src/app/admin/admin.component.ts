@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MembersService } from '../members.service'
 
 @Component({
   selector: 'app-admin',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ms: MembersService) { }
 
   ngOnInit() {
   }
 
+  logout() {
+    this.ms.members = [];
+    this.ms.passengers = [];
+    this.ms.drivers = [];
+    this.ms.selected = [];
+  }
 }

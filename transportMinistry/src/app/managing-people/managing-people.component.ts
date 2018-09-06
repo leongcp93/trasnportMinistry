@@ -49,9 +49,14 @@ export class ManagingPeopleComponent implements OnInit {
 
   ngOnInit() {
     this.lifeGroup = this.ms.adminLg;
-    this.members = this.ms.getPeople();
+    if (this.ms.members.length == 0) {
+      this.members = this.ms.getPeople();
+    } else {
+      this.members = this.ms.members;
+    }
+    
   }
-
+  
 }
 
 

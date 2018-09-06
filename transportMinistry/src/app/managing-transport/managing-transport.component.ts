@@ -10,47 +10,14 @@ import { MembersService } from '../members.service'
   selector: 'app-managing-transport',
   templateUrl: './managing-transport.component.html',
   styleUrls: ['./managing-transport.component.scss'],
-  /*animations: [
-
-    trigger('passengerVisibility',[
-
-      state('true', style({
-        opacity: '1'
-      })),
-      state('false', style({
-        opacity: '0'
-      })),
-
-      transition('1 <=> 0', animate('200ms ease')),
-
-    ]),
-
-    trigger('passengerDisplay',[
-
-      state('true', style({
-
-        display: 'block'
-
-      })),
-      state('false', style({
-
-        display: 'none'
-
-      })),
-
-      transition('0 => 1 ', animate('0ms ease')),
-      transition('1 => 0', animate('0ms 200ms ease'))
-
-    ])
-
-  ]*/
 })
 export class ManagingTransportComponent implements OnInit {
 
   //driver: string = '';
-  passengers: Array<string> = this.ms.passengers;
+  drivers: Array<object>;
+  passengers: Array<object>;
+  sortedPassengers: object = {};
   transportForm: FormGroup;
-  drivers: Array<string> = this.ms.drivers;
   selectedPassengers: object = this.ms.selectedPassengers;
   displayPlan: boolean = false;
 
@@ -62,23 +29,87 @@ export class ManagingTransportComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.drivers = this.ms.drivers;
+    this.passengers = this.ms.passengers;
+    this.sortPassengers(this.drivers, this.passengers);
+  }
 
   animatePassenger(driver, passenger) {
-    this.selectedPassengers[driver].push(passenger);
-    const index = this.passengers.indexOf(passenger);
-    this.passengers.splice(index, 1);
+    var passengers = this.selectedPassengers[driver.name];
+    if (passengers.length < driver.seats) {
+      passengers.push(passenger);
+      this.ms.selected.push(passenger.name);
+      this.drivers.forEach((driver) => {
+        var waitingPassengers = this.sortedPassengers[driver['name']];
+        const index = waitingPassengers.indexOf(passenger);
+        waitingPassengers.splice(index, 1);
+      })
+      
+    }
   }
 
   cancelAlloc(driver, passenger) {
-    const index = this.selectedPassengers[driver].indexOf(passenger);
-    this.selectedPassengers[driver].splice(index, 1);
-    this.passengers.push(passenger);
+    const index = this.selectedPassengers[driver.name].indexOf(passenger);
+    this.selectedPassengers[driver.name].splice(index, 1);
+    const i = this.ms.selected.indexOf(passenger.name);
+    this.ms.selected.splice(i, 1);
     this.displayPlan = false;
+    this.drivers.forEach((driver) => {
+      //waitingPassengers.push(passenger);
+      var pasCpy = Object.assign([], this.sortedPassengers[driver['name']]);
+      pasCpy.push(passenger);
+      this.sortedPassengers[driver['name']] = [];
+      this.sortPassengersForAdriver(driver, pasCpy, this.sortedPassengers[driver['name']]);
+    })
   }
 
   generatePlan() {
     this.displayPlan = true;
   }
+  sortPassengersForAdriver(driver, pasCpy, waitingPassengers) {
+    const driverPostcode = parseInt(driver.suburb.slice(-4));
+    const len = pasCpy.length;
+    for (var i = 0; i < len; i++) {
+      const min = findMin(driverPostcode, pasCpy);
+      waitingPassengers.push(min);
+      const index = pasCpy.indexOf(min);
+      pasCpy.splice(index, 1);
+    }
+  }
 
+  sortPassengers(drivers, passengers) {
+    const len = passengers.length;
+    drivers.forEach((driver) =>{
+      const driverPostcode = parseInt(driver.suburb.slice(-4));
+      var pas = Object.assign([], passengers);
+      for (var i = 0; i < len; i++) {
+        if (this.sortedPassengers[driver.name] == null) {
+          this.sortedPassengers[driver.name] = new Array<Object>();
+        }
+        const min = findMin(driverPostcode, pas);
+        if (this.ms.selected.indexOf(min.name) == -1) {
+          this.sortedPassengers[driver.name].push(min);
+        }
+        const i = pas.indexOf(min);
+        pas.splice(i, 1);
+      }
+    })
+  }
+}
+
+function findMin(driverPostcode, passengers) {
+  if (passengers.length == 1) {
+    return passengers[0];
+  }
+  var minDiff = 500;
+  var closest;
+  passengers.forEach((passenger) => {
+    const diff = Math.abs(parseInt(passenger.suburb.slice(-4)) - driverPostcode);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closest = passenger;
+    }
+  })
+  return closest;
 }
