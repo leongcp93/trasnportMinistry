@@ -1,53 +1,100 @@
-<div>
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item">
-      <a routerLink="/admin">Admin</a>
-    </li>
-    <li class="breadcrumb-item active">Managing people</li>
-  </ol>
-</div>
+<body>
+  <div>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/admin">Admin</a>
+      </li>
+      <li class="breadcrumb-item active">Managing people</li>
+    </ol>
+  </div>
 
-<form [formGroup]="managingForm">
-  <div class="container-fluid">
-    <div class="bg-profile-design">
-      <div class="profile-design">
+  <header class="profile-design" [formGroup]="managingForm">
+    <div class="special-container">
+      <input type="text" formControlName="name" class="col-md-4  selection-design" (keyup)="onName($event)" placeholder="Search passenger's/driver's name ...">
+      <a class="button" (click)="popUp()">Check List
+        <i class="fas fa-tasks"></i>
+      </a>
+    </div>
+    <br>
+    <br>
+  </header>
 
-        <input type="text" formControlName="name" class="col-md-4 selection-design" (keyup)="onName($event)" placeholder="passenger's/driver's name...">
-        <br>
-      </div>
-      <br>
+  <div class="container">
+    <h4 *ngIf="this.ms.members.length == 0 && !this.ms.ticked">
+      Please
+      <a id="login" routerLink="/home">login</a> first
+    </h4>
+    <h3 *ngIf="this.ms.members.length == 0 && this.ms.ticked">You have selected all members</h3>
+  </div>
 
-      <div class="profile-design" *ngFor="let member of members">
+
+  <div *ngFor="let member of members">
+    <div class="profile-design">
+      <div class="special-container">
         <div *ngIf="member.seats > 0">
-          Driver: {{member.name}}<br>
-          Suburb: {{member.suburb}}<br>
-          Seats: {{member.seats}}
+          Driver: {{member.name}}
+          <br> Suburb: {{member.suburb}}
+          <br> Seats: {{member.seats}}
         </div>
         <div *ngIf="member.seats == 0">
-          Passenger: {{member.name}}<br>
-          Suburb: {{member.suburb}}
+          Passenger: {{member.name}}
+          <br> Suburb: {{member.suburb}}
         </div>
-
-        <div align="right">
-          <button class="btn btn-success selection-design col-md-1" (click)="mark(member)">
-            <i class="fas fa-check"></i> Tick
-          </button>
-          <button routerLink="/edit-page" class="btn btn-primary selection-design col-md-1" (click)="editPerson(member)">
-            <i class="fa fa-edit"></i> Edit
-          </button>
-          <button class="btn btn-danger selection-design col-md-1" (click)="delPerson(member.name)">
-            <i class="fa fa-trash"></i> Delete
-          </button>
-        </div>
-
       </div>
+      <hr>
 
-      <br>
-      <br>
-      <br>
-
-
+      <div class="buttons">
+        <div>
+          <a (click)="mark(member)">
+            <i class="fas fa-car"></i> Add
+          </a>
+        </div>
+        <div>
+          <a routerLink="/edit-page" (click)="editPerson(member)">
+            <i class="fa fa-edit"></i> Edit
+          </a>
+        </div>
+        <div>
+          <a (click)="delPerson(member.name)">
+            <i class="fa fa-trash"></i> Delete
+          </a>
+        </div>
+      </div>
     </div>
-
   </div>
-</form>
+
+
+  <br>
+  <br>
+  <br>
+  <div *ngIf="displayChecklist" class="overlay">
+    <div class="popup">
+      <div class="container">
+        <h3>Did I miss any one?</h3>
+        <br>
+        <a class="close" (click)="closePopup()">&times;</a>
+        <b>Drivers({{this.ms.drivers.length}}):</b>
+        <br>
+        <p *ngIf="this.ms.drivers.length==0">You haven't selected any driver</p>
+        <div class="content" *ngFor="let driver of this.ms.drivers">
+          {{driver.name}}
+          <button class="btn btn-link" (click)="delAlloc(driver)">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <b>Passengers({{this.ms.passengers.length}}): </b>
+        <br>
+        <p *ngIf="this.ms.passengers.length==0">You haven't selected any passenger</p>
+        <div class="content" *ngFor="let passenger of this.ms.passengers">
+          {{passenger.name}}
+          <button class="btn btn-link" (click)="delAlloc(passenger)">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <br>
+        <p *ngIf="this.ms.totalSeats < this.ms.passengers.length">
+          <b>*NOTE*:</b> there are not enough seats</p>
+      </div>
+    </div>
+  </div>
+</body>

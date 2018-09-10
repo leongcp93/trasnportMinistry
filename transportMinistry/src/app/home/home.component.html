@@ -1,10 +1,11 @@
-<div class="login-align container-fluid content-display" align="center">
-  <h3>Admin login</h3>
-
-  <div>
-    <form [formGroup]="adminForm">
-     <br>
-     <!---
+<body>
+    
+  <div class="login-align container-fluid content-display" align="center">
+    <h3>Admin login</h3>
+    <div>
+      <form [formGroup]="adminForm">
+        <br>
+        <!---
   <label>ID:</label><br>
   <input formControlName="id" type="text" class="col-md-6" placeholder="Your ID..." #id><br>
   <div class="alert col-md-6" *ngIf="!adminForm.controls['id'].valid && adminForm.controls['id'].touched"> Please key in your ID.</div>
@@ -14,24 +15,25 @@
   <input formControlName="password" type="password" class="col-md-6" placeholder="Password..." #password><br>
   <div class="alert col-md-6" *ngIf="!adminForm.controls['password'].valid && adminForm.controls['password'].touched"> Please key in your password.</div>
  -->
- <label>
-    <strong>Lifegroup Unit:</strong>
-  </label>
-  <select #lg formControlName="lifegroup">
-    <option *ngFor="let unit of units" value={{unit}}>{{unit}}</option>
-  </select>
-  <br>
-  <br>
-  <button (click)="signIn()" routerLink="/admin" class="btn btn-primary col-md-6 custome-button" [disabled]="!adminForm.valid"><i class="fa fa-sign-in"></i> Login</button>
-  <!--<input type="button" class="btn btn-primary col-md-6 custome-button" value="Login" [disabled]="!adminForm.valid">-->
-  <!--<a routerLink="/admin" class="btn btn-primary col-md-6 custome-button">Login</a>-->
-  
-    <br>
-  <br>
-  </form>
+        <label>
+          <strong>Lifegroup Unit:</strong>
+        </label>
+        <select #lg formControlName="lifegroup">
+          <option *ngFor="let unit of units" value={{unit}}>{{unit}}</option>
+        </select>
+        <br>
+        <br>
+        <button (click)="signIn()" routerLink="/admin" class="btn btn-primary col-md-4" [disabled]="!adminForm.valid">
+          <i class="fa fa-sign-in"></i> Login</button>
+        <!--<input type="button" class="btn btn-primary col-md-6 custome-button" value="Login" [disabled]="!adminForm.valid">-->
+        <!--<a routerLink="/admin" class="btn btn-primary col-md-6 custome-button">Login</a>-->
 
+        <br>
+        <br>
+      </form>
+
+    </div>
+    <strong class="design-alert">*IMPORTANT NOTE*:</strong> If you are not the transport minister, please leave this page by clicking on this
+    <a routerLink="/signup">link.</a>
   </div>
-  
- 
-  <strong class="design-alert">*IMPORTANT NOTE*:</strong> If you are not the transport minister, please leave this page by clicking on this <a routerLink="/signup">link.</a>
-</div>
+</body>

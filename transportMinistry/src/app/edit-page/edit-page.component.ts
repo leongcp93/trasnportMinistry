@@ -42,6 +42,15 @@ export class EditPageComponent implements OnInit {
       seats: this.inputSeats.nativeElement.value,
       auth: "pw1234"
     })
-    .subscribe()
+    .subscribe(
+      (data: any) => {
+        this.ms.members.forEach((member) => {
+          if (member['name'] == this.member['name']) {
+            member['suburb'] = this.suburbInput.nativeElement.value;
+            member['seats'] = this.inputSeats.nativeElement.value;
+          }
+        })
+      }
+    );
   }
 }

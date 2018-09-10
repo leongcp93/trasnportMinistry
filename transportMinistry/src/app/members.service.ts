@@ -11,6 +11,9 @@ export class MembersService {
   members: Array<object> = [];
   adminLg: string;
   selected: Array<string> = [];
+  unselected: Array<string> = [];
+  ticked: Boolean = false;
+  totalSeats: number = 0;
   constructor(private httpClient: HttpClient, private pipe: Filter) {
 
   }
@@ -38,8 +41,10 @@ export class MembersService {
     if (member.seats > 0) {
       this.drivers.push(member);
       this.selectedPassengers[member.name] = [];
+      this.totalSeats += member.seats;
     } else {
       this.passengers.push(member);
+      this.unselected.push(member.name);
     }
     const i = this.members.indexOf(member);
     this.members.splice(i, 1);

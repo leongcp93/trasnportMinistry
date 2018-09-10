@@ -18,5 +18,8 @@ export class AdminComponent implements OnInit {
     this.ms.passengers = [];
     this.ms.drivers = [];
     this.ms.selected = [];
+    this.ms.ticked = false;
+    this.ms.totalSeats = 0;
+    this.ms.unselected = [];
   }
 }

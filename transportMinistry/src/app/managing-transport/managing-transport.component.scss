@@ -1,30 +1,17 @@
-.special-container{
-    color: #013199;
-    padding: 15px;
-    border-radius: 25px;
-    cursor: pointer;
-    position: sticky;
+body { 
+    background:#eaecef;
 }
 
-.special-container:hover{
-    background-color: #35f2e5;
+.special-container{
+    background: white;
+    padding: 15px;
+    cursor: pointer;
+    position: sticky;
+    margin: auto auto 1em auto;
 }
 
 .passenger-container{
-   
-    border-radius: 25px;
     padding: 10px;
-}
-
-.button-align{
-    margin:5%;
-    padding: 5px;
-    border-radius: 25px;
-    width: 85%;
-}
-
-.content-display{
-    animation: 2s contDisplay forwards;
 }
 
 @keyframes contDisplay {
@@ -44,7 +31,7 @@
     width:100%; 
     height: 150px; 
     overflow-y: scroll;
-    border-radius: 25px;
+    border-radius: 10px;
 }
 
 div.fixed{
@@ -57,4 +44,42 @@ div.fixed{
 h3 {
     text-align: center;
     color: red;
+}
+section:last-child {
+    padding: 1em 0 10vh 0;
+    margin: 2em 0 2em 0;
+    background: white;
+}
+
+#plan-container {
+    border-radius: 5px;
+    border:2px solid #ccc;
+    min-height: 10em;
+}
+
+#plan-container > div{
+    padding-top: 2em;
+    padding-bottom: 1em;
+}
+
+#plan-title {
+    background: #eaecef;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 1em;
+    height: 2em;
+}
+
+#plan-title b {
+    margin-right: 2em;
+}
+
+#plan-title i:first-child {
+    margin-right: 0.5em;
+}
+
+button {
+    border-radius: 5px;
+    margin-bottom: 1em;
 }

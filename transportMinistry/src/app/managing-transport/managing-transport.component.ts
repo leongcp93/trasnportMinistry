@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DISABLED } from '@angular/forms/src/model';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 import { MembersService } from '../members.service'
+import { ngCopy } from 'angular-6-clipboard';
 
 @Component({
   selector: 'app-managing-transport',
@@ -20,6 +21,7 @@ export class ManagingTransportComponent implements OnInit {
   transportForm: FormGroup;
   selectedPassengers: object = this.ms.selectedPassengers;
   displayPlan: boolean = false;
+  copied: boolean = false;
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
 
@@ -40,23 +42,25 @@ export class ManagingTransportComponent implements OnInit {
     if (passengers.length < driver.seats) {
       passengers.push(passenger);
       this.ms.selected.push(passenger.name);
+      const i = this.ms.unselected.indexOf(passenger.name);
+      this.ms.unselected.splice(i, 1);
       this.drivers.forEach((driver) => {
         var waitingPassengers = this.sortedPassengers[driver['name']];
         const index = waitingPassengers.indexOf(passenger);
         waitingPassengers.splice(index, 1);
       })
-      
     }
   }
 
   cancelAlloc(driver, passenger) {
+    this.copied = false;
     const index = this.selectedPassengers[driver.name].indexOf(passenger);
     this.selectedPassengers[driver.name].splice(index, 1);
     const i = this.ms.selected.indexOf(passenger.name);
     this.ms.selected.splice(i, 1);
+    this.ms.unselected.push(passenger.name);
     this.displayPlan = false;
     this.drivers.forEach((driver) => {
-      //waitingPassengers.push(passenger);
       var pasCpy = Object.assign([], this.sortedPassengers[driver['name']]);
       pasCpy.push(passenger);
       this.sortedPassengers[driver['name']] = [];
@@ -95,6 +99,18 @@ export class ManagingTransportComponent implements OnInit {
         pas.splice(i, 1);
       }
     })
+  }
+
+  copy() {
+    this.copied = true;
+    var plan = "";
+    this.ms.drivers.forEach((driver) => {
+      plan += driver['name'] + "\n";
+      this.ms.selectedPassengers[driver['name']].forEach((passenger) => {
+        plan += "• " + passenger['name'] + "\n"
+      }) 
+    })
+    ngCopy(plan);
   }
 }
 

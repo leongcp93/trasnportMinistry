@@ -16,6 +16,7 @@ export class ManagingPeopleComponent implements OnInit {
   lifeGroup: string;
   passcode: string = 'pw1234';
   members: Array<object> = [];
+  displayChecklist: boolean = false;
   //private headers = new Headers({'Content-Type': 'application/json'}); 
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
@@ -45,18 +46,42 @@ export class ManagingPeopleComponent implements OnInit {
 
   mark(member) {
     this.ms.markMember(member);
+    this.ms.ticked = true;
   }
 
   ngOnInit() {
     this.lifeGroup = this.ms.adminLg;
-    if (this.ms.members.length == 0) {
+    if (this.ms.members.length == 0 && !this.ms.ticked) {
       this.members = this.ms.getPeople();
     } else {
       this.members = this.ms.members;
     }
     
   }
+
+  popUp() {
+    this.displayChecklist = true;
+  }
+
+  closePopup() {
+    this.displayChecklist = false;
+  }
   
+  delAlloc(member) {
+    
+    if (member.seats > 0) {
+      const i = this.ms.drivers.indexOf(member);
+      this.ms.drivers.splice(i, 1);
+      this.ms.totalSeats -= member.seats;
+    } else {
+      const i = this.ms.passengers.indexOf(member);
+      this.ms.passengers.splice(i, 1);
+    }
+    this.ms.members.push(member);
+    const j = this.ms.unselected.indexOf(member);
+    this.ms.unselected.splice(j, 1);
+  }
+
 }
 
 

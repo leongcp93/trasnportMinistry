@@ -1,38 +1,35 @@
-<div>
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item">
-      <a routerLink="/admin">Admin</a>
-    </li>
-    <li class="breadcrumb-item active">Managing Transport</li>
-  </ol>
-</div>
+<body>
+  <div>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/admin">Admin</a>
+      </li>
+      <li class="breadcrumb-item active">Managing Transport</li>
+    </ol>
+  </div>
 
+  <!-- start of the container -->
+  <h3 *ngIf="drivers.length == 0 && passengers.length != 0">No driver is selected</h3>
+  <h3 title="navigate to admin and click managing people" *ngIf="drivers.length == 0 && passengers.length == 0">Please select members first</h3>
 
-
-<!-- start of the container -->
-<h3 *ngIf="drivers.length == 0 && passengers.length != 0">No driver is selected</h3>
-<h3 title="navigate to admin and click managing people"*ngIf="drivers.length == 0 && passengers.length == 0">Please select members first</h3>
-
-<form *ngIf="drivers.length != 0 && passengers.length != 0">
-  <div class="content-display">
+  <section *ngIf="drivers.length != 0 && passengers.length != 0">
     <div class="special-container" *ngFor="let driver of drivers">
-      <strong>Driver: {{driver.name}}</strong>
-      <br> has {{driver.seats}} seats, stays at {{driver.suburb.slice(0, driver.suburb.indexOf(','))}}
-
-
-      <div class="passenger-container">
+      <p>
+        <strong>Driver: {{driver.name}}</strong>
+      </p>
+      <p>Has {{driver.seats}} seats; stays at {{driver.suburb.slice(0, driver.suburb.indexOf(','))}}</p>
+      <p>
         <strong>Passenger(s):</strong>
-        <ul *ngFor="let passenger of selectedPassengers[driver.name]">
-          <li>
-            <div>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})
-              <button (click)="cancelAlloc(driver, passenger)"
-                class="btn btn-link">
-                <i class="fa fa-times-circle"></i>
-              </button>
-            </div>
-          </li>
-        </ul>
-      </div>
+      </p>
+      <ul *ngFor="let passenger of selectedPassengers[driver.name]">
+        <li>
+          <div>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})
+            <button (click)="cancelAlloc(driver, passenger)" class="btn btn-link">
+              <i class="fa fa-times-circle"></i>
+            </button>
+          </div>
+        </li>
+      </ul>
       <p>List of available passengers:</p>
       <div class="container passenger">
         <div>
@@ -45,23 +42,45 @@
         </div>
 
       </div>
+
+      <br>
+      <br>
+      <br>
+
     </div>
+  </section>
 
-    <br><br><br>
+  <section>
+    <div class="container">
+      <button (click)="generatePlan()">Generate Transport Plan</button>
 
-    <button type="submit" (click)="generatePlan()" class="btn btn-primary button-align">Submit</button>
-
-    <div *ngIf="displayPlan" class="container">
-      <div *ngFor="let driver of drivers">
-        <strong>{{driver.name}}</strong>
-        <br>
-        <div *ngFor="let passenger of selectedPassengers[driver.name]">
-          • {{passenger.name}}
-          <br>
+      <div id="plan-container">
+        <span id="plan-title">
+          <i class="fas fa-car"></i>
+          <b>Transport Plan</b>
+          <div><a (click)="copy()"><i class="far fa-copy"></i></a>
+            <span *ngIf="copied">Copied</span>
+          </div>
+        </span>
+        <div *ngIf="displayPlan" class="container">
+          <div *ngFor="let driver of drivers">
+            <strong>{{driver.name}}</strong>
+            <br>
+            <div *ngFor="let passenger of selectedPassengers[driver.name]">
+              • {{passenger.name}}
+              <br>
+            </div>
+            <br>
+          </div>
+          <div *ngIf="this.ms.unselected.length > 0">
+            <strong>Not Allocated</strong>
+            <div *ngFor="let passenger of this.ms.unselected">
+              • {{passenger}}
+            </div>
+          </div>
         </div>
-        <br>
       </div>
     </div>
+  </section>
 
-  </div>
-</form>
+</body>
