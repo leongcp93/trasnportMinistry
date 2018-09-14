@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { MembersService } from '../members.service'
@@ -17,6 +17,8 @@ export class ManagingPeopleComponent implements OnInit {
   passcode: string = 'pw1234';
   members: Array<object> = [];
   displayChecklist: boolean = false;
+  filter: boolean = false;
+  @ViewChild("filterInput") filterInput: ElementRef;
   //private headers = new Headers({'Content-Type': 'application/json'}); 
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
@@ -28,8 +30,14 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   //this is the event handeling
-  onName(event: any) {
-    this.members = this.ms.filterPassengers(event.target.value);
+  onName() {
+    const query = this.filterInput.nativeElement.value;
+    if (query.length > 0) {
+      this.filter = true;
+    } else {
+      this.filter = false;
+    }
+    this.members = this.ms.filterPassengers(query);
   }
 
   delPerson(name) {
@@ -47,6 +55,10 @@ export class ManagingPeopleComponent implements OnInit {
   mark(member) {
     this.ms.markMember(member);
     this.ms.ticked = true;
+    if (this.filter) {
+      const query = this.filterInput.nativeElement.value;
+      this.members = this.ms.filterPassengers(query);
+    } 
   }
 
   ngOnInit() {

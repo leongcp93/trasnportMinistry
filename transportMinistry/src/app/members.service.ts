@@ -14,6 +14,8 @@ export class MembersService {
   unselected: Array<string> = [];
   ticked: Boolean = false;
   totalSeats: number = 0;
+  loggedIn: Boolean = false;
+
   constructor(private httpClient: HttpClient, private pipe: Filter) {
 
   }
@@ -88,6 +90,17 @@ export class MembersService {
       }
     )
     return suburbs;
+  }
+
+  logout() {
+    this.members = [];
+    this.passengers = [];
+    this.drivers = [];
+    this.selected = [];
+    this.ticked = false;
+    this.totalSeats = 0;
+    this.unselected = [];
+    this.loggedIn = false;
   }
 
 }

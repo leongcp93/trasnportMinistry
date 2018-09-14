@@ -1,52 +1,64 @@
 <body>
-  <div>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a routerLink="/admin">Admin</a>
-      </li>
-      <li class="breadcrumb-item active">Managing Transport</li>
-    </ol>
+
+  <nav class="navbar navbar-light bg-light">
+    <div class="container">
+      <div id="manage">
+        <a class="nav-link" routerLink="/managing-people">People</a>
+        <a class="nav-link active" routerLink="/managing-transport">Transport</a>
+      </div>
+      <div>
+        <a class="nav-link" (click)="this.ms.logout()" routerLink="/home">
+          <i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container">
+    <p *ngIf="drivers.length == 0 && passengers.length != 0">No driver is selected</p>
+    <p *ngIf="!this.ms.loggedIn">
+      Please
+      <a id="login" routerLink="/home">login</a> first
+    </p>
+    <p *ngIf="drivers.length == 0 && passengers.length == 0 && this.ms.loggedIn">Please
+      <a routerLink="/managing-people">select members</a> first</p>
   </div>
-
-  <!-- start of the container -->
-  <h3 *ngIf="drivers.length == 0 && passengers.length != 0">No driver is selected</h3>
-  <h3 title="navigate to admin and click managing people" *ngIf="drivers.length == 0 && passengers.length == 0">Please select members first</h3>
-
   <section *ngIf="drivers.length != 0 && passengers.length != 0">
     <div class="special-container" *ngFor="let driver of drivers">
-      <p>
-        <strong>Driver: {{driver.name}}</strong>
-      </p>
-      <p>Has {{driver.seats}} seats; stays at {{driver.suburb.slice(0, driver.suburb.indexOf(','))}}</p>
-      <p>
-        <strong>Passenger(s):</strong>
-      </p>
-      <ul *ngFor="let passenger of selectedPassengers[driver.name]">
-        <li>
-          <div>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})
-            <button (click)="cancelAlloc(driver, passenger)" class="btn btn-link">
-              <i class="fa fa-times-circle"></i>
-            </button>
+      <div class="container">
+        <p>
+          <strong>Driver: {{driver.name}}</strong>
+        </p>
+        <p>Has {{driver.seats}} seats; stays at {{driver.suburb.slice(0, driver.suburb.indexOf(','))}}</p>
+        <p>
+          <strong>Passenger(s):</strong>
+        </p>
+        <ul *ngFor="let passenger of selectedPassengers[driver.name]">
+          <li>
+            <div>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})
+              <button (click)="cancelAlloc(driver, passenger)" class="btn btn-link">
+                <i class="fa fa-times-circle"></i>
+              </button>
+            </div>
+          </li>
+        </ul>
+        <p>List of available passengers:</p>
+        <div class="container passenger">
+          <div>
+            <ul *ngFor="let passenger of sortedPassengers[driver.name]">
+              <button class="btn btn-link" (click)="animatePassenger(driver, passenger)">
+                <li>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})</li>
+              </button>
+              <br>
+            </ul>
           </div>
-        </li>
-      </ul>
-      <p>List of available passengers:</p>
-      <div class="container passenger">
-        <div>
-          <ul *ngFor="let passenger of sortedPassengers[driver.name]">
-            <button class="btn btn-link" (click)="animatePassenger(driver, passenger)">
-              <li>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})</li>
-            </button>
-            <br>
-          </ul>
+
         </div>
 
+        <br>
+        <br>
+        <br>
       </div>
-
-      <br>
-      <br>
-      <br>
-
     </div>
   </section>
 
@@ -58,7 +70,10 @@
         <span id="plan-title">
           <i class="fas fa-car"></i>
           <b>Transport Plan</b>
-          <div><a (click)="copy()"><i class="far fa-copy"></i></a>
+          <div>
+            <a (click)="copy()">
+              <i class="far fa-copy"></i>
+            </a>
             <span *ngIf="copied">Copied</span>
           </div>
         </span>

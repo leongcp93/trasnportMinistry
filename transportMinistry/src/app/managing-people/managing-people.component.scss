@@ -116,12 +116,21 @@ header {
       color: red;
   }
 
-  #login, h4 {
-    color: black;
+  nav a {
+      color: black;
   }
 
-  #login {
-      text-decoration: underline;
+  nav > a:first-child {
+      color: #4286f4;
   }
-      
+
+  #manage {
+      display: flex;
+      width: 50%;
+      justify-content: flex-start;
+  }
+
+  #manage a.active {
+    border-bottom: 3px solid red;
+  }
   

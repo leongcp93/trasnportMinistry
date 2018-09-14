@@ -69,6 +69,7 @@ export class ManagingTransportComponent implements OnInit {
   }
 
   generatePlan() {
+    this.copied = false;
     this.displayPlan = true;
   }
   sortPassengersForAdriver(driver, pasCpy, waitingPassengers) {

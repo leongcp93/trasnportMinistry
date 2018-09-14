@@ -7,7 +7,7 @@ body {
     padding: 15px;
     cursor: pointer;
     position: sticky;
-    margin: auto auto 1em auto;
+    margin: auto auto 0.5em auto;
 }
 
 .passenger-container{
@@ -41,13 +41,9 @@ div.fixed{
     width: 100%;
 }
 
-h3 {
-    text-align: center;
-    color: red;
-}
 section:last-child {
-    padding: 1em 0 10vh 0;
-    margin: 2em 0 2em 0;
+    padding: 1em 0 5vh 0;
+    margin: 0 0 2em 0;
     background: white;
 }
 
@@ -82,4 +78,18 @@ section:last-child {
 button {
     border-radius: 5px;
     margin-bottom: 1em;
+}
+
+#manage {
+    display: flex;
+    width: 50%;
+    justify-content: flex-start;
+}
+
+#manage a.active {
+    border-bottom: 3px solid red;
+}
+
+nav a {
+    color: black;
 }

@@ -1,16 +1,20 @@
 <body>
-  <div>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a routerLink="/admin">Admin</a>
-      </li>
-      <li class="breadcrumb-item active">Managing people</li>
-    </ol>
-  </div>
+  <nav class="navbar navbar-light bg-light">
+    <div class="container">
+      <div id="manage">
+        <a class="nav-link active" routerLink="/managing-people">People</a>
+        <a class="nav-link" routerLink="/managing-transport">Transport</a>
+      </div>
+      <div>
+        <a class="nav-link" (click)="this.ms.logout()" routerLink="/home">
+          <i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </nav>
 
   <header class="profile-design" [formGroup]="managingForm">
     <div class="special-container">
-      <input type="text" formControlName="name" class="col-md-4  selection-design" (keyup)="onName($event)" placeholder="Search passenger's/driver's name ...">
+      <input #filterInput type="text" formControlName="name" class="col-md-4  selection-design" (keyup)="onName()" placeholder="Search passenger's/driver's name ...">
       <a class="button" (click)="popUp()">Check List
         <i class="fas fa-tasks"></i>
       </a>
@@ -20,11 +24,11 @@
   </header>
 
   <div class="container">
-    <h4 *ngIf="this.ms.members.length == 0 && !this.ms.ticked">
+    <p *ngIf="this.ms.members.length == 0 && !this.ms.ticked">
       Please
-      <a id="login" routerLink="/home">login</a> first
-    </h4>
-    <h3 *ngIf="this.ms.members.length == 0 && this.ms.ticked">You have selected all members</h3>
+      <a routerLink="/home">login</a> first
+    </p>
+    <p *ngIf="this.ms.members.length == 0 && this.ms.ticked">You have selected all members</p>
   </div>
 
 

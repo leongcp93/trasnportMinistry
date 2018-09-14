@@ -41,6 +41,7 @@ export class HomeComponent implements OnInit {
 
   signIn() {
     this.ms.adminLg = this.lg.nativeElement.value.toLowerCase();
+    this.ms.loggedIn = true;
   }
 
 /*
