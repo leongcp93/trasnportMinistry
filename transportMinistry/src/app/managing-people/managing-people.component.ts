@@ -41,7 +41,7 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   delPerson(name) {
-    const url = "http://localhost:4300/api/member?lg="
+    const url = "http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/member?lg="
       + this.lifeGroup + "&name=" + name + "&auth=" + this.passcode;
     this.httpClient.delete(url, { responseType: 'text' }).subscribe(() => {
       this.members = this.ms.getPeople();

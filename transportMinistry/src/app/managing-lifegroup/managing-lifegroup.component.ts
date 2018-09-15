@@ -36,7 +36,7 @@ export class ManagingLifegroupComponent implements OnInit {
   //this one is not fully function yet.
   delLifeGroup(getUnit) {
     if (confirm("Are you sure delete this lifegroup?")) {
-      const url = "http://localhost:4300/api/lifegroup?passcode=pw1234&lg=" + getUnit; //this is required the url
+      const url = "http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/lifegroup?passcode=pw1234&lg=" + getUnit; //this is required the url
       this.httpClient.delete(url, {responseType: 'text'}).subscribe(()=>{
         this.units = this.ms.getLifeGroup();
       })

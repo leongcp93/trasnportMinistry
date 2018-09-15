@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Filter } from './filter.pipe';
 @Injectable()
 
@@ -22,7 +22,7 @@ export class MembersService {
 
   getPeople() {
     this.members = [];
-    this.httpClient.get('http://localhost:4300/api/member?passcode=pw1234&lg=' + this.adminLg)//change this when the legit url is there.
+    this.httpClient.get('http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/member?passcode=pw1234&lg=' + this.adminLg)//change this when the legit url is there.
       .subscribe(
         (data: any[]) => {
           if (data.length) {
@@ -59,7 +59,7 @@ export class MembersService {
 
   getLifeGroup() {
     var units = [];
-    this.httpClient.get('http://localhost:4300/api/lifegroup?passcode=pw1234')
+    this.httpClient.get('http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/lifegroup?passcode=pw1234')
       .subscribe(
         (data: any[]) => {
           if (data.length) {
@@ -74,7 +74,12 @@ export class MembersService {
 
   searchPostCode(suburb) {
     var suburbs = [];
-    this.httpClient.get('http://v0.postcodeapi.com.au/suburbs.json?name='+suburb)
+    this.httpClient.get('http://v0.postcodeapi.com.au/suburbs.json?name='+suburb, {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'content-type': 'application/json'
+      })
+    })
     .subscribe(
       (data: any[]) => {
         if (data.length > 10) {

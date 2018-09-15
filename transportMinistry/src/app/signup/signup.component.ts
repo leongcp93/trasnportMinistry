@@ -47,20 +47,19 @@ export class SignupComponent implements OnInit {
     this.units = this.ms.getLifeGroup();
   }
 
-  postSignUp() {
-    //this part collect all the value in the field and set to httpClient. 
+  //make a post request to the api to store that member to the database
+  postSignUp() { 
     const name = this.firstName.nativeElement.value + " " + this.lastName.nativeElement.value;
     if (this.driver) {
       this.numberOfSeats = this.seatsInput.nativeElement.value;
     }
-    //passing 
-    this.httpClient.post('http://localhost:4300/api/member', {
+    this.httpClient.post('http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/member', {
       lg: this.lg.nativeElement.value,
       name: name,
       auth: "pw1234",
       seats: this.numberOfSeats,
       suburb: this.suburbInput.nativeElement.value
-    })//change this when the legit url is there.
+    })
       .subscribe(
         (data: any[]) => {
           console.log(data);
@@ -68,7 +67,7 @@ export class SignupComponent implements OnInit {
       )
   }
 
-  //this function is to settle check driver
+  //handles the radio button "are you a driver"
   checkDriver() {
     if (this.isDriverInput.nativeElement.checked) {
       this.driver = true;
@@ -80,9 +79,9 @@ export class SignupComponent implements OnInit {
     this.signupForm.controls['numberOfSeats'].updateValueAndValidity();
   }
 
+  //search for the full suburb name followed by a postcode
   searchPostcode() {
     const suburb = this.suburbInput.nativeElement.value;
     this.suburbs = this.ms.searchPostCode(suburb);
   }
-
 }

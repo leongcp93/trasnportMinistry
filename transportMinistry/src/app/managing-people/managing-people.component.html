@@ -14,8 +14,11 @@
 
   <header class="profile-design" [formGroup]="managingForm">
     <div class="special-container">
-      <input #filterInput type="text" formControlName="name" class="col-md-4  selection-design" (keyup)="onName()" placeholder="Search passenger's/driver's name ...">
-      <a class="button" (click)="popUp()">Check List
+      <input #filterInput type="text" formControlName="name" 
+          class="col-md-4  selection-design" (keyup)="onName()"
+          placeholder="Search passenger's/driver's name ...">
+      
+          <a class="button" (click)="popUp()">Check List
         <i class="fas fa-tasks"></i>
       </a>
     </div>
