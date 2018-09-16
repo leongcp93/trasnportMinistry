@@ -3,8 +3,8 @@
     <a routerLink="/home" class="btn btn-link nav-item">Admin login</a>
   </div>
 
-  <div class="content-display" *ngIf="!name; else forminfo" ng-app="signup" ng-controller="signupCtrl">
-    <form [formGroup]="signupForm">
+  <div class="content-display">
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <div>
         <label>
           <strong>Lifegroup Unit:</strong>
@@ -61,7 +61,7 @@
         <br>
         <br>
 
-        <button (click)="postSignUp()" routerLink="/submit-responds" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid">
+        <button type="submit" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid">
           <i class="fa fa-check-circle"></i> Submit</button>
       </div>
     </form>

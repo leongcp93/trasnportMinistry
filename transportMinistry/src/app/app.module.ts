@@ -18,22 +18,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //below are all of the components of each page 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { AdminComponent } from './admin/admin.component';
-import { ConfirmIdentityComponent } from './confirm-identity/confirm-identity.component';
 import { ManagingPeopleComponent } from './managing-people/managing-people.component';
 import { ManagingTransportComponent } from './managing-transport/managing-transport.component';
-import { AddPeopleComponent } from './add-people/add-people.component';
-import { ProfileInfoComponent } from './profile-info/profile-info.component';
-import { AddPeopleRespondsComponent } from './add-people-responds/add-people-responds.component';
-import { EventpageComponent } from './eventpage/eventpage.component';
 import { EditPageComponent } from './edit-page/edit-page.component';
 import { EditPageRespondComponent } from './edit-page-respond/edit-page-respond.component';
-import { CreateEventRespondsComponent } from './create-event-responds/create-event-responds.component';
 import { ManagingLifegroupComponent } from './managing-lifegroup/managing-lifegroup.component';
-import { ManagingEventComponent } from './managing-event/managing-event.component';
-import { EditEventComponent } from './edit-event/edit-event.component';
-import { EventEditPageComponent } from './event-edit-page/event-edit-page.component';
-import { ListParticipantsComponent } from './list-participants/list-participants.component';
 
 //http client module to get and post 
 import { HttpClientModule } from '@angular/common/http';
@@ -45,36 +34,17 @@ import { MembersService } from './members.service';
     //component added in here to run it (make sure import it)
     AppComponent,
     HomeComponent,
-    AdminComponent,
-    ConfirmIdentityComponent,
     
     routingComponent,
     
     ManagingPeopleComponent,
     ManagingTransportComponent,
-    AddPeopleComponent,
-    
-    ProfileInfoComponent,
-    
-    AddPeopleRespondsComponent,
-    
-    EventpageComponent,
     
     EditPageComponent,
     
     EditPageRespondComponent,
     
-    CreateEventRespondsComponent,
-    
     ManagingLifegroupComponent,
-    
-    ManagingEventComponent,
-    
-    EditEventComponent,
-    
-    EventEditPageComponent,
-    
-    ListParticipantsComponent,
     
     Filter
   ],

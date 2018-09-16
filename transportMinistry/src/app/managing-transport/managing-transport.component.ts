@@ -18,10 +18,12 @@ export class ManagingTransportComponent implements OnInit {
   drivers: Array<object>;
   passengers: Array<object>;
   sortedPassengers: object = {};
+  unselected: Array<string> = [];
   transportForm: FormGroup;
   selectedPassengers: object = this.ms.selectedPassengers;
-  displayPlan: boolean = false;
-  copied: boolean = false;
+  displayPlan: Boolean = false;
+  copied: Boolean = false;
+  loggedIn: Boolean = false;
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
 
@@ -35,8 +37,8 @@ export class ManagingTransportComponent implements OnInit {
     this.drivers = this.ms.drivers;
     this.passengers = this.ms.passengers;
     this.sortPassengers(this.drivers, this.passengers);
+    this.loggedIn = this.ms.loggedIn;
   }
-
   animatePassenger(driver, passenger) {
     var passengers = this.selectedPassengers[driver.name];
     if (passengers.length < driver.seats) {
@@ -44,6 +46,7 @@ export class ManagingTransportComponent implements OnInit {
       this.ms.selected.push(passenger.name);
       const i = this.ms.unselected.indexOf(passenger.name);
       this.ms.unselected.splice(i, 1);
+      this.unselected.splice(i, 1);
       this.drivers.forEach((driver) => {
         var waitingPassengers = this.sortedPassengers[driver['name']];
         const index = waitingPassengers.indexOf(passenger);
@@ -59,6 +62,7 @@ export class ManagingTransportComponent implements OnInit {
     const i = this.ms.selected.indexOf(passenger.name);
     this.ms.selected.splice(i, 1);
     this.ms.unselected.push(passenger.name);
+    this.unselected.push(passenger.name);
     this.displayPlan = false;
     this.drivers.forEach((driver) => {
       var pasCpy = Object.assign([], this.sortedPassengers[driver['name']]);
@@ -112,6 +116,14 @@ export class ManagingTransportComponent implements OnInit {
       }) 
     })
     ngCopy(plan);
+  }
+
+  logout() {
+    this.ms.logout();
+    this.passengers = [];
+    this.drivers = [];
+    this.unselected = [];
+    this.loggedIn = false;
   }
 }
 

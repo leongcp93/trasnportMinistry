@@ -7,7 +7,7 @@
         <a class="nav-link active" routerLink="/managing-transport">Transport</a>
       </div>
       <div>
-        <a class="nav-link" (click)="this.ms.logout()" routerLink="/home">
+        <a class="nav-link" (click)="logout()" routerLink="/home">
           <i class="fas fa-sign-out-alt"></i> Logout</a>
       </div>
     </div>
@@ -16,11 +16,11 @@
 
   <div class="container">
     <p *ngIf="drivers.length == 0 && passengers.length != 0">No driver is selected</p>
-    <p *ngIf="!this.ms.loggedIn">
+    <p *ngIf="!loggedIn">
       Please
       <a id="login" routerLink="/home">login</a> first
     </p>
-    <p *ngIf="drivers.length == 0 && passengers.length == 0 && this.ms.loggedIn">Please
+    <p *ngIf="drivers.length == 0 && passengers.length == 0 && loggedIn">Please
       <a routerLink="/managing-people">select members</a> first</p>
   </div>
   <section *ngIf="drivers.length != 0 && passengers.length != 0">
@@ -87,9 +87,9 @@
             </div>
             <br>
           </div>
-          <div *ngIf="this.ms.unselected.length > 0">
+          <div *ngIf="unselected.length > 0">
             <strong>Not Allocated</strong>
-            <div *ngFor="let passenger of this.ms.unselected">
+            <div *ngFor="let passenger of unselected">
               • {{passenger}}
             </div>
           </div>

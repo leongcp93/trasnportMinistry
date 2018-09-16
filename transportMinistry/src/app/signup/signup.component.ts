@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { MembersService } from '../members.service'
 import { forEach } from '@angular/router/src/utils/collection';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit {
   @ViewChild("isNotDriver") isNotDriverInput: ElementRef;
   @ViewChild("lg") lg: ElementRef;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
+  constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService, public router: Router) {
 
     this.signupForm = fb.group({
       'firstname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
@@ -48,7 +48,7 @@ export class SignupComponent implements OnInit {
   }
 
   //make a post request to the api to store that member to the database
-  postSignUp() { 
+  onSubmit() { 
     const name = this.firstName.nativeElement.value + " " + this.lastName.nativeElement.value;
     if (this.driver) {
       this.numberOfSeats = this.seatsInput.nativeElement.value;
@@ -65,6 +65,7 @@ export class SignupComponent implements OnInit {
           console.log(data);
         }
       )
+    this.router.navigate(['/managing-people']);
   }
 
   //handles the radio button "are you a driver"

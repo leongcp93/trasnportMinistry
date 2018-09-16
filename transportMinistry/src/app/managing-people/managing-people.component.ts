@@ -16,8 +16,12 @@ export class ManagingPeopleComponent implements OnInit {
   lifeGroup: string;
   passcode: string = 'pw1234';
   members: Array<object> = [];
-  displayChecklist: boolean = false;
-  filter: boolean = false;
+  drivers: Array<object> = [];
+  passengers: Array<object> = [];
+  ticked: Boolean = false;
+  displayChecklist: Boolean = false;
+  filter: Boolean = false;
+  totalSeats: number = 0;
   @ViewChild("filterInput") filterInput: ElementRef;
   //private headers = new Headers({'Content-Type': 'application/json'}); 
 
@@ -55,10 +59,12 @@ export class ManagingPeopleComponent implements OnInit {
   mark(member) {
     this.ms.markMember(member);
     this.ms.ticked = true;
+    this.ticked = true;
     if (this.filter) {
       const query = this.filterInput.nativeElement.value;
       this.members = this.ms.filterPassengers(query);
     } 
+    this.totalSeats = this.ms.totalSeats;
   }
 
   ngOnInit() {
@@ -68,7 +74,9 @@ export class ManagingPeopleComponent implements OnInit {
     } else {
       this.members = this.ms.members;
     }
-    
+    this.drivers = this.ms.drivers;
+    this.passengers = this.ms.passengers;
+    this.totalSeats = this.ms.totalSeats;
   }
 
   popUp() {
@@ -85,6 +93,7 @@ export class ManagingPeopleComponent implements OnInit {
       const i = this.ms.drivers.indexOf(member);
       this.ms.drivers.splice(i, 1);
       this.ms.totalSeats -= member.seats;
+      this.totalSeats -= member.seats;
     } else {
       const i = this.ms.passengers.indexOf(member);
       this.ms.passengers.splice(i, 1);
@@ -92,6 +101,14 @@ export class ManagingPeopleComponent implements OnInit {
     this.ms.members.push(member);
     const j = this.ms.unselected.indexOf(member);
     this.ms.unselected.splice(j, 1);
+  }
+
+  logout() {
+    this.ms.logout();
+    this.ticked = false;
+    this.drivers = [];
+    this.members = [];
+    this.passengers = [];
   }
 
 }

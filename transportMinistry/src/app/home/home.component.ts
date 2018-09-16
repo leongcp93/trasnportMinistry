@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { Response } from '@angular/http';
 import { MembersService } from '../members.service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit {
   @ViewChild("password") setPassword: ElementRef;
   @ViewChild("lg") lg: ElementRef;
 
-  constructor(private httpClient:HttpClient,private fb: FormBuilder, private ms: MembersService) {
+  constructor(private httpClient:HttpClient,private fb: FormBuilder, private ms: MembersService, public router: Router) {
 
     this.adminForm = fb.group({
      /* 'id': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
@@ -39,9 +40,10 @@ export class HomeComponent implements OnInit {
     this.units = this.ms.getLifeGroup();
   }
 
-  signIn() {
+  onSubmit() {
     this.ms.adminLg = this.lg.nativeElement.value.toLowerCase();
     this.ms.loggedIn = true;
+    this.router.navigate(['/managing-people'])
   }
 
 /*

@@ -3,7 +3,7 @@
   <div class="login-align container-fluid content-display" align="center">
     <h3>Admin login</h3>
     <div>
-      <form [formGroup]="adminForm">
+      <form [formGroup]="adminForm" (ngSubmit)="onSubmit()">
         <br>
         <!---
   <label>ID:</label><br>
@@ -23,7 +23,7 @@
         </select>
         <br>
         <br>
-        <button (click)="signIn()" routerLink="/managing-people" class="btn btn-primary col-md-4" [disabled]="!adminForm.valid">
+        <button type="submit" class="btn btn-primary col-md-4" [disabled]="!adminForm.valid">
           <i class="fa fa-sign-in"></i> Login</button>
         <!--<input type="button" class="btn btn-primary col-md-6 custome-button" value="Login" [disabled]="!adminForm.valid">-->
         <!--<a routerLink="/admin" class="btn btn-primary col-md-6 custome-button">Login</a>-->

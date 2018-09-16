@@ -6,7 +6,7 @@
         <a class="nav-link" routerLink="/managing-transport">Transport</a>
       </div>
       <div>
-        <a class="nav-link" (click)="this.ms.logout()" routerLink="/home">
+        <a class="nav-link" (click)="logout()" routerLink="/home">
           <i class="fas fa-sign-out-alt"></i> Logout</a>
       </div>
     </div>
@@ -27,11 +27,11 @@
   </header>
 
   <div class="container">
-    <p *ngIf="this.ms.members.length == 0 && !this.ms.ticked">
+    <p *ngIf="members.length == 0 && !ticked">
       Please
       <a routerLink="/home">login</a> first
     </p>
-    <p *ngIf="this.ms.members.length == 0 && this.ms.ticked">You have selected all members</p>
+    <p *ngIf="members.length == 0 && ticked">You have selected all members</p>
   </div>
 
 
@@ -80,26 +80,26 @@
         <h3>Did I miss any one?</h3>
         <br>
         <a class="close" (click)="closePopup()">&times;</a>
-        <b>Drivers({{this.ms.drivers.length}}):</b>
+        <b>Drivers({{drivers.length}}):</b>
         <br>
-        <p *ngIf="this.ms.drivers.length==0">You haven't selected any driver</p>
-        <div class="content" *ngFor="let driver of this.ms.drivers">
+        <p *ngIf="drivers.length==0">You haven't selected any driver</p>
+        <div class="content" *ngFor="let driver of drivers">
           {{driver.name}}
           <button class="btn btn-link" (click)="delAlloc(driver)">
             <i class="fas fa-times"></i>
           </button>
         </div>
-        <b>Passengers({{this.ms.passengers.length}}): </b>
+        <b>Passengers({{passengers.length}}): </b>
         <br>
-        <p *ngIf="this.ms.passengers.length==0">You haven't selected any passenger</p>
-        <div class="content" *ngFor="let passenger of this.ms.passengers">
+        <p *ngIf="passengers.length==0">You haven't selected any passenger</p>
+        <div class="content" *ngFor="let passenger of passengers">
           {{passenger.name}}
           <button class="btn btn-link" (click)="delAlloc(passenger)">
             <i class="fas fa-times"></i>
           </button>
         </div>
         <br>
-        <p *ngIf="this.ms.totalSeats < this.ms.passengers.length">
+        <p *ngIf="totalSeats < passengers.length">
           <b>*NOTE*:</b> there are not enough seats</p>
       </div>
     </div>
