@@ -76,8 +76,9 @@ export class MembersService {
     var suburbs = [];
     this.httpClient.get('http://v0.postcodeapi.com.au/suburbs.json?name='+suburb, {
       headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        'content-type': 'application/json'
+        'Access-Control-Allow-Origin': 'http://v0.postcodeapi.com.au',
+        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE',
+        'Access-Control-Allow-Max-Age': '86400'
       })
     })
     .subscribe(

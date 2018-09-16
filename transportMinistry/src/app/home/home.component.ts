@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   @ViewChild("password") setPassword: ElementRef;
   @ViewChild("lg") lg: ElementRef;
 
-  constructor(private httpClient:HttpClient,private fb: FormBuilder, private ms: MembersService, public router: Router) {
+  constructor(private httpClient:HttpClient,private fb: FormBuilder, private ms: MembersService, private router: Router) {
 
     this.adminForm = fb.group({
      /* 'id': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],

@@ -9,13 +9,8 @@ body {
 }
 
 .buttons {
-    display: inline-grid;
-    grid-template-columns: auto auto auto;
-    width: 100%;
-}
-
-.buttons div {
-    text-align: center;
+    display: flex;
+    justify-content: space-around;
 }
 
 .profile-design{

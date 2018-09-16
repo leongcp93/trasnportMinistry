@@ -7,7 +7,7 @@
 </div>
 
 <div class="content-align-default content-display" align="center">
-  <form [formGroup]=editForm> 
+  <form [formGroup]=editForm (ngSubmit)="onSubmit()"> 
     <strong>Edit  {{member['name']}}</strong><br>
     <br>
     <label>Suburb:</label><br>
@@ -19,7 +19,7 @@
     <input #seats class="col-md-4" formControlName="seats" type="number" value="{{member['seats']}}"><br>
     <div class="alert col-md-4" *ngIf="!editForm.controls['seats'].valid">No negative value.</div>
     <br><br>
-    <button (click)="onEdit()" routerLink="/edit-page-respond" class="btn btn-primary custome-button col-md-4" [disabled]="!editForm.valid">Update</button>
+    <button class="btn btn-primary custome-button col-md-4" [disabled]="!editForm.valid">Update</button>
     <br>
 
   </form>

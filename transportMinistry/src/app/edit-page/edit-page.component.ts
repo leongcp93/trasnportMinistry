@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MembersService } from '../members.service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-page',
@@ -17,7 +18,7 @@ export class EditPageComponent implements OnInit {
   @ViewChild("suburbInput") suburbInput: ElementRef;
   @ViewChild("seats") inputSeats: ElementRef;
 
-  constructor(private fb: FormBuilder, private httpClient:HttpClient, private ms: MembersService) {
+  constructor(private fb: FormBuilder, private httpClient:HttpClient, private ms: MembersService, private router: Router) {
     this.editForm = fb.group ({
       'seats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(0), Validators.max(7)])],
       'validate': ''
@@ -33,9 +34,9 @@ export class EditPageComponent implements OnInit {
     this.suburbs = this.ms.searchPostCode(suburb);
   }
 
-  onEdit(){
+  onSubmit() {
 
-    this.httpClient.put('http://localhost:4300/api/member',{
+    this.httpClient.put('http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/member',{
       lg: this.ms.adminLg,
       name: this.member['name'],
       suburb: this.suburbInput.nativeElement.value,
@@ -52,5 +53,6 @@ export class EditPageComponent implements OnInit {
         })
       }
     );
+    this.router.navigate(['/edit-page-respond']);
   }
 }
