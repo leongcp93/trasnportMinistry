@@ -21,7 +21,6 @@ Class:
         del_lg
 """
 import sqlite3
-import sys
 
 global table1_name,table2_name,table3_name
 table1_name = "Person"
@@ -55,7 +54,6 @@ class Person (object):
         VALUES ('{nm}', '{lg}', {st}, '{sub}');".format(tb=table1_name,
                 nm = name, lg=unit, st=seats, sub = sub)
         msg = _sql(q)
-        sys.stderr.write(msg)
         return msg
         
     
@@ -186,7 +184,7 @@ def _sql(q):
     Space for direct sql
     """
     ## Standard procedure
-    sql_file = "Database/my_db.sqlite"
+    sql_file = "my_db.sqlite"
     conn = sqlite3.connect(sql_file)
     c=conn.cursor()
     w = q.split(" ")
@@ -216,24 +214,3 @@ def _sql(q):
     else:
         return msg
     
-    
-## Debugging Testing
-if __name__ == '__main__':
-    # change directory only if run as debug
-    global sql_file
-    sql_file = "../Database/my_db.sqlite"
-    
-    red_reset_button()     
-    
-    ## register lg
-    lgs = []
-    lgs.extend(["uq{}".format(lg) for lg in range(1,10)])
-    lgs.extend(["qut{}".format(lg) for lg in range(1,7)])
-    for lg in lgs:
-        LifeGroup(lg).add_lg()
-        
-    ## testing    
-    Person('uq6','bruno',4067).add_db() # success
-    Person('uq4','sd',4000).add_db() # fail
-    show_all_lg()
-    show_person(lg=10000)
