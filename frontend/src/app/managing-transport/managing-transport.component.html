@@ -77,6 +77,7 @@
             <span *ngIf="copied">Copied</span>
           </div>
         </span>
+        <div *ngIf="clickedDisplay && !displayPlan" class="container">You haven't allocated any passenger</div>
         <div *ngIf="displayPlan" class="container">
           <div *ngFor="let driver of drivers">
             <strong>{{driver.name}}</strong>

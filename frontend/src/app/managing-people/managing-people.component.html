@@ -27,11 +27,12 @@
   </header>
 
   <div class="container">
-    <p *ngIf="members.length == 0 && !ticked">
+    <p *ngIf="!loggedIn">
       Please
       <a routerLink="/home">login</a> first
     </p>
     <p *ngIf="members.length == 0 && ticked">You have selected all members</p>
+    <p *ngIf="loggedIn && members.length == 0 && !ticked">Please ask your lifegroup members to <a routerLink="/signup">sign up</a></p>
   </div>
 
 

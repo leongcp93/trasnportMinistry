@@ -8,6 +8,7 @@ export class MembersService {
   drivers: Array<object> = [];
   passengers: Array<object> = [];
   selectedPassengers: object = {};
+  sortedPassengers: object = {};
   members: Array<object> = [];
   adminLg: string;
   selected: Array<string> = [];
@@ -30,7 +31,7 @@ export class MembersService {
               this.members.push(data[i]); 
             }
           }
-        }
+        } 
       )
     return this.members;
   }
@@ -108,5 +109,4 @@ export class MembersService {
     this.unselected = [];
     this.loggedIn = false;
   }
-
 }

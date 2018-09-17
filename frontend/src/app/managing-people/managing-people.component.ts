@@ -22,6 +22,8 @@ export class ManagingPeopleComponent implements OnInit {
   displayChecklist: Boolean = false;
   filter: Boolean = false;
   totalSeats: number = 0;
+  loggedIn: Boolean = true;
+
   @ViewChild("filterInput") filterInput: ElementRef;
   //private headers = new Headers({'Content-Type': 'application/json'}); 
 
@@ -68,12 +70,14 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.lifeGroup = this.ms.adminLg;
+    this.loggedIn = this.ms.loggedIn;
     if (this.ms.members.length == 0 && !this.ms.ticked) {
       this.members = this.ms.getPeople();
     } else {
       this.members = this.ms.members;
     }
+    this.lifeGroup = this.ms.adminLg;
+    this.ticked = this.ms.ticked;
     this.drivers = this.ms.drivers;
     this.passengers = this.ms.passengers;
     this.totalSeats = this.ms.totalSeats;
@@ -88,19 +92,27 @@ export class ManagingPeopleComponent implements OnInit {
   }
   
   delAlloc(member) {
-    
     if (member.seats > 0) {
       const i = this.ms.drivers.indexOf(member);
+      this.ms.drivers.slice(i, 1);
+      const abandoned = this.ms.selectedPassengers[member.name];
+      abandoned.forEach((homeless) => {
+        this.ms.unselected.push(homeless.name);
+        const index = this.ms.selected.indexOf(homeless.name);
+        this.ms.selected.splice(index, 1);
+      })
+      console.log(this.ms.unselected);
       this.ms.drivers.splice(i, 1);
       this.ms.totalSeats -= member.seats;
       this.totalSeats -= member.seats;
     } else {
       const i = this.ms.passengers.indexOf(member);
       this.ms.passengers.splice(i, 1);
+      const j = this.ms.unselected.indexOf(member);
+      this.ms.unselected.splice(j, 1);
     }
     this.ms.members.push(member);
-    const j = this.ms.unselected.indexOf(member);
-    this.ms.unselected.splice(j, 1);
+
   }
 
   logout() {
