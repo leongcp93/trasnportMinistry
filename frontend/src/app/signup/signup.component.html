@@ -31,10 +31,10 @@
         <div class="alert col-md-6" *ngIf="!signupForm.controls['lastname'].valid && signupForm.controls['lastname'].touched">Please do fill your last name.</div>
         <br>
         <label>
-          <strong>Suburb</strong>
+          <strong>Suburb</strong><div *ngIf="suburbs.length ==0 && dirty" class="loader"></div>
         </label>
         <br>
-        <input list="matchPostcode" (keyup)="searchPostcode()" formControlName="suburb" class="txt col-md-6" type="text" #suburbInput><br>
+        <input list="matchPostcode" (keyup)="searchPostcode()" formControlName="suburb" class="txt col-md-6" type="text" #suburbInput>
         <div *ngIf="suburbs.length != 0" class="col-md-6 choosing_surburb">
           <ul class="remove_bullet">
             <li *ngFor="let sub of suburbs"><button type="button" class="btn btn-link" (click)="selectSuburb(sub)">{{sub}}</button></li>

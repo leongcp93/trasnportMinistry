@@ -19,6 +19,7 @@ export class SignupComponent implements OnInit {
   numberOfSeats: number = 0;
   units: Array<string> = [];
   suburbs: Array<string> = [];
+  dirty: Boolean = false;
 
   //refer the id in html from the textfield.
   @ViewChild("firstName") firstName: ElementRef;
@@ -83,6 +84,7 @@ export class SignupComponent implements OnInit {
   //search for the full suburb name followed by a postcode
   searchPostcode() {
     const suburb = this.suburbInput.nativeElement.value;
+    this.dirty = true;
     this.suburbs = this.ms.searchPostCode(suburb);
     if (this.signupForm.controls['suburb'].validator == null) {
       this.signupForm.controls['suburb'].setValidators(this.ms.suburbValidator);
@@ -95,5 +97,6 @@ export class SignupComponent implements OnInit {
     this.suburbs = [];
     this.signupForm.controls['suburb'].clearValidators();
     this.signupForm.controls['suburb'].updateValueAndValidity();
+    this.dirty = false;
   }
 }
