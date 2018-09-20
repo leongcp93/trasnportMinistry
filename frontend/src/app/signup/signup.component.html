@@ -35,10 +35,17 @@
         </label>
         <br>
         <input list="matchPostcode" (keyup)="searchPostcode()" formControlName="suburb" class="txt col-md-6" type="text" #suburbInput><br>
+        <div *ngIf="suburbs.length != 0" class="col-md-6">
+          <p *ngFor="let sub of suburbs"><button type="button" class="btn btn-link" (click)="selectSuburb(sub)">{{sub}}</button></p>
+        </div>
         <div class="alert col-md-6" *ngIf="!signupForm.controls['suburb'].valid && signupForm.controls['suburb'].touched">Please select a full suburb name from the drop-down list</div>
+        
+        <!-->
         <datalist id="matchPostcode">
           <option *ngFor="let sub of suburbs">{{sub}}</option>
         </datalist>
+        <!-->
+        
         <br>
         <br>
         <label> Are you a driver?</label>

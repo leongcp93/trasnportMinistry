@@ -86,5 +86,8 @@ export class SignupComponent implements OnInit {
     this.suburbs = this.ms.searchPostCode(suburb);
   }
 
-  
+  selectSuburb(sub) {
+    this.suburbInput.nativeElement.value = sub;
+    this.suburbs = [];
+  }
 }
