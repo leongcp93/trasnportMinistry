@@ -20,6 +20,7 @@ export class EditPageComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private httpClient:HttpClient, private ms: MembersService, private router: Router) {
     this.editForm = fb.group ({
+      'suburb': [null, Validators.compose([this.ms.suburbValidator()])],
       'seats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(0), Validators.max(7)])],
       'validate': ''
     })

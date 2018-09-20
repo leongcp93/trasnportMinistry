@@ -28,6 +28,7 @@ import { ManagingLifegroupComponent } from './managing-lifegroup/managing-lifegr
 import { HttpClientModule } from '@angular/common/http';
 import { Filter } from './filter.pipe';
 import { MembersService } from './members.service';
+import { ComboBoxComponent } from './combo-box/combo-box.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,9 @@ import { MembersService } from './members.service';
     
     ManagingLifegroupComponent,
     
-    Filter
+    Filter,
+    
+    ComboBoxComponent
   ],
   imports: [
     BrowserModule,

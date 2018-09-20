@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Filter } from './filter.pipe';
+import { ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms'
 @Injectable()
 
 export class MembersService {
@@ -75,13 +76,7 @@ export class MembersService {
 
   searchPostCode(suburb) {
     var suburbs = [];
-    this.httpClient.get('http://v0.postcodeapi.com.au/suburbs.json?name='+suburb, {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': 'http://v0.postcodeapi.com.au',
-        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE',
-        'Access-Control-Allow-Max-Age': '86400'
-      })
-    })
+    this.httpClient.get('http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/suburb?suburb='+suburb)
     .subscribe(
       (data: any[]) => {
         if (data.length > 10) {
@@ -109,4 +104,21 @@ export class MembersService {
     this.unselected = [];
     this.loggedIn = false;
   }
+
+  suburbValidator(): ValidatorFn {
+    return (control: AbstractControl): { null: boolean } | ValidationErrors => {
+      if (control.value == null) {
+        return null;
+      }
+      const index = control.value.indexOf(',');
+      if (isNaN(parseInt(control.value.slice(-4))) || index == -1) {
+        return { 'suburb': "the suburb is not in the incorrect format"};
+      }
+      if (control.value.slice(index+2, index+5) != "QLD") {
+        return {'state': "incorrect state name"};
+      }
+      return null;
+    };
+  }
+
 }

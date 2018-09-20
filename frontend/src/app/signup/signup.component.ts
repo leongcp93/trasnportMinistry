@@ -37,7 +37,7 @@ export class SignupComponent implements OnInit {
       'firstname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'lastname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'lifegroup': [null, Validators.compose([Validators.required])],
-      //'suburb': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
+      'suburb': [null, Validators.compose([this.ms.suburbValidator()])],
       'numberOfSeats': [],
       'validate': ''
     });
@@ -65,7 +65,7 @@ export class SignupComponent implements OnInit {
           console.log(data);
         }
       )
-    this.router.navigate(['/managing-people']);
+    this.router.navigate(['/submit-responds']);
   }
 
   //handles the radio button "are you a driver"
@@ -85,4 +85,6 @@ export class SignupComponent implements OnInit {
     const suburb = this.suburbInput.nativeElement.value;
     this.suburbs = this.ms.searchPostCode(suburb);
   }
+
+  
 }

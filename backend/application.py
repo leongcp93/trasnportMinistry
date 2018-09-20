@@ -15,7 +15,7 @@ from flask_cors import CORS
 import databaseInteraction as db
 import pandas as pd
 import os
-
+import requests
 import base64
 
 application = Flask(__name__)
@@ -267,6 +267,12 @@ def show_members():
     else:
         return jsonify({"msg":"Unauthorized action"}), 401
     
+@application.route("{}/suburb".format(url_prex), methods=['GET'])
+def serachSuburb():
+    suburb = request.args.get('suburb')
+    url = 'http://v0.postcodeapi.com.au/suburbs.json?name=' + suburb
+    r = requests.get(url)
+    return r.text
 
 @application.route("{}/clear".format(url_prex), methods=['GET'])
 @requires_auth
