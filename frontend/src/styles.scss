@@ -42,3 +42,30 @@ img{
     }
 }
 
+
+html, body{
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+}
+
+
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:-webkit-scrollbar-track {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    display: none;
+}
