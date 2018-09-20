@@ -33,6 +33,17 @@ export class EditPageComponent implements OnInit {
   searchPostcode() {
     const suburb = this.suburbInput.nativeElement.value;
     this.suburbs = this.ms.searchPostCode(suburb);
+    if (this.editForm.controls['suburb'].validator == null) {
+      this.editForm.controls['suburb'].setValidators(this.ms.suburbValidator);
+      this.editForm.controls['suburb'].updateValueAndValidity();
+    }
+  }
+
+  selectSuburb(sub) {
+    this.suburbInput.nativeElement.value = sub;
+    this.suburbs = [];
+    this.editForm.controls['suburb'].clearValidators();
+    this.editForm.controls['suburb'].updateValueAndValidity();
   }
 
   onSubmit() {
