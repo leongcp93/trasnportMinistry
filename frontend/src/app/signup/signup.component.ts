@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, NgModule } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, NgForm} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, NgForm, ValidatorFn, AbstractControl, ValidationErrors} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { MembersService } from '../members.service'
@@ -84,10 +84,16 @@ export class SignupComponent implements OnInit {
   searchPostcode() {
     const suburb = this.suburbInput.nativeElement.value;
     this.suburbs = this.ms.searchPostCode(suburb);
+    if (this.signupForm.controls['suburb'].validator == null) {
+      this.signupForm.controls['suburb'].setValidators(this.ms.suburbValidator);
+      this.signupForm.controls['suburb'].updateValueAndValidity();
+    }
   }
 
   selectSuburb(sub) {
     this.suburbInput.nativeElement.value = sub;
     this.suburbs = [];
+    this.signupForm.controls['suburb'].clearValidators();
+    this.signupForm.controls['suburb'].updateValueAndValidity();
   }
 }
