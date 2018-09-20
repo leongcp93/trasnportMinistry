@@ -45,7 +45,7 @@
         <p>List of available passengers:</p>
         <div class="container passenger">
           <div>
-            <ul *ngFor="let passenger of sortedPassengers[driver.name]">
+            <ul class="remove_bullet" *ngFor="let passenger of sortedPassengers[driver.name]">
               <button class="btn btn-link" (click)="animatePassenger(driver, passenger)">
                 <li>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})</li>
               </button>

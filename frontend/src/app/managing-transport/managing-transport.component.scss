@@ -14,6 +14,10 @@ body {
     padding: 10px;
 }
 
+.remove_bullet{
+    list-style-type: none;
+}
+
 @keyframes contDisplay {
     from {
         opacity: 0;
