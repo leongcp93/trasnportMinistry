@@ -84,7 +84,11 @@ export class SignupComponent implements OnInit {
   //search for the full suburb name followed by a postcode
   searchPostcode() {
     const suburb = this.suburbInput.nativeElement.value;
-    this.dirty = true;
+    if (suburb == '') {
+      this.dirty = false;  
+    } else {
+      this.dirty = true;
+    }
     this.suburbs = this.ms.searchPostCode(suburb);
     if (this.signupForm.controls['suburb'].validator == null) {
       this.signupForm.controls['suburb'].setValidators(this.ms.suburbValidator);
