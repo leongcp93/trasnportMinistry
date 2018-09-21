@@ -9,13 +9,17 @@
 
 <div class="content-align-default content-display" align="center">
   <form [formGroup]=editForm (ngSubmit)="onSubmit()">
-    <strong>Edit {{member['name']}}</strong>
+    <Strong>Edit {{member['name']}}</Strong>
     <br>
     <br>
-    <label>Suburb:</label>
+    <label>
+      Suburb
+      <div *ngIf="suburbs.length ==0 && dirty" class="loader"></div>
+    </label>
     <br>
     <input list="matchPostcode" formControlName="suburb" (keyup)="searchPostcode()" class="txt col-md-4" type="text" #suburbInput
-      value="{{member['suburb']}}"><br>
+      value="{{member['suburb']}}">
+    <br>
     <div *ngIf="suburbs.length != 0" class="col-md-4 choosing_surburb">
       <ul class="remove_bullet">
         <li *ngFor="let sub of suburbs">
@@ -26,11 +30,14 @@
     <div class="alert col-md-4" *ngIf="!editForm.controls['suburb'].valid && editForm.controls['suburb'].touched">Please select a full suburb name from the drop-down list</div>
 
     <br>
-    <label>Seats</label>
+    <label>
+        Seats
+    </label>
     <br>
-    <input #seats class="col-md-4" formControlName="seats" type="number" value="{{member['seats']}}">
-    <br>
+    <input #seats class="col-md-4" formControlName="seats" type="number" value="{{member['seats']}}"><br>
     <div class="alert col-md-4" *ngIf="!editForm.controls['seats'].valid">No negative value.</div>
+    <p class="note" *ngIf="member['seats'] == 0">A passenger becomes a driver automatically<br> if the number of seats is set to be greater than 0</p>
+    <p class="note" *ngIf="member['seats'] > 0">Set to 0 if the dirver is not driving today</p>
     <br>
     <br>
     <button class="btn btn-primary custome-button col-md-4" [disabled]="!editForm.valid">Update</button>

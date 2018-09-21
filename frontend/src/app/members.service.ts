@@ -24,7 +24,7 @@ export class MembersService {
 
   getPeople() {
     this.members = [];
-    this.httpClient.get('http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/member?passcode=pw1234&lg=' + this.adminLg)//change this when the legit url is there.
+    this.httpClient.get('http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/member?passcode=pw1234&lg=' + this.adminLg)//change this when the legit url is there.
       .subscribe(
         (data: any[]) => {
           if (data.length) {
@@ -61,7 +61,7 @@ export class MembersService {
 
   getLifeGroup() {
     var units = [];
-    this.httpClient.get('http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/lifegroup?passcode=pw1234')
+    this.httpClient.get('http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/lifegroup?passcode=pw1234')
       .subscribe(
         (data: any[]) => {
           if (data.length) {
@@ -76,7 +76,7 @@ export class MembersService {
 
   searchPostCode(suburb) {
     var suburbs = [];
-    this.httpClient.get('http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/suburb?suburb='+suburb)
+    this.httpClient.get('http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/suburb?suburb='+suburb)
     .subscribe(
       (data: any[]) => {
         if (data.length > 10) {
@@ -108,7 +108,7 @@ export class MembersService {
   suburbValidator(): ValidatorFn {
     return (control: AbstractControl): { null: boolean } | ValidationErrors => {
       if (control.value == null) {
-        return null;
+        return {'suburb': 'the suburb is empty'};
       }
       const index = control.value.indexOf(',');
       if (isNaN(parseInt(control.value.slice(-4))) || index == -1) {

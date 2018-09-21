@@ -15,6 +15,7 @@ export class EditPageComponent implements OnInit {
   editForm: FormGroup;
   member: Object;
   suburbs: Array<string> = [];
+  dirty: Boolean = false;
   @ViewChild("suburbInput") suburbInput: ElementRef;
   @ViewChild("seats") inputSeats: ElementRef;
 
@@ -32,6 +33,11 @@ export class EditPageComponent implements OnInit {
 
   searchPostcode() {
     const suburb = this.suburbInput.nativeElement.value;
+    if (suburb == '') {
+      this.dirty = false;  
+    } else {
+      this.dirty = true;
+    }
     this.suburbs = this.ms.searchPostCode(suburb);
     if (this.editForm.controls['suburb'].validator == null) {
       this.editForm.controls['suburb'].setValidators(this.ms.suburbValidator);
@@ -44,11 +50,11 @@ export class EditPageComponent implements OnInit {
     this.suburbs = [];
     this.editForm.controls['suburb'].clearValidators();
     this.editForm.controls['suburb'].updateValueAndValidity();
+    this.dirty = false;
   }
 
   onSubmit() {
-
-    this.httpClient.put('http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/member',{
+    this.httpClient.put('http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/member',{
       lg: this.ms.adminLg,
       name: this.member['name'],
       suburb: this.suburbInput.nativeElement.value,

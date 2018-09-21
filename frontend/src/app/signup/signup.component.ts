@@ -35,8 +35,8 @@ export class SignupComponent implements OnInit {
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService, public router: Router) {
 
     this.signupForm = fb.group({
-      'firstname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
-      'lastname': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
+      'firstname': [null, Validators.compose([Validators.required, this.nameValidator()])],
+      'lastname': [null, Validators.compose([Validators.required, this.nameValidator()])],
       'lifegroup': [null, Validators.compose([Validators.required])],
       'suburb': [null, Validators.compose([this.ms.suburbValidator()])],
       'numberOfSeats': [],
@@ -54,7 +54,7 @@ export class SignupComponent implements OnInit {
     if (this.driver) {
       this.numberOfSeats = this.seatsInput.nativeElement.value;
     }
-    this.httpClient.post('http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/member', {
+    this.httpClient.post('http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/member', {
       lg: this.lg.nativeElement.value,
       name: name,
       auth: "pw1234",
@@ -102,5 +102,18 @@ export class SignupComponent implements OnInit {
     this.signupForm.controls['suburb'].clearValidators();
     this.signupForm.controls['suburb'].updateValueAndValidity();
     this.dirty = false;
+  }
+
+  nameValidator(): ValidatorFn {
+    return (control: AbstractControl): { null: boolean } | ValidationErrors => {
+      if (control.value == null) {
+        return null;
+      }
+      if (control.value.replace(/\s/g, "").match('^[a-zA-Z\s]+$')) {
+        return null;
+      } else {
+        return {'name not validated': false};
+      }
+    };
   }
 }

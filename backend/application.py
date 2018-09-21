@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Apr  3 16:09:28 2018
+Created on Tue Apr 3 16:09:28 2018
 
-@author: BrunoAdmin
-
-Notes:
-    Webservice run on port 5000
+@author: Bruno
+Trimmed and modified by Kenneth Guo
 
 """
 from functools import wraps
@@ -91,8 +89,6 @@ def add_LG(): ##
     
     except Exception as e:
         return e
-        #return "Some internal error existed"
-
 
 @application.route("{}/lifegroup".format(url_prex), methods=['DELETE'])
 def delete_LG(): ##
@@ -162,13 +158,12 @@ def edit_person(): ##
             return jsonify({"msg":"Un-authorized action"}), 401
         msg = db.Person(lg = lg, name = name, seats = seats, suburb = suburb).edit_db()
         return jsonify({"msg":msg}), 200
-        #return "Added successfully"
     
     except Exception as e:
         return jsonify({"err": "Some internal error existed"}), 500
 
 @application.route("{}/member".format(url_prex), methods=['POST'])
-def add_person():
+def add_person(): ##
     """
     Register life group
     
@@ -185,7 +180,7 @@ def add_person():
         ## receive file
         content = request.get_json()
         lg = content.get('lg')
-        name = content.get('name')
+        name = content.get('name').title()
         seats = content.get('seats')
         suburb = content.get('suburb')
         ## passcode
@@ -194,14 +189,13 @@ def add_person():
         msg = db.Person(lg = lg, name = name   ,
                         seats = seats, suburb = suburb).add_db()
         return jsonify({"msg":msg}), 200
-        #return "Edited successfully"
     
     except Exception as e:
         return jsonify({"err":e}), 500
     
 
 @application.route("{}/member".format(url_prex), methods=['DELETE'])
-def delete_person():
+def delete_person(): ##
     """
     Register life group
     
@@ -229,7 +223,7 @@ def delete_person():
         return jsonify({"err":"Some internal error existed {}".foramt(e)}), 500
 
 @application.route("{}/member".format(url_prex), methods=['GET'])
-def show_members():
+def show_members(): ##
     """
     This method shows all the members of a lifegroup.
     """
@@ -253,7 +247,6 @@ def show_members():
             return jsonify(ls), 200
         
         else:
-            
             # Function 2: Retrieve details of a person
             members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}'\
                               AND name = '{}';".format(lg, name))
@@ -268,7 +261,7 @@ def show_members():
         return jsonify({"msg":"Unauthorized action"}), 401
     
 @application.route("{}/suburb".format(url_prex), methods=['GET'])
-def serachSuburb():
+def serachSuburb(): ##
     suburb = request.args.get('suburb')
     url = 'http://v0.postcodeapi.com.au/suburbs.json?name=' + suburb
     r = requests.get(url)
@@ -276,7 +269,7 @@ def serachSuburb():
 
 @application.route("{}/clear".format(url_prex), methods=['GET'])
 @requires_auth
-def reset(): ##
+def reset():##
     """
     Reset db
     """

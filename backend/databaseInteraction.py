@@ -2,6 +2,7 @@
 Created on Tue Apr  12 12:05:28 2018
 
 @author: BrunoAdmin
+Trimmed and modified by Kenneth Guo
 
 All Available methods:
     show_person(lg, postcode)

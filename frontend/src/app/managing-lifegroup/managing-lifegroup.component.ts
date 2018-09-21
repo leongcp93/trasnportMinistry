@@ -23,7 +23,7 @@ export class ManagingLifegroupComponent implements OnInit {
   }
 
   addLifeGroup(event: any) {
-    const url = "http://localhost:4300/api/lifegroup";
+    const url = "http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/lifegroup";
     this.httpClient.post(url, {
       "lg": this.lifeGroup.nativeElement.value,
       "auth": 'pw1234'
@@ -33,10 +33,9 @@ export class ManagingLifegroupComponent implements OnInit {
     })
   }
 
-  //this one is not fully function yet.
   delLifeGroup(getUnit) {
     if (confirm("Are you sure delete this lifegroup?")) {
-      const url = "http://transportappbackend-env.2xbitmvids.us-east-2.elasticbeanstalk.com/api/lifegroup?passcode=pw1234&lg=" + getUnit; //this is required the url
+      const url = "http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/lifegroup?passcode=pw1234&lg=" + getUnit; 
       this.httpClient.delete(url, {responseType: 'text'}).subscribe(()=>{
         this.units = this.ms.getLifeGroup();
       })
