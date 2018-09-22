@@ -28,13 +28,13 @@ export class HomeComponent implements OnInit {
   constructor(private httpClient:HttpClient,private fb: FormBuilder, private ms: MembersService, private router: Router) {
 
     this.adminForm = fb.group({
-     /* 'id': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
-      'password': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],*/
-      'lifegroup': [null, Validators.compose([Validators.required])],
-      'validate' : ''
+      //'id': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
+      //'password': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
+      //'lifegroup': [null, Validators.compose([Validators.required])],
+      //'validate' : ''
     });
 
-   }
+}
 
   ngOnInit() {
     this.units = this.ms.getLifeGroup();

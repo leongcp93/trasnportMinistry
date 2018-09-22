@@ -18,12 +18,12 @@
         <label>
           <strong>Lifegroup Unit:</strong>
         </label>
-        <select #lg formControlName="lifegroup">
+        <select #lg>
           <option *ngFor="let unit of units" value={{unit}}>{{unit}}</option>
         </select>
         <br>
         <br>
-        <button type="submit" class="btn btn-primary col-md-4" [disabled]="!adminForm.valid">
+        <button type="submit" class="btn btn-primary col-md-4">
           <i class="fa fa-sign-in"></i> Login</button>
         <!--<input type="button" class="btn btn-primary col-md-6 custome-button" value="Login" [disabled]="!adminForm.valid">-->
         <!--<a routerLink="/admin" class="btn btn-primary col-md-6 custome-button">Login</a>-->

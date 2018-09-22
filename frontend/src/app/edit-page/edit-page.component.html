@@ -17,8 +17,8 @@
       <div *ngIf="suburbs.length ==0 && dirty" class="loader"></div>
     </label>
     <br>
-    <input list="matchPostcode" formControlName="suburb" (keyup)="searchPostcode()" class="txt col-md-4" type="text" #suburbInput
-      value="{{member['suburb']}}">
+    <input list="matchPostcode" formControlName="suburb" (keyup)="searchPostcode()"
+     class="txt col-md-4" type="text" #suburbInput value="{{member['suburb']}}">
     <br>
     <div *ngIf="suburbs.length != 0" class="col-md-4 choosing_surburb">
       <ul class="remove_bullet">
@@ -31,12 +31,14 @@
 
     <br>
     <label>
-        Seats
+      Seats
     </label>
     <br>
-    <input #seats class="col-md-4" formControlName="seats" type="number" value="{{member['seats']}}"><br>
-    <div class="alert col-md-4" *ngIf="!editForm.controls['seats'].valid">No negative value.</div>
-    <p class="note" *ngIf="member['seats'] == 0">A passenger becomes a driver automatically<br> if the number of seats is set to be greater than 0</p>
+    <input #seats (keyup)='onKey()' class="col-md-4" formControlName="seats" type="number" value="{{member['seats']}}">
+    <br>
+    <div class="alert col-md-4" *ngIf="!editForm.controls['seats'].valid">Please enter a number greater than 0</div>
+    <p class="note" *ngIf="member['seats'] == 0">A passenger becomes a driver automatically
+      <br> if the number of seats is set to be greater than 0</p>
     <p class="note" *ngIf="member['seats'] > 0">Set to 0 if the dirver is not driving today</p>
     <br>
     <br>

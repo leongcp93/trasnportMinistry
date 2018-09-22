@@ -37,7 +37,6 @@ export class SignupComponent implements OnInit {
     this.signupForm = fb.group({
       'firstname': [null, Validators.compose([Validators.required, this.nameValidator()])],
       'lastname': [null, Validators.compose([Validators.required, this.nameValidator()])],
-      'lifegroup': [null, Validators.compose([Validators.required])],
       'suburb': [null, Validators.compose([this.ms.suburbValidator()])],
       'numberOfSeats': [],
       'validate': ''

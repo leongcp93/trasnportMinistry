@@ -19,10 +19,11 @@ export class EditPageComponent implements OnInit {
   @ViewChild("suburbInput") suburbInput: ElementRef;
   @ViewChild("seats") inputSeats: ElementRef;
 
-  constructor(private fb: FormBuilder, private httpClient:HttpClient, private ms: MembersService, private router: Router) {
+  constructor(private fb: FormBuilder, private httpClient:HttpClient, 
+    private ms: MembersService, private router: Router) {
     this.editForm = fb.group ({
-      'suburb': [null, Validators.compose([this.ms.suburbValidator()])],
-      'seats': [null, Validators.compose([Validators.pattern('^[0-9]+$'), Validators.min(0), Validators.max(7)])],
+      'suburb': [],
+      'seats': [],
       'validate': ''
     })
    }
@@ -33,6 +34,9 @@ export class EditPageComponent implements OnInit {
 
   searchPostcode() {
     const suburb = this.suburbInput.nativeElement.value;
+    if (suburb.indexOf(',')!= -1) {
+      return;
+    }
     if (suburb == '') {
       this.dirty = false;  
     } else {
@@ -51,6 +55,14 @@ export class EditPageComponent implements OnInit {
     this.editForm.controls['suburb'].clearValidators();
     this.editForm.controls['suburb'].updateValueAndValidity();
     this.dirty = false;
+  }
+
+  onKey() {
+    if (this.editForm.controls['seats'].validator == null) {
+      this.editForm.controls['seats'].setValidators(Validators.compose([
+        Validators.required, Validators.pattern('^[0-9]+$'), Validators.min(0), Validators.max(7)]));
+        this.editForm.controls['seats'].updateValueAndValidity();
+    }
   }
 
   onSubmit() {
