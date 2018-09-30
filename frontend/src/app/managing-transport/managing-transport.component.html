@@ -43,7 +43,7 @@
           </li>
         </ul>
         <p>List of available passengers:</p>
-        <div class="container passenger">
+        <div class="passenger">
           <div>
             <ul class="remove_bullet" *ngFor="let passenger of sortedPassengers[driver.name]">
               <button class="btn btn-link" (click)="animatePassenger(driver, passenger)">
