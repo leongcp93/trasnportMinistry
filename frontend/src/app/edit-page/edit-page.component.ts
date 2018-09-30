@@ -66,13 +66,12 @@ export class EditPageComponent implements OnInit {
   }
 
   onSubmit() {
-    this.httpClient.put('http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/member',{
+    this.httpClient.put('http://localhost:5000/api/member',{
       lg: this.ms.adminLg,
       name: this.member['name'],
       suburb: this.suburbInput.nativeElement.value,
       seats: this.inputSeats.nativeElement.value,
-      auth: "pw1234"
-    })
+    }, {headers: this.ms.header})
     .subscribe(
       (data: any) => {
         this.ms.members.forEach((member) => {

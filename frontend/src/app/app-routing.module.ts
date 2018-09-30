@@ -8,6 +8,8 @@ import { HomeComponent } from './home/home.component';
 import { EditPageComponent } from './edit-page/edit-page.component';
 import { EditPageRespondComponent } from './edit-page-respond/edit-page-respond.component';
 import { ManagingLifegroupComponent } from './managing-lifegroup/managing-lifegroup.component';
+import { AdminSignupComponent } from './admin-signup/admin-signup.component';
+import { AdminSignupRespondComponent } from './admin-signup-respond/admin-signup-respond.component'
 
 //this is where i changed refer this https://www.youtube.com/watch?v=Nehk4tBxD4o&t=399s for sample
 const routes: Routes = [
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: 'edit-page', component: EditPageComponent },
   { path: 'edit-page-respond', component: EditPageRespondComponent },
   { path: 'managing-lifegroup', component: ManagingLifegroupComponent },
+  { path: 'admin-signup', component: AdminSignupComponent },  
+  { path: 'admin-signup-respond', component: AdminSignupRespondComponent },
   { path: '**', component: SignupComponent }
 
 ];

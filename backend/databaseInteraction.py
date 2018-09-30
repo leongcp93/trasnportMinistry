@@ -22,6 +22,9 @@ Class:
         del_lg
 """
 import sqlite3
+from passlib.apps import custom_app_context as pwd_context
+from flask_httpauth import HTTPBasicAuth
+auth = HTTPBasicAuth()
 
 global table1_name,table2_name,table3_name
 table1_name = "Person"
@@ -87,12 +90,16 @@ class Person (object):
             
             
 class LifeGroup(object):
-    def __init__(self, lg=None):
+
+    def __init__(self, lg=None, password=None):
         self.lg = lg.lower()
+        if password != None:
+            self.password = password
+            self.password_hash = pwd_context.encrypt(password)
         
     def add_lg(self):
-        q = "INSERT INTO LifeGroups (lg) \
-             VALUES ('{}');".format(self.lg)
+        q = "INSERT INTO LifeGroups (lg, password) \
+             VALUES ('{lg}', '{pw}');".format(lg=self.lg, pw=self.password_hash)
         msg = _sql(q)
         return msg
         
@@ -101,6 +108,16 @@ class LifeGroup(object):
              WHERE lg = '{}';".format(self.lg)
         msg = _sql(q)
         return msg
+
+    def verify_password(self):
+        q = "SELECT password FROM {tb}\
+             WHERE lg = '{lg}';".format(tb=table3_name, lg=self.lg)
+        list = _sql(q)
+        try:
+            password_hash = list[0][0]
+            return pwd_context.verify(self.password, password_hash)
+        except Exception as e:
+            return None
             
 #################################
 ## General info enq methods

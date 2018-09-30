@@ -19,23 +19,11 @@ export class ManagingLifegroupComponent implements OnInit {
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
 
-
-  }
-
-  addLifeGroup(event: any) {
-    const url = "http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/lifegroup";
-    this.httpClient.post(url, {
-      "lg": this.lifeGroup.nativeElement.value,
-      "auth": 'pw1234'
-    }, {responseType: 'text'}).subscribe(() => {
-      this.units = this.ms.getLifeGroup();
-      
-    })
   }
 
   delLifeGroup(getUnit) {
     if (confirm("Are you sure delete this lifegroup?")) {
-      const url = "http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/lifegroup?passcode=pw1234&lg=" + getUnit; 
+      const url = "http://localhost:5000/api/lifegroup?lg=" + getUnit; 
       this.httpClient.delete(url, {responseType: 'text'}).subscribe(()=>{
         this.units = this.ms.getLifeGroup();
       })

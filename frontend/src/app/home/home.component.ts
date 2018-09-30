@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { Response } from '@angular/http';
 import { MembersService } from '../members.service'
@@ -15,60 +15,43 @@ export class HomeComponent implements OnInit {
 
   adminForm: FormGroup;
   post: any;
-  password: string = '';
   group: string = '';
   dataId: string = '';
-  dataPassword: string ='';
   units: Array<string> = [];
+  loading: Boolean = false;
 
   @ViewChild("id") setId: ElementRef;
-  @ViewChild("password") setPassword: ElementRef;
+  @ViewChild("password") password: ElementRef;
   @ViewChild("lg") lg: ElementRef;
 
   constructor(private httpClient:HttpClient,private fb: FormBuilder, private ms: MembersService, private router: Router) {
-
     this.adminForm = fb.group({
-      //'id': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
-      //'password': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
-      //'lifegroup': [null, Validators.compose([Validators.required])],
-      //'validate' : ''
+      'password': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
+      'lifegroup': [null, Validators.compose([Validators.required])],
+      'validate' : ''
     });
-
 }
 
   ngOnInit() {
-    this.units = this.ms.getLifeGroup();
   }
 
   onSubmit() {
+    this.loading = true;
     this.ms.adminLg = this.lg.nativeElement.value.toLowerCase();
     this.ms.loggedIn = true;
-    this.router.navigate(['/managing-people'])
-  }
-
-/*
-  checkSignIn(){
-
-    this.group = this.setId.nativeElement.value;
-    this.password = this.setPassword.nativeElement.value;
-
-    this.httpClient.get(`https://my-json-server.typicode.com/leongcp93/dummieDB/logins?ID=${this.group}&&password=${this.password}`)//change this when the legit url is there.
+    const password = this.password.nativeElement.value;
+    this.httpClient.get("http://localhost:5000/api/login?lg="+this.ms.adminLg + "&password="+password)
     .subscribe(
       (data:any[])=>{
-        this.dataId = data[0].ID;
-        this.dataPassword=data[0].password;
-
-        if (this.group!=this.dataId || this.password!= this.dataPassword){
-          console.log("Id or password is not correct.");
-        } else if (this.group!=this.dataId && this.password!= this.dataPassword){
-          console.log("Both id and password is correct");
+        this.loading = false;
+        if (data['access_token'] == null) {
+          alert(data['failure']);
+          return;
         }
-
-        console.log(data);
-          
-        }
-      
+        this.ms.token = data['access_token'];
+        this.ms.getPeople();
+        this.router.navigate(['/managing-people'])
+      }
     )
-  }*/
-
+  }
 }

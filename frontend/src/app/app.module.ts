@@ -28,6 +28,8 @@ import { ManagingLifegroupComponent } from './managing-lifegroup/managing-lifegr
 import { HttpClientModule } from '@angular/common/http';
 import { Filter } from './filter.pipe';
 import { MembersService } from './members.service';
+import { AdminSignupComponent } from './admin-signup/admin-signup.component';
+import { AdminSignupRespondComponent } from './admin-signup-respond/admin-signup-respond.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,11 @@ import { MembersService } from './members.service';
     
     ManagingLifegroupComponent,
     
-    Filter
+    Filter,
+    
+    AdminSignupComponent,
+    
+    AdminSignupRespondComponent
   ],
   imports: [
     BrowserModule,

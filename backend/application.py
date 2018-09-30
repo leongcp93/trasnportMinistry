@@ -15,10 +15,17 @@ import pandas as pd
 import os
 import requests
 import base64
-
+import datetime
+from flask_jwt_extended import (
+JWTManager, jwt_required, create_access_token,
+get_jwt_identity
+)
+
 application = Flask(__name__)
+application.config['SECRET_KEY'] = "transportMinistry"
 CORS(application)
-    
+jwt = JWTManager(application)
+
 ## Actual implementation
 global url_prex, auth_passcode
 url_prex = '/api'
@@ -76,16 +83,12 @@ def add_LG(): ##
         ## receive file
         content = request.get_json()
         lg = content.get('lg')
-        
-        ## passcode
-        if content.get('auth') != auth_passcode:
-            return "Un-authorized action"
-        
-        ## exec
-        msg = db.LifeGroup(lg=lg)
-        msg = msg.add_lg()
-        
-        return msg
+        password = content.get('password')
+        if lg is None or password is None:
+            abort(400) # missing arguments
+        lifegroup = db.LifeGroup(lg=lg, password=password)
+        msg = lifegroup.add_lg()
+        return jsonify({"msg": msg})
     
     except Exception as e:
         return e
@@ -98,18 +101,11 @@ def delete_LG(): ##
     try:
         ## receive file
         lg = request.args.get('lg', type = str)
-        auth = request.args.get('passcode', type = str)
-        
-        ## passcode
-        if auth != auth_passcode:
-            return "Un-authorized action"
-        
-        msg = db.LifeGroup(lg).del_lg()
+        msg = db.LifeGroup(lg=lg, password=None).del_lg()
         return msg
     
     except Exception as e:
-        return "Some internal error existed"
-    
+        return "Some internal error existed" 
     
 @application.route("{}/lifegroup".format(url_prex), methods=['GET'])
 def list_LG(): ##
@@ -125,14 +121,35 @@ def list_LG(): ##
             d = {"name":lg}
             all_lg.append(d)
         
-        return jsonify(all_lg)
-        
+        return jsonify(all_lg)        
     
     except Exception as e:
         return "Some internal error existed"
-    
-    
+
+@application.route("{}/login".format(url_prex), methods=['GET'])
+def verify_lg():##
+    import sys
+    lg = request.args.get('lg', type = str)
+    pw = request.args.get('password', type = str)
+    lifegroup = db.LifeGroup(lg=lg, password=pw)
+    verified = lifegroup.verify_password()
+    if verified == None:
+        return jsonify({"failure": "The lifegroup is not registered"})
+    if verified == False:
+        return jsonify({"failure": "Incorrect password"})
+    expires = datetime.timedelta(minutes=10)
+    ret = {'access_token': create_access_token(identity=lg, expires_delta=expires)}
+    return jsonify(ret), 200
+
+@application.route('{}/protected'.format(url_prex), methods=['GET'])
+@jwt_required
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
+
 @application.route("{}/member".format(url_prex), methods=['PUT'])
+@jwt_required
 def edit_person(): ##
     """
     Register person
@@ -153,9 +170,6 @@ def edit_person(): ##
         suburb = content.get('suburb')
         seats = content.get('seats')
         
-        ## passcode
-        if content.get('auth') != auth_passcode:
-            return jsonify({"msg":"Un-authorized action"}), 401
         msg = db.Person(lg = lg, name = name, seats = seats, suburb = suburb).edit_db()
         return jsonify({"msg":msg}), 200
     
@@ -183,9 +197,6 @@ def add_person(): ##
         name = content.get('name').title()
         seats = content.get('seats')
         suburb = content.get('suburb')
-        ## passcode
-        if content.get('auth') != auth_passcode:
-            return jsonify({"msg":"Un-authorized action"}), 401
         msg = db.Person(lg = lg, name = name   ,
                         seats = seats, suburb = suburb).add_db()
         return jsonify({"msg":msg}), 200
@@ -195,6 +206,7 @@ def add_person(): ##
     
 
 @application.route("{}/member".format(url_prex), methods=['DELETE'])
+@jwt_required
 def delete_person(): ##
     """
     Register life group
@@ -209,12 +221,7 @@ def delete_person(): ##
     try:
         ## receive file
         lg = request.args.get('lg', type = str)
-        auth = request.args.get('auth', type = str)
         name = request.args.get('name', type = str)
-        
-        ## passcode
-        if auth != auth_passcode:
-            return jsonify({"msg":"Un-authorized action"}), 401
         
         msg = db.Person(lg = lg, name = name).del_db()
         return jsonify({"msg":msg}), 200
@@ -223,6 +230,7 @@ def delete_person(): ##
         return jsonify({"err":"Some internal error existed {}".foramt(e)}), 500
 
 @application.route("{}/member".format(url_prex), methods=['GET'])
+@jwt_required
 def show_members(): ##
     """
     This method shows all the members of a lifegroup.
@@ -230,36 +238,30 @@ def show_members(): ##
     # Parameters
     lg = request.args.get('lg', type = str)
     name = request.args.get('name', type = str)
-    passcode = request.args.get('passcode', type = str)
     
-    # Authorization required:
-    if passcode == auth_passcode:
-        # Function 1: Retreive member names
-        if lg != None and name == None:
-            members = db._sql("SELECT name, seats, suburb \
-                    FROM Person WHERE lg = '{}';".format(lg))
-            ls = []
-            for i, pair in enumerate(members):
-                n = {"id":str(i), "name":pair[0], "group":lg,
-                         "seats":pair[1], "suburb":pair[2]}
-                ls.append(n)
+    # Function 1: Retreive member names
+    if lg != None and name == None:
+        members = db._sql("SELECT name, seats, suburb \
+            FROM Person WHERE lg = '{}';".format(lg))
+        ls = []
+        for i, pair in enumerate(members):
+            n = {"id":str(i), "name":pair[0], "group":lg,
+                "seats":pair[1], "suburb":pair[2]}
+            ls.append(n)
                 
-            return jsonify(ls), 200
+        return jsonify(ls), 200
         
-        else:
-            # Function 2: Retrieve details of a person
-            members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}'\
-                              AND name = '{}';".format(lg, name))
-            ls = []
-            for i, pair in enumerate(members):
-                n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "seats":"4"}
-                ls.append(n)
-                
-            return jsonify(ls), 200
-    
     else:
-        return jsonify({"msg":"Unauthorized action"}), 401
-    
+        # Function 2: Retrieve details of a person
+        members = db._sql("SELECT name, postcode FROM Person WHERE lg = '{}'\
+                    AND name = '{}';".format(lg, name))
+        ls = []
+        for i, pair in enumerate(members):
+            n = {"id":str(i), "name":pair[0],"postcode":str(pair[1]), "group":lg, "seats":"4"}
+            ls.append(n)
+                
+        return jsonify(ls), 200
+
 @application.route("{}/suburb".format(url_prex), methods=['GET'])
 def serachSuburb(): ##
     suburb = request.args.get('suburb')
@@ -277,10 +279,4 @@ def reset():##
     return msg
 
 if __name__ == "__main__":
-    application.run()
-    
-    
-    
-    
-    
-    
+    application.run(debug=True)

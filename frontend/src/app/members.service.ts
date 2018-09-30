@@ -17,23 +17,32 @@ export class MembersService {
   ticked: Boolean = false;
   totalSeats: number = 0;
   loggedIn: Boolean = false;
+  token: String = "";
+  header: HttpHeaders;
 
   constructor(private httpClient: HttpClient, private pipe: Filter) {
 
   }
 
   getPeople() {
-    this.members = [];
-    this.httpClient.get('http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/member?passcode=pw1234&lg=' + this.adminLg)//change this when the legit url is there.
-      .subscribe(
-        (data: any[]) => {
-          if (data.length) {
-            for (var i = 0; i < data.length; i++) {
-              this.members.push(data[i]); 
-            }
+    if (this.members.length != 0) {
+      this.members = [];
+    }
+    this.header = new HttpHeaders({
+      "Authorization": "Bearer " + this.token
+    })
+    this.httpClient.get('http://localhost:5000/api/member?lg=' + this.adminLg, {
+      headers: this.header
+    })
+    .subscribe(
+      (data: any[]) => {
+        if (data.length) {
+          for (var i = 0; i < data.length; i++) {
+            this.members.push(data[i]); 
           }
-        } 
-      )
+        }
+      } 
+    )
     return this.members;
   }
 
@@ -55,13 +64,12 @@ export class MembersService {
   }
 
   ngOnInit() {
-    this.getPeople();
     this.getLifeGroup;
   }
 
   getLifeGroup() {
     var units = [];
-    this.httpClient.get('http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/lifegroup?passcode=pw1234')
+    this.httpClient.get('http://localhost:5000/api/lifegroup')
       .subscribe(
         (data: any[]) => {
           if (data.length) {
@@ -76,7 +84,7 @@ export class MembersService {
 
   searchPostCode(suburb) {
     var suburbs = [];
-    this.httpClient.get('http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/suburb?suburb='+suburb)
+    this.httpClient.get('http://localhost:5000/api/suburb?suburb='+suburb)
     .subscribe(
       (data: any[]) => {
         if (data.length > 10) {
@@ -103,6 +111,7 @@ export class MembersService {
     this.totalSeats = 0;
     this.unselected = [];
     this.loggedIn = false;
+    this.token = "";
   }
 
   suburbValidator(): ValidatorFn {

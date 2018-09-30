@@ -14,8 +14,7 @@ export class ManagingPeopleComponent implements OnInit {
  
   managingForm: FormGroup;
   lifeGroup: string;
-  passcode: string = 'pw1234';
-  members: Array<object> = [];
+  members: Array<object> = this.ms.members;
   drivers: Array<object> = [];
   passengers: Array<object> = [];
   ticked: Boolean = false;
@@ -25,7 +24,6 @@ export class ManagingPeopleComponent implements OnInit {
   loggedIn: Boolean = true;
 
   @ViewChild("filterInput") filterInput: ElementRef;
-  //private headers = new Headers({'Content-Type': 'application/json'}); 
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
     //This is for validation on the name.
@@ -47,9 +45,9 @@ export class ManagingPeopleComponent implements OnInit {
   }
 
   delPerson(name) {
-    const url = "http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/member?lg="
-      + this.lifeGroup + "&name=" + name + "&auth=" + this.passcode;
-    this.httpClient.delete(url, { responseType: 'text' }).subscribe(() => {
+    const url = "http://localhost:5000/api/member?lg="
+      + this.lifeGroup + "&name=" + name;
+    this.httpClient.delete(url, {headers: this.ms.header}).subscribe(() => {
       this.members = this.ms.getPeople();
     })
   }
@@ -71,11 +69,11 @@ export class ManagingPeopleComponent implements OnInit {
 
   ngOnInit() {
     this.loggedIn = this.ms.loggedIn;
-    if (this.ms.members.length == 0 && !this.ms.ticked) {
+    /*if (this.ms.members.length == 0 && !this.ms.ticked) {
       this.members = this.ms.getPeople();
     } else {
       this.members = this.ms.members;
-    }
+    }*/
     this.lifeGroup = this.ms.adminLg;
     this.ticked = this.ms.ticked;
     this.drivers = this.ms.drivers;
@@ -101,7 +99,6 @@ export class ManagingPeopleComponent implements OnInit {
         const index = this.ms.selected.indexOf(homeless.name);
         this.ms.selected.splice(index, 1);
       })
-      console.log(this.ms.unselected);
       this.ms.drivers.splice(i, 1);
       this.ms.totalSeats -= member.seats;
       this.totalSeats -= member.seats;
@@ -112,7 +109,6 @@ export class ManagingPeopleComponent implements OnInit {
       this.ms.unselected.splice(j, 1);
     }
     this.ms.members.push(member);
-
   }
 
   logout() {

@@ -53,10 +53,9 @@ export class SignupComponent implements OnInit {
     if (this.driver) {
       this.numberOfSeats = this.seatsInput.nativeElement.value;
     }
-    this.httpClient.post('http://hope-transport-api.us-east-2.elasticbeanstalk.com/api/member', {
+    this.httpClient.post('http://localhost:5000/api/member', {
       lg: this.lg.nativeElement.value,
       name: name,
-      auth: "pw1234",
       seats: this.numberOfSeats,
       suburb: this.suburbInput.nativeElement.value
     })
