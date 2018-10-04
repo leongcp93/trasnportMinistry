@@ -22,6 +22,26 @@
     <p *ngIf="drivers.length == 0 && passengers.length == 0 && loggedIn">Please
       <a routerLink="/managing-people">select members</a> first</p>
   </div>
+  
+  <section *ngIf="loggedIn">
+    <div class="special-container">
+      <b>Notes:</b> <br>
+      <div *ngFor="let note of notes">
+          • {{note}} <button *ngIf="editNotes" (click)="cancelNote(note)" class="btn btn-link">
+              <i class="fa fa-times-circle"></i>
+            </button>
+      </div>
+      
+      <form>
+          <button *ngIf="!editNotes && notes.length > 0" (click)="editNotes = true">Edit</button>
+          <button *ngIf="editNotes && notes.length > 0" (click)="editNotes = false">Done</button><br>
+        <input class="txt col-md-4" placeholder="Add a new note" #note>
+        <button class="btn btn-primary btn-sm" (click)="addNote()">Add</button>
+      </form>
+    </div>
+    
+  </section>
+
   <section *ngIf="drivers.length != 0 && passengers.length != 0">
     <div class="special-container" *ngFor="let driver of drivers">
       <div class="container">

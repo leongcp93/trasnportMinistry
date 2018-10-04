@@ -50,7 +50,9 @@ export class HomeComponent implements OnInit {
         }
         this.ms.token = data['access_token'];
         this.ms.getPeople();
+        this.ms.getNotes();
         this.router.navigate(['/managing-people'])
+        
       }
     )
   }

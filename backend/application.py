@@ -16,11 +16,13 @@ import os
 import requests
 import base64
 import datetime
+import sys
 from flask_jwt_extended import (
 JWTManager, jwt_required, create_access_token,
 get_jwt_identity
 )
-
+
+
 application = Flask(__name__)
 application.config['SECRET_KEY'] = "transportMinistry"
 CORS(application)
@@ -268,6 +270,28 @@ def serachSuburb(): ##
     url = 'http://v0.postcodeapi.com.au/suburbs.json?name=' + suburb
     r = requests.get(url)
     return r.text
+
+@application.route("{}/notes".format(url_prex), methods=['POST'])
+def addNotes():##
+    content = request.get_json()
+    lg = content.get('lg')
+    if lg == None:
+        return jsonify("lg cannot be none")
+    note = content.get('note')
+    msg = db.Note(lg=lg, note=note).add_db()
+    return jsonify(msg)
+
+@application.route("{}/notes".format(url_prex), methods=['GET'])
+def returnNotes():##
+    lg = request.args.get('lg')
+    return jsonify(db.show_notes(lg))
+
+@application.route("{}/notes".format(url_prex), methods=['DELETE'])
+def deleteNotes():##
+    lg = request.args.get('lg')
+    note = request.args.get('note')
+    msg = db.Note(lg=lg, note=note).del_db()
+    return jsonify(msg)
 
 @application.route("{}/clear".format(url_prex), methods=['GET'])
 @requires_auth

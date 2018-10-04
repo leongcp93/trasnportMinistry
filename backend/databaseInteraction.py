@@ -28,10 +28,29 @@ auth = HTTPBasicAuth()
 
 global table1_name,table2_name,table3_name
 table1_name = "Person"
-table2_name = "PostCodeAddress"
+table2_name = "Notes"
 table3_name = "LifeGroups"
 
 ## Helper Person Info class
+class Note(object):
+    def __init__(self, lg = None, note = None):
+        self.lg = lg
+        self.note = note
+
+    def add_db(self):
+        q = "INSERT INTO {tb} (lg, note) \
+        VALUES ('{lg}', '{note}');".format(tb=table2_name,
+                lg = self.lg, note = self.note)
+        msg = _sql(q)
+        return msg
+
+    def del_db(self):
+        q = "DELETE FROM {tb} \
+         WHERE lg = '{lg}' \
+         AND note = '{n}';".format(tb=table2_name, lg=self.lg, n = self.note)
+        msg = _sql(q)            
+        return msg
+
 class Person (object):
     def __init__(self, lg = None, name = None, seats = None,
                  suburb = None):
@@ -149,7 +168,15 @@ def show_all_lg():
         l.append(i[0])
     
     return l
-     
+
+def show_notes(lg):
+    q = "SELECT note FROM {tb} WHERE lg='{lg}';".format(tb=table2_name,lg=lg)
+    r = _sql(q)
+    l = []
+    for i in r:
+        l.append(i[0])
+    return l
+
 def red_reset_button():
     """
     So this is a red reset button that RESETS everything :)

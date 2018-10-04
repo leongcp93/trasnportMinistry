@@ -19,6 +19,7 @@ export class MembersService {
   loggedIn: Boolean = false;
   token: String = "";
   header: HttpHeaders;
+  notes: Array<string> = [];
 
   constructor(private httpClient: HttpClient, private pipe: Filter) {
 
@@ -80,6 +81,16 @@ export class MembersService {
         }
       )
     return units;
+  }
+
+  getNotes() {
+    this.httpClient.get('http://localhost:5000/api/notes?lg=' + this.adminLg)
+    .subscribe(
+      (data: any[]) => {
+        this.notes = data;
+      }
+    )
+    console.log(this.notes)
   }
 
   searchPostCode(suburb) {

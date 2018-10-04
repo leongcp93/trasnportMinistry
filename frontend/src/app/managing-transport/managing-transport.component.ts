@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DISABLED } from '@angular/forms/src/model';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
@@ -24,6 +24,10 @@ export class ManagingTransportComponent implements OnInit {
   copied: Boolean = false;
   loggedIn: Boolean = false;
   clickedDisplay: Boolean = false;
+  notes: Array<string> = this.ms.notes;
+  editNotes = false;
+
+  @ViewChild("note") noteInput: ElementRef;
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
 
@@ -36,12 +40,40 @@ export class ManagingTransportComponent implements OnInit {
   ngOnInit() {
     this.drivers = this.ms.drivers;
     this.passengers = this.ms.passengers;
-    console.log(this.passengers);    
+    console.log(this.passengers);
     this.sortedPassengers = this.ms.sortedPassengers;
     this.sortPassengers(this.drivers, this.passengers);
     this.loggedIn = this.ms.loggedIn;
     this.unselected = this.ms.unselected;
   }
+
+  addNote() {
+    const note = this.noteInput.nativeElement.value;
+    this.ms.notes.push(note);
+    this.noteInput.nativeElement.value = '';
+    this.httpClient.post('http://localhost:5000/api/notes', {
+      lg: this.ms.adminLg,
+      note: note
+    })
+      .subscribe(
+        (data: any[]) => {
+          console.log(data);
+        }
+      )
+  }
+
+  cancelNote(note) {
+    const i = this.notes.indexOf(note);
+    this.ms.notes.splice(i, 1);
+    const url = 'http://localhost:5000/api/notes?lg=' + this.ms.adminLg + "&note=" + note
+    this.httpClient.delete(url)
+      .subscribe(
+        (data: any[]) => {
+          console.log(data);
+        }
+      )
+  }
+
   animatePassenger(driver, passenger) {
     this.clickedDisplay = false;
     var passengers = this.ms.selectedPassengers[driver.name];
@@ -87,11 +119,10 @@ export class ManagingTransportComponent implements OnInit {
       }
     })
   }
-  
 
   sortPassengers(drivers, passengers) {
     const len = this.ms.passengers.length;
-    drivers.forEach((driver) =>{
+    drivers.forEach((driver) => {
       const driverPostcode = parseInt(driver.suburb.slice(-4));
       var pas = Object.assign([], passengers);
       console.log(this.ms.selected);
@@ -114,7 +145,7 @@ export class ManagingTransportComponent implements OnInit {
       plan += driver['name'] + "\n";
       this.ms.selectedPassengers[driver['name']].forEach((passenger) => {
         plan += "• " + passenger['name'] + "\n"
-      }) 
+      })
     })
     ngCopy(plan);
   }
