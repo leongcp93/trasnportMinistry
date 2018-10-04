@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { MembersService } from '../members.service'
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-managing-people',
@@ -25,7 +26,8 @@ export class ManagingPeopleComponent implements OnInit {
 
   @ViewChild("filterInput") filterInput: ElementRef;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
+  constructor(private httpClient: HttpClient, private fb: FormBuilder, 
+    private ms: MembersService, private route: ActivatedRoute) {
     //This is for validation on the name.
     this.managingForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
@@ -69,16 +71,14 @@ export class ManagingPeopleComponent implements OnInit {
 
   ngOnInit() {
     this.loggedIn = this.ms.loggedIn;
-    /*if (this.ms.members.length == 0 && !this.ms.ticked) {
-      this.members = this.ms.getPeople();
-    } else {
-      this.members = this.ms.members;
-    }*/
     this.lifeGroup = this.ms.adminLg;
     this.ticked = this.ms.ticked;
     this.drivers = this.ms.drivers;
     this.passengers = this.ms.passengers;
     this.totalSeats = this.ms.totalSeats;
+    this.route.queryParams.subscribe(params => {
+      let token = params['token'];
+  });
   }
 
   popUp() {

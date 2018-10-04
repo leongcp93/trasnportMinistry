@@ -21,14 +21,15 @@ body {
     margin: auto auto 0.5em auto;
 }
 
-header {
-    display: flex;
-    align-items: center;
-}
-
 .special-container {
     width: 85%;
     margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
 }
 
 @keyframes profDesign {
@@ -65,11 +66,8 @@ header {
   
   .button {
     font-size: 1em;
-    padding: 10px;
     text-decoration: none;
-    border-radius: 10px;
     cursor: pointer;
-    width: 90%;
   }
 
   .overlay {

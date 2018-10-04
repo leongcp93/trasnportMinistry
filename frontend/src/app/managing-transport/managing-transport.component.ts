@@ -14,7 +14,6 @@ import { ngCopy } from 'angular-6-clipboard';
 })
 export class ManagingTransportComponent implements OnInit {
 
-  //driver: string = '';
   drivers: Array<object>;
   passengers: Array<object>;
   sortedPassengers: object;

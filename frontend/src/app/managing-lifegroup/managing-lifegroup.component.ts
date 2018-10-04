@@ -17,7 +17,8 @@ export class ManagingLifegroupComponent implements OnInit {
 
   @ViewChild("lifeGroup") lifeGroup: ElementRef;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder, private ms: MembersService) {
+  constructor(private httpClient: HttpClient, private fb: FormBuilder,
+     private ms: MembersService) {
 
   }
 
