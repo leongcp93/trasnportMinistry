@@ -39,6 +39,12 @@ img{
     animation: 2s alertAnim forwards;
 }
 
+.page {
+    height: 75vh;
+    display: flex;
+    align-items: center;
+}
+
 @keyframes alertAnim {
     from {
         opacity: 0;
