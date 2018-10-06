@@ -1,4 +1,4 @@
-<body>
+<div id="page">
     
   <div class="login-align container-fluid content-display" align="center">
     <div align="right">
@@ -16,13 +16,6 @@
   <label>Password</label><br>
   <input formControlName="password" type="password" class="col-md-4" placeholder="Password" #password><br>
   <div class="alert col-md-4" *ngIf="!adminForm.controls['password'].valid && adminForm.controls['password'].touched"> Please enter your password.</div>
-        <!-- <label>
-          <strong>Lifegroup Unit:</strong>
-        </label>
-        <select #lg>
-          <option *ngFor="let unit of units" value={{unit}}>{{unit}}</option>
-        </select> -->
-        <br>
         <br>
         <a routerLink="/reset-password">Forgot your password?</a>
         <br>
@@ -37,4 +30,4 @@
     <strong class="design-alert">*IMPORTANT NOTE*:</strong> If you are not the transport minister, please leave this page by clicking on this
     <a routerLink="/signup">link.</a>
   </div>
-</body>
+</div>

@@ -26,11 +26,12 @@ export class HomeComponent implements OnInit {
 
   constructor(private httpClient:HttpClient,private fb: FormBuilder, private ms: MembersService, private router: Router) {
     this.adminForm = fb.group({
-      'password': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
+      'password': [null, Validators.compose([Validators.required, 
+        Validators.pattern('^[a-zA-Z0-9]+$')])],
       'lifegroup': [null, Validators.compose([Validators.required])],
       'validate' : ''
     });
-}
+  }
 
   ngOnInit() {
   }
@@ -40,7 +41,8 @@ export class HomeComponent implements OnInit {
     this.ms.adminLg = this.lg.nativeElement.value.toLowerCase();
     this.ms.loggedIn = true;
     const password = this.password.nativeElement.value;
-    this.httpClient.get("http://localhost:5000/api/login?lg="+this.ms.adminLg + "&password="+password)
+    this.httpClient.get("http://localhost:5000/api/login?lg="
+    + this.ms.adminLg + "&password="+password)
     .subscribe(
       (data:any[])=>{
         this.loading = false;
@@ -52,7 +54,6 @@ export class HomeComponent implements OnInit {
         this.ms.getPeople();
         this.ms.getNotes();
         this.router.navigate(['/managing-people'])
-        
       }
     )
   }
