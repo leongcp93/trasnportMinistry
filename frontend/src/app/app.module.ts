@@ -30,6 +30,7 @@ import { Filter } from './filter.pipe';
 import { MembersService } from './members.service';
 import { AdminSignupComponent } from './admin-signup/admin-signup.component';
 import { AdminSignupRespondComponent } from './admin-signup-respond/admin-signup-respond.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,9 @@ import { AdminSignupRespondComponent } from './admin-signup-respond/admin-signup
     
     AdminSignupComponent,
     
-    AdminSignupRespondComponent
+    AdminSignupRespondComponent,
+    
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

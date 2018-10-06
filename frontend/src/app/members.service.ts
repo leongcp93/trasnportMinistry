@@ -20,6 +20,8 @@ export class MembersService {
   token: String = "";
   header: HttpHeaders;
   notes: Array<string> = [];
+  email: string;
+  newPassword: string;
 
   constructor(private httpClient: HttpClient, private pipe: Filter) {
 
@@ -141,4 +143,6 @@ export class MembersService {
     };
   }
 
+
 }
+
