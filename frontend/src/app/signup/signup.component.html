@@ -4,8 +4,8 @@
   </div>
 
   <div class="content-display">
-    <form [formGroup]="signupForm">
-      <div>
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      
         <label>
           <strong>Lifegroup Unit:</strong>
         </label>
@@ -67,11 +67,10 @@
           <br>
         </div>
         <br>
-        <br>
-
+        <div *ngIf="loading" class="loader"></div><br>
         <button type="submit" class="btn btn-primary col-md-6 custome-button" [disabled]="!signupForm.valid">
           <i class="fa fa-check-circle"></i> Submit</button>
-      </div>
+     
     </form>
   </div>
 </div>

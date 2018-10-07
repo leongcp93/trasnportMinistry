@@ -20,6 +20,7 @@ export class SignupComponent implements OnInit {
   units: Array<string> = [];
   suburbs: Array<string> = [];
   dirty: Boolean = false;
+  loading: Boolean = false;
 
   //refer the id in html from the textfield.
   @ViewChild("firstName") firstName: ElementRef;
@@ -48,7 +49,8 @@ export class SignupComponent implements OnInit {
   }
 
   //make a post request to the api to store that member to the database
-  onSubmit() { 
+  onSubmit() {
+    this.loading = true;
     const name = this.firstName.nativeElement.value + " " + this.lastName.nativeElement.value;
     if (this.driver) {
       this.numberOfSeats = this.seatsInput.nativeElement.value;
@@ -61,10 +63,14 @@ export class SignupComponent implements OnInit {
     })
       .subscribe(
         (data: any[]) => {
-          console.log(data);
+          this.loading = false;
+          if (data['msg'] != "inserted!") {
+            alert("The member is already in the database");
+            return;
+          } 
+          this.router.navigate(['/submit-responds']);
         }
       )
-    this.router.navigate(['/submit-responds']);
   }
 
   //handles the radio button "are you a driver"

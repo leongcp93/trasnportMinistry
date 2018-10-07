@@ -33,10 +33,11 @@
       </div>
       
       <form>
+          <button *ngIf="!editNotes && notes.length == 0" (click)="editNotes = true">Add Notes</button>
           <button *ngIf="!editNotes && notes.length > 0" (click)="editNotes = true">Edit</button>
-          <button *ngIf="editNotes && notes.length > 0" (click)="editNotes = false">Done</button><br>
-        <input class="txt col-md-4" placeholder="Add a new note" #note>
-        <button class="btn btn-primary btn-sm" (click)="addNote()">Add</button>
+          <button *ngIf="editNotes" (click)="editNotes = false">Done</button><br>
+        <input *ngIf="editNotes" class="txt col-md-4" placeholder="Add a new note" #note>
+        <button *ngIf="editNotes" class="btn btn-primary btn-sm" (click)="addNote()">Add</button>
       </form>
     </div>
     
