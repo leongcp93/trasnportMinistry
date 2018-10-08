@@ -21,8 +21,24 @@ from flask_jwt_extended import (
 JWTManager, jwt_required, create_access_token,
 get_jwt_identity
 )
+"""
+import smtplib
+from email.message import EmailMessage
 
+msg = EmailMessage()
+msg.set_content("Hey I am just trying to send an email via python")
+msg['Subject'] = "First Email"
+msg['From'] = "kwokkinhungisme@gmail.com"
+msg['To'] = "jianxing.guo@uq.net.au"
 
+s = smtplib.SMTP('localhost', 1025)
+s = smtplib.SMTP_SSL('smtp.gmail.com', 587)
+s.ehlo()
+server.starttls()
+
+s.send_message(msg)
+s.quit()
+"""
 application = Flask(__name__)
 application.config['SECRET_KEY'] = "transportMinistry"
 CORS(application)
@@ -85,10 +101,11 @@ def add_LG(): ##
         ## receive file
         content = request.get_json()
         lg = content.get('lg')
+        email = content.get('email')
         password = content.get('password')
-        if lg is None or password is None:
+        if lg is None or email is None or password is None:
             abort(400) # missing arguments
-        lifegroup = db.LifeGroup(lg=lg, password=password)
+        lifegroup = db.LifeGroup(lg=lg, email=email, password=password)
         msg = lifegroup.add_lg()
         return jsonify({"msg": msg})
     

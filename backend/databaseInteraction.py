@@ -110,15 +110,16 @@ class Person (object):
             
 class LifeGroup(object):
 
-    def __init__(self, lg=None, password=None):
+    def __init__(self, lg=None, email = None, password=None):
         self.lg = lg.lower()
+        self.email = email
         if password != None:
             self.password = password
             self.password_hash = pwd_context.encrypt(password)
         
     def add_lg(self):
-        q = "INSERT INTO LifeGroups (lg, password) \
-             VALUES ('{lg}', '{pw}');".format(lg=self.lg, pw=self.password_hash)
+        q = "INSERT INTO LifeGroups (lg, email, password) \
+             VALUES ('{lg}', '{em}', '{pw}');".format(lg=self.lg, em=self.email, pw=self.password_hash)
         msg = _sql(q)
         return msg
         
