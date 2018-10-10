@@ -13,6 +13,10 @@
       <br>
       <div class="alert col-md-4" *ngIf="!adminForm.controls['lifegroup'].valid && adminForm.controls['lifegroup'].touched"> Please key in your lifegroup unit</div>
       <br>
+      <label>Email</label><br>
+      <input formControlName="email" type="email" class="col-md-4" placeholder="uq8lifegroup@gmail.com" #email><br>
+      <div class="alert col-md-4" *ngIf="!adminForm.controls['email'].valid && adminForm.controls['email'].touched"> Please enter the email address</div>
+      <br>
       <label>Password</label>
       <br>
       <input formControlName="password" type="password" class="col-md-4" placeholder="Password" #password>

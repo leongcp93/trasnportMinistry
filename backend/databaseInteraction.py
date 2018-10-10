@@ -233,6 +233,7 @@ def _sql(q):
     sql_file = "my_db.sqlite"
     conn = sqlite3.connect(sql_file)
     c=conn.cursor()
+    c.execute('pragma foreign_keys = ON;')
     w = q.split(" ")
     w = w[0].lower()
     rows = None

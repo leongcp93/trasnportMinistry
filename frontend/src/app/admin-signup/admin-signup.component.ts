@@ -15,11 +15,13 @@ export class AdminSignupComponent implements OnInit {
   adminForm: FormGroup;
   @ViewChild("lg") lifegroup: ElementRef;
   @ViewChild("password") password: ElementRef;
+  @ViewChild("email") email: ElementRef;
 
   constructor(private httpClient:HttpClient,private fb: FormBuilder, private ms: MembersService, private router: Router) { 
     this.adminForm = fb.group({
       'password': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')])],
-      'lifegroup': [null, Validators.compose([Validators.required])],
+      'lifegroup': [null, Validators.required],
+      'email': [null, Validators.required],
       'validate' : ''
     });
   }
@@ -32,8 +34,11 @@ export class AdminSignupComponent implements OnInit {
     const url = "http://localhost:5000/api/lifegroup";
     this.httpClient.post(url, {
       "lg": this.lifegroup.nativeElement.value,
+      "email": this.email.nativeElement.value,
       "password": this.password.nativeElement.value
-    }).subscribe()
+    }).subscribe((data: any)=>{
+      console.log(data);
+    })
     this.router.navigate(['/admin-signup-respond']);
   }
 
