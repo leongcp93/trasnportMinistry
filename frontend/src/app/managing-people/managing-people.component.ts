@@ -76,9 +76,6 @@ export class ManagingPeopleComponent implements OnInit {
     this.drivers = this.ms.drivers;
     this.passengers = this.ms.passengers;
     this.totalSeats = this.ms.totalSeats;
-    /*(this.route.queryParams.subscribe(params => {
-      let token = params['token'];
-  });*/
   }
 
   popUp() {

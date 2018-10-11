@@ -10,6 +10,7 @@ import { MembersService } from '../members.service'
   templateUrl: './managing-lifegroup.component.html',
   styleUrls: ['./managing-lifegroup.component.scss']
 })
+
 export class ManagingLifegroupComponent implements OnInit {
 
   lifeGroupForm: FormGroup;
@@ -19,11 +20,10 @@ export class ManagingLifegroupComponent implements OnInit {
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder,
      private ms: MembersService) {
-
   }
 
   delLifeGroup(getUnit) {
-    if (confirm("Are you sure delete this lifegroup?")) {
+    if (confirm("Are you sure to delete this lifegroup?")) {
       const url = "http://localhost:5000/api/lifegroup?lg=" + getUnit; 
       this.httpClient.delete(url, {responseType: 'text'}).subscribe((data:any)=>{
         console.log(data);

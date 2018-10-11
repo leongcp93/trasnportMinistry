@@ -31,6 +31,7 @@ import { MembersService } from './members.service';
 import { AdminSignupComponent } from './admin-signup/admin-signup.component';
 import { AdminSignupRespondComponent } from './admin-signup-respond/admin-signup-respond.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ResetPasswordRequestComponent } from './reset-password-request/reset-password-request.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,9 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     
     AdminSignupRespondComponent,
     
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    
+    ResetPasswordRequestComponent
   ],
   imports: [
     BrowserModule,

@@ -21,28 +21,24 @@ from flask_jwt_extended import (
 JWTManager, jwt_required, create_access_token,
 get_jwt_identity
 )
-"""
-import smtplib
-from email.message import EmailMessage
+from flask_mail import Mail, Message
 
-msg = EmailMessage()
-msg.set_content("Hey I am just trying to send an email via python")
-msg['Subject'] = "First Email"
-msg['From'] = "kwokkinhungisme@gmail.com"
-msg['To'] = "jianxing.guo@uq.net.au"
-
-s = smtplib.SMTP('localhost', 1025)
-s = smtplib.SMTP_SSL('smtp.gmail.com', 587)
-s.ehlo()
-server.starttls()
-
-s.send_message(msg)
-s.quit()
-"""
 application = Flask(__name__)
 application.config['SECRET_KEY'] = "transportMinistry"
 CORS(application)
 jwt = JWTManager(application)
+
+
+# email server
+application.config.update(
+    DEBUG = True,
+    MAIL_SERVER = 'smtp.gmail.com',
+    MAIL_PORT = 465,
+    MAIL_USE_SSL = True,
+    MAIL_USERNAME = "kwokkinhungisme@gmail.com",
+    MAIL_PASSWORD = 'secret'
+)
+mail = Mail(application)
 
 ## Actual implementation
 global url_prex, auth_passcode
@@ -71,6 +67,38 @@ def requires_auth(f):
         return f(*args, **kwargs)
     return decorated
 ## --------------------- Auth class --------------------------------
+
+@application.route("{}/reset-password-request".format(url_prex))
+def resetPasswordRequest():
+    lg = request.args.get('lg', type = str)
+    email = db.retrieve_email(lg)
+    if email == 'err':
+        return jsonify({'msg': 'The lifegroup you entered is not registered'})
+    expires = datetime.timedelta(minutes=10)
+    token = create_access_token(identity=lg, expires_delta=expires)
+    link = "localhost:4200/reset-password/" + token
+    try:
+        msg = Message("Reset your password on Hope Transport",
+                      sender="kwokkinhungisme@gmail.com",
+                      recipients=[email])
+        msg.body = "Hi "+ lg +",\nWe received a request to reset your Transport App password\nyou can enter the following password reset code:\n635837"
+        msg.html = "<p>Hi " + lg + ",</p>"
+        msg.html += "<p>We received a request to reset your Transport App password</p>"
+        msg.html += "<p>You can click the link below to reset password:</p>"
+        msg.html += "<p><a href='" + link + "'>" + link + "</a></p>"
+        mail.send(msg)
+        return jsonify({'msg': 'Mail sent'})
+    except Exception as e:
+        return jsonify({'msg': e})
+
+@application.route("{}/reset-password".format(url_prex), methods=['POST'])
+@jwt_required
+def resetPassword():
+    lg = get_jwt_identity()
+    pw = request.args.get('password', type = str)
+    msg = db.reset_password(lg, pw)
+    return jsonify(msg), 200
+
 
 @application.route("{}/".format(url_prex), methods=['GET'])
 def index(): 

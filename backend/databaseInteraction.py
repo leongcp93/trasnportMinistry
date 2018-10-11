@@ -24,6 +24,7 @@ Class:
 import sqlite3
 from passlib.apps import custom_app_context as pwd_context
 from flask_httpauth import HTTPBasicAuth
+from flask import jsonify
 auth = HTTPBasicAuth()
 
 global table1_name,table2_name,table3_name
@@ -178,6 +179,25 @@ def show_notes(lg):
         l.append(i[0])
     return l
 
+def retrieve_email(lg):
+    q = "SELECT email FROM LifeGroups\
+         WHERE lg = '{}';".format(lg)
+    import sys
+    try:
+        email = _sql(q)[0][0]
+        return email
+    except Exception as e:
+        return "err"
+
+def reset_password(lg, password):
+    password = pwd_context.encrypt(password)
+    import sys
+    q = "UPDATE LifeGroups \
+         SET password = '{pw}'\
+         WHERE lg = '{lg}';".format(pw=password, lg=lg)
+    msg = _sql(q)
+    return msg
+
 def red_reset_button():
     """
     So this is a red reset button that RESETS everything :)
@@ -245,7 +265,7 @@ def _sql(q):
             
         else:
             c.execute(q)
-            msg = "{}ed!".format(w)
+            msg = "the {} query has been executed successfully".format(w)
         
         conn.commit()
         

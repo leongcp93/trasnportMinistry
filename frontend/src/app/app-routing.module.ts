@@ -11,12 +11,14 @@ import { ManagingLifegroupComponent } from './managing-lifegroup/managing-lifegr
 import { AdminSignupComponent } from './admin-signup/admin-signup.component';
 import { AdminSignupRespondComponent } from './admin-signup-respond/admin-signup-respond.component'
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ResetPasswordRequestComponent } from './reset-password-request/reset-password-request.component';
 
 //this is where i changed refer this https://www.youtube.com/watch?v=Nehk4tBxD4o&t=399s for sample
 const routes: Routes = [
   { path: '', redirectTo: 'signup', pathMatch:'full' },
   { path: 'signup', component: SignupComponent },
-  { path: 'reset-password', component: ResetPasswordComponent},
+  { path: 'reset-password/:token', component: ResetPasswordComponent},
+  { path: 'reset-password-request', component: ResetPasswordRequestComponent},
   { path: 'submit-responds', component: SubmitRespondsComponent },
   { path: 'managing-transport', component: ManagingTransportComponent },
   { path: 'managing-people', component: ManagingPeopleComponent },
