@@ -13,6 +13,8 @@ export class ResetPasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
   token: string;
   loading: Boolean = false;
+  success: Boolean = false;
+  err: String = "";
   @ViewChild("password") password: ElementRef;
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, 
@@ -29,15 +31,28 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   onSubmit() {
+    this.success = false;
+    this.err = "";
     this.loading = true;
     const header = new HttpHeaders({
       "Authorization": "Bearer " + this.token
     })
     const link = 'http://localhost:5000/api/reset-password?password='+this.password.nativeElement.value;
-    this.httpClient.post(link, {}, {headers: header})
+    this.httpClient.post(link,{}, {headers: header})
     .subscribe((data:any) => {
-      console.log(data);
-      this.loading = false;
-    })
+      if (data.msg == "success") {
+        this.loading = false;
+        this.success = true;
+      }
+    }
+    ,(error) => {
+      if (error.error.msg == "Token has expired") {
+        this.loading = false;
+        this.err = "expired";
+      } else {
+        this.err = error.error.msg;
+      }
+    }
+    )
   }
 }

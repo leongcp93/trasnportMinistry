@@ -182,7 +182,6 @@ def show_notes(lg):
 def retrieve_email(lg):
     q = "SELECT email FROM LifeGroups\
          WHERE lg = '{}';".format(lg)
-    import sys
     try:
         email = _sql(q)[0][0]
         return email
@@ -191,7 +190,6 @@ def retrieve_email(lg):
 
 def reset_password(lg, password):
     password = pwd_context.encrypt(password)
-    import sys
     q = "UPDATE LifeGroups \
          SET password = '{pw}'\
          WHERE lg = '{lg}';".format(pw=password, lg=lg)
@@ -265,7 +263,7 @@ def _sql(q):
             
         else:
             c.execute(q)
-            msg = "the {} query has been executed successfully".format(w)
+            msg = "success"
         
         conn.commit()
         

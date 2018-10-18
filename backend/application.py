@@ -16,7 +16,6 @@ import os
 import requests
 import base64
 import datetime
-import sys
 from flask_jwt_extended import (
 JWTManager, jwt_required, create_access_token,
 get_jwt_identity
@@ -36,7 +35,7 @@ application.config.update(
     MAIL_PORT = 465,
     MAIL_USE_SSL = True,
     MAIL_USERNAME = "kwokkinhungisme@gmail.com",
-    MAIL_PASSWORD = 'secret'
+    MAIL_PASSWORD = 'Ken13798132631'
 )
 mail = Mail(application)
 
@@ -97,8 +96,7 @@ def resetPassword():
     lg = get_jwt_identity()
     pw = request.args.get('password', type = str)
     msg = db.reset_password(lg, pw)
-    return jsonify(msg), 200
-
+    return jsonify({'msg': msg}), 200
 
 @application.route("{}/".format(url_prex), methods=['GET'])
 def index(): 
@@ -175,7 +173,6 @@ def list_LG(): ##
 
 @application.route("{}/login".format(url_prex), methods=['GET'])
 def verify_lg():##
-    import sys
     lg = request.args.get('lg', type = str)
     pw = request.args.get('password', type = str)
     lifegroup = db.LifeGroup(lg=lg, password=pw)
@@ -348,4 +345,4 @@ def reset():##
     return msg
 
 if __name__ == "__main__":
-    application.run(debug=True)
+    application.run()

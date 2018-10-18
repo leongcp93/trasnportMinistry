@@ -13,13 +13,13 @@
       <br>
       <input formControlName="lifegroup" type="text" class="col-md-4" placeholder="Your lifegroup" #lg>
       <br>
-      <div class="alert col-md-4" *ngIf="!adminForm.controls['lifegroup'].valid && adminForm.controls['lifegroup'].touched"> Please key in your lifegroup.</div>
+      <div class="alert alert-warning col-md-4" role="alert" *ngIf="!adminForm.controls['lifegroup'].valid && adminForm.controls['lifegroup'].touched"> Please key in your lifegroup.</div>
       <br>
       <label>Password</label>
       <br>
       <input formControlName="password" type="password" class="col-md-4" placeholder="Password" #password>
       <br>
-      <div class="alert col-md-4" *ngIf="!adminForm.controls['password'].valid && adminForm.controls['password'].touched"> Please enter your password.</div>
+      <div class="alert alert-warning col-md-4" role="alert" *ngIf="!adminForm.controls['password'].valid && adminForm.controls['password'].touched"> Please enter your password.</div>
       <br>
       <a routerLink="/reset-password-request">Forgot your password?</a>
       <br>
