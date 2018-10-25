@@ -1,0 +1,80 @@
+.content-align-default{
+    padding: 15px;
+}
+
+.custome-button{
+    border-radius: 25px;
+}
+
+.content-display{
+    animation: 2s contDisplay forwards;
+}
+
+@keyframes contDisplay {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert{
+    background: #f2edda;
+    padding: 7px;
+    font-size: .9em;
+    margin-bottom: 20px;
+    display: inline-block;
+    animation: 2s alertAnim forwards;
+}
+
+@keyframes alertAnim {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.suburb_outline{
+    border: 3px solid red;
+}
+
+.remove_bullet{
+    list-style-type: none;
+    -webkit-padding-start: 0;
+}
+
+.choosing_surburb{
+    border:2px solid #ccc; 
+    width:100%; 
+    height: 150px; 
+    overflow-y: scroll;
+    text-align: left;
+    -webkit-padding-start: 0;
+}
+
+.loader {
+    border: 3px solid #f3f3f3; /* Light grey */
+    border-top: 3px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.note {
+    color:#535e70;
+}

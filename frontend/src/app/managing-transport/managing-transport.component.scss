@@ -1,0 +1,108 @@
+body { 
+    background:#eaecef;
+}
+
+input {
+    margin-right: 1em;
+}
+
+form {
+    margin-top: 2em;
+}
+
+.special-container{
+    background: white;
+    padding: 15px;
+    cursor: pointer;
+    position: sticky;
+    margin: auto auto 0.5em auto;
+}
+
+.passenger-container{
+    padding: 10px;
+}
+
+.remove_bullet{
+    list-style-type: none;
+    margin-bottom: 0rem;
+}
+
+@keyframes contDisplay {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.passenger { 
+    border:2px solid #ccc; 
+    width:100%; 
+    height: 200px; 
+    overflow-y: scroll;
+    border-radius: 10px;
+}
+
+div.fixed{
+    position: fixed;
+    top: 5;
+    left: 0;
+    width: 100%;
+}
+
+section:last-child {
+    padding: 1em 0 5vh 0;
+    margin: 0 0 2em 0;
+    background: white;
+}
+
+#plan-container {
+    border-radius: 5px;
+    border:2px solid #ccc;
+    min-height: 10em;
+}
+
+#plan-container > div{
+    padding-top: 2em;
+    padding-bottom: 1em;
+}
+
+#plan-title {
+    background: #eaecef;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 1em;
+    height: 2em;
+}
+
+#plan-title b {
+    margin-right: 2em;
+}
+
+#plan-title i:first-child {
+    margin-right: 0.5em;
+}
+
+button {
+    border-radius: 5px;
+    margin-bottom: 1em;
+}
+
+#manage {
+    display: flex;
+    width: 50%;
+    justify-content: flex-start;
+}
+
+#manage a.active {
+    border-bottom: 3px solid red;
+}
+
+nav a {
+    color: black;
+}

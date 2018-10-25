@@ -1,0 +1,122 @@
+<body>
+
+  <nav class="navbar navbar-light bg-light">
+    <div class="container">
+      <div id="manage">
+        <a class="nav-link" routerLink="/managing-people">People</a>
+        <a class="nav-link active" routerLink="/managing-transport">Transport</a>
+      </div>
+      <div>
+        <a class="nav-link" (click)="logout()" routerLink="/home">
+          <i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <p *ngIf="drivers.length == 0 && passengers.length != 0">No driver is selected</p>
+    <p *ngIf="!loggedIn">
+      Please
+      <a id="login" routerLink="/home">login</a> first
+    </p>
+    <p *ngIf="drivers.length == 0 && passengers.length == 0 && loggedIn">Please
+      <a routerLink="/managing-people">select members</a> first</p>
+  </div>
+  
+  <section *ngIf="loggedIn">
+    <div class="special-container">
+      <b>Notes:</b> <br>
+      <div *ngFor="let note of notes">
+          • {{note}} <button *ngIf="editNotes" (click)="cancelNote(note)" class="btn btn-link">
+              <i class="fa fa-times-circle"></i>
+            </button>
+      </div>
+      
+      <form>
+          <button *ngIf="!editNotes && notes.length == 0" (click)="editNotes = true">Add Notes</button>
+          <button *ngIf="!editNotes && notes.length > 0" (click)="editNotes = true">Edit</button>
+          <button *ngIf="editNotes" (click)="editNotes = false">Done</button><br>
+        <input *ngIf="editNotes" class="txt col-md-4" placeholder="Add a new note" #note>
+        <button *ngIf="editNotes" class="btn btn-primary btn-sm" (click)="addNote()">Add</button>
+      </form>
+    </div>
+    
+  </section>
+
+  <section *ngIf="drivers.length != 0 && passengers.length != 0">
+    <div class="special-container" *ngFor="let driver of drivers">
+      <div class="container">
+        <p>
+          <strong>Driver: {{driver.name}}</strong>
+        </p>
+        <p>Has {{driver.seats}} seats; stays at {{driver.suburb.slice(0, driver.suburb.indexOf(','))}}</p>
+        <p>
+          <strong>Passenger(s):</strong>
+        </p>
+        <ul *ngFor="let passenger of selectedPassengers[driver.name]">
+          <li>
+            <div>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})
+              <button (click)="cancelAlloc(driver, passenger)" class="btn btn-link">
+                <i class="fa fa-times-circle"></i>
+              </button>
+            </div>
+          </li>
+        </ul>
+        <p>List of available passengers:</p>
+        <div class="passenger">
+          <div>
+            <ul class="remove_bullet" *ngFor="let passenger of sortedPassengers[driver.name]">
+              <button class="btn btn-link" (click)="animatePassenger(driver, passenger)">
+                <li>{{passenger.name}} ({{passenger.suburb.slice(0, passenger.suburb.indexOf(','))}})</li>
+              </button>
+              <br>
+            </ul>
+          </div>
+
+        </div>
+
+        <br>
+        <br>
+        <br>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <button (click)="generatePlan()">Generate Transport Plan</button>
+
+      <div id="plan-container">
+        <span id="plan-title">
+          <i class="fas fa-car"></i>
+          <b>Transport Plan</b>
+          <div>
+            <a (click)="copy()">
+              <i class="far fa-copy"></i>
+            </a>
+            <span *ngIf="copied">Copied</span>
+          </div>
+        </span>
+        <div *ngIf="clickedDisplay && !displayPlan" class="container">You haven't allocated any passenger</div>
+        <div *ngIf="displayPlan" class="container">
+          <div *ngFor="let driver of drivers">
+            <strong>{{driver.name}}</strong>
+            <br>
+            <div *ngFor="let passenger of selectedPassengers[driver.name]">
+              • {{passenger.name}}
+              <br>
+            </div>
+            <br>
+          </div>
+          <div *ngIf="unselected.length > 0">
+            <strong>Not Allocated</strong>
+            <div *ngFor="let passenger of unselected">
+              • {{passenger}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>

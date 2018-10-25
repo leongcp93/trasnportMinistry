@@ -1,0 +1,129 @@
+body {
+    min-height: 100vh; 
+    background: #eaecef;
+}
+
+.buttons a {
+    color: #30363f;
+    cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.profile-design{
+    color: black;
+    background-color:white;
+    padding: 10px;
+    animation: 2s profDesign forwards;
+    margin: auto auto 0.5em auto;
+}
+
+.special-container {
+    width: 85%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+}
+
+@keyframes profDesign {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes backgDesign{
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.button-txt-color{
+    color: whitesmoke;
+}
+
+.selection-design{
+    border-radius: 25px;
+}
+  
+  .button {
+    font-size: 1em;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+  }
+  
+  .popup {
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    max-height: 75%;
+    overflow-y: scroll;
+    width: 70%;
+    z-index: 1;
+  }
+  
+  .popup .close {
+    margin-top: -2em;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+  }
+
+  .popup .close:hover {
+    color: red;
+  }
+
+  p:last-child b{
+      color: red;
+  }
+
+  nav a {
+      color: black;
+  }
+
+  nav > a:first-child {
+      color: #4286f4;
+  }
+
+  #manage {
+      display: flex;
+      width: 50%;
+      justify-content: flex-start;
+  }
+
+  #manage a.active {
+    border-bottom: 3px solid red;
+  }
+  
