@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Apr 3 16:09:28 2018
-
 @author: Bruno
 Trimmed and modified by Kenneth Guo
-
 """
 from functools import wraps
 from flask import Flask, Response, request, jsonify, render_template
@@ -34,7 +32,7 @@ application.config.update(
     MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = 465,
     MAIL_USE_SSL = True,
-    MAIL_USERNAME = "kwokkinhungisme@gmail.com",
+    MAIL_USERNAME = "xxx@gmail.com",
     MAIL_PASSWORD = 'secret'
 )
 mail = Mail(application)
