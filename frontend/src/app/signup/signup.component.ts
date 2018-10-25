@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, NgModule } from '@angular/cor
 import { FormBuilder, FormGroup, Validators, FormsModule, NgForm, ValidatorFn, AbstractControl, ValidationErrors} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
-import { MembersService } from '../members.service'
+import { MembersService } from '../members.service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Router } from '@angular/router';
 

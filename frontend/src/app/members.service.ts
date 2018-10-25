@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { PeopleService } from './people.service';
+import { LifegroupsService } from './lifegroups.service';
 import { Filter } from './filter.pipe';
 import { ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms'
 @Injectable()
@@ -10,7 +12,7 @@ export class MembersService {
   passengers: Array<object> = [];
   selectedPassengers: object = {};
   sortedPassengers: object = {};
-  members: Array<object> = [];
+  members: Array<object> = this.peopleService.members;
   adminLg: string;
   selected: Array<string> = [];
   unselected: Array<string> = [];
@@ -22,77 +24,39 @@ export class MembersService {
   notes: Array<string> = [];
   email: string;
   newPassword: string;
+  
 
-  constructor(private httpClient: HttpClient, private pipe: Filter) {
+  constructor(private httpClient: HttpClient, 
+    private pipe: Filter, 
+    public peopleService: PeopleService, 
+    public lifegroupsService: LifegroupsService) {
 
   }
 
-  getPeople() {
-    if (this.members.length != 0) {
-      this.members = [];
-    }
-    this.header = new HttpHeaders({
-      "Authorization": "Bearer " + this.token
-    })
-    this.httpClient.get('http://localhost:5000/api/member?lg=' + this.adminLg, {
-      headers: this.header
-    })
-    .subscribe(
-      (data: any[]) => {
-        if (data.length) {
-          for (var i = 0; i < data.length; i++) {
-            this.members.push(data[i]); 
-          }
-        }
-      } 
-    )
-    return this.members;
+  getPeople(){
+   return this.peopleService.getPeople();
   }
+
 
   filterPassengers(filter) {
     return this.pipe.transform(this.members, filter);
   }
 
-  markMember(member) {
-    if (member.seats > 0) {
-      this.drivers.push(member);
-      this.selectedPassengers[member.name] = [];
-      this.totalSeats += member.seats;
-    } else {
-      this.passengers.push(member);
-      this.unselected.push(member.name);
-    }
-    const i = this.members.indexOf(member);
-    this.members.splice(i, 1);
-  }
 
+  markMember(member){
+    return this.peopleService.markMember(member);
+  }
+  
   ngOnInit() {
     this.getLifeGroup;
   }
 
-  getLifeGroup() {
-    var units = [];
-    this.httpClient.get('http://localhost:5000/api/lifegroup')
-      .subscribe(
-        (data: any[]) => {
-          if (data.length) {
-            for (var i = 0; i < data.length; i++) {
-              units.push(data[i].name.toUpperCase());
-            }
-          }
-        }
-      )
-    return units;
+  getLifeGroup(){
+    return this.lifegroupsService.getLifeGroup();
   }
 
-  getNotes() {
-    this.httpClient.get('http://localhost:5000/api/notes?lg=' + this.adminLg)
-    .subscribe(
-      (data: any[]) => {
-        this.notes = data;
-      }
-    )
-    console.log(this.notes)
+  getNotes(){
+    return this.lifegroupsService.getNotes();
   }
 
   searchPostCode(suburb) {
@@ -115,16 +79,8 @@ export class MembersService {
     return suburbs;
   }
 
-  logout() {
-    this.members = [];
-    this.passengers = [];
-    this.drivers = [];
-    this.selected = [];
-    this.ticked = false;
-    this.totalSeats = 0;
-    this.unselected = [];
-    this.loggedIn = false;
-    this.token = "";
+  logout(){
+    return this.lifegroupsService.logout();
   }
 
   suburbValidator(): ValidatorFn {
