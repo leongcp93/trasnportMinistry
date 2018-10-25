@@ -63,8 +63,8 @@ export class SignupComponent implements OnInit {
     })
       .subscribe(
         (data: any[]) => {
-          this.loading = false;
-          if (data['msg'] != "inserted!") {
+          if (data['msg'] != "success") {
+            alert(data['msg']);
             alert("The member is already in the database");
             return;
           } 

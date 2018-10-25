@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
+  //submit the signup form
   onSubmit() {
     this.loading = true;
     this.ms.adminLg = this.lg.nativeElement.value.toLowerCase();

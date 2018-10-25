@@ -22,6 +22,7 @@ export class ManagingLifegroupComponent implements OnInit {
      private ms: MembersService) {
   }
 
+  //delete this lifegroup from the database
   delLifeGroup(getUnit) {
     if (confirm("Are you sure to delete this lifegroup?")) {
       const url = "http://localhost:5000/api/lifegroup?lg=" + getUnit; 

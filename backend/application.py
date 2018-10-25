@@ -34,7 +34,7 @@ application.config.update(
     MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = 465,
     MAIL_USE_SSL = True,
-    MAIL_USERNAME = "kwokkinhungisme@gmail.com",
+    MAIL_USERNAME = "xxx@gmail.com",
     MAIL_PASSWORD = 'secret'
 )
 mail = Mail(application)
