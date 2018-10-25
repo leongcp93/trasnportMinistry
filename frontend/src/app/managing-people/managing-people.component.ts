@@ -11,6 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ManagingPeopleComponent implements OnInit {
 
+  //declaring the variables
+ 
   managingForm: FormGroup;
   lifeGroup: string;
   members: Array<object> = this.ms.members;
@@ -26,12 +28,14 @@ export class ManagingPeopleComponent implements OnInit {
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, 
     private ms: MembersService, private route: ActivatedRoute) {
+    //This is for validation on the name.
     this.managingForm = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z]+$')])],
       'validate': ''
     });
   }
 
+  //this is the event handeling
   onName() {
     const query = this.filterInput.nativeElement.value;
     if (query.length > 0) {
@@ -42,7 +46,6 @@ export class ManagingPeopleComponent implements OnInit {
     this.members = this.ms.filterPassengers(query);
   }
 
-  //delete the person from the lifegroup
   delPerson(name) {
     const url = "http://localhost:5000/api/member?lg="
       + this.lifeGroup + "&name=" + name;

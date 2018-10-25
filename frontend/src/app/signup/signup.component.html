@@ -22,7 +22,7 @@
         <br>
         <input class="txt col-md-6" formControlName="firstname" type="text" #firstName>
         <br>
-        <div class="alert alert-warning col-md-6" role="alert" *ngIf="!signupForm.controls['firstname'].valid && signupForm.controls['firstname'].touched">Please do fill your first name.</div>
+        <div class="alert alert-warning col-md-4" role="alert" *ngIf="!signupForm.controls['firstname'].valid && signupForm.controls['firstname'].touched">Please do fill your first name.</div>
         <br>
         <label>
           <strong>Last Name</strong>
@@ -30,7 +30,7 @@
         <br>
         <input class="txt col-md-6" formControlName="lastname" type="text" #lastName>
         <br>
-        <div class="alert alert-warning col-md-6" role="alert" *ngIf="!signupForm.controls['lastname'].valid && signupForm.controls['lastname'].touched">Please do fill your last name.</div>
+        <div class="alert alert-warning col-md-4" role="alert" *ngIf="!signupForm.controls['lastname'].valid && signupForm.controls['lastname'].touched">Please do fill your last name.</div>
         <br>
         <label>
           <strong>Suburb</strong>
@@ -45,7 +45,7 @@
             </li>
           </ul>
         </div>
-        <div class="alert alert-warning col-md-6" role="alert" *ngIf="!signupForm.controls['suburb'].valid && signupForm.controls['suburb'].touched">Please select a full suburb name from the drop-down list</div>
+        <div class="alert alert-warning col-md-4" role="alert" *ngIf="!signupForm.controls['suburb'].valid && signupForm.controls['suburb'].touched">Please select a full suburb name from the drop-down list</div>
         <br>
         <br>
         <label> Are you a driver?</label>
@@ -63,7 +63,7 @@
           <strong>Number of seats: </strong>
           <br>
           <input class="col-md-6" type="number" formControlName="numberOfSeats" #seatsInput>
-          <div class="alert alert-warning col-md-6" role="alert" *ngIf="!signupForm.controls['numberOfSeats'].valid && signupForm.controls['numberOfSeats'].touched">No zero and negative value.</div>
+          <div class="alert alert-warning col-md-4" role="alert" *ngIf="!signupForm.controls['numberOfSeats'].valid && signupForm.controls['numberOfSeats'].touched">No zero and negative value.</div>
           <br>
         </div>
         <br>

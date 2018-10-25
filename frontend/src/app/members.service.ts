@@ -27,7 +27,6 @@ export class MembersService {
 
   }
 
-  //get all memebers of the signed in lifegroup
   getPeople() {
     if (this.members.length != 0) {
       this.members = [];
@@ -54,7 +53,6 @@ export class MembersService {
     return this.pipe.transform(this.members, filter);
   }
 
-  //mark whoever needs transport
   markMember(member) {
     if (member.seats > 0) {
       this.drivers.push(member);
@@ -72,7 +70,6 @@ export class MembersService {
     this.getLifeGroup;
   }
 
-  //get a list of lifegroups
   getLifeGroup() {
     var units = [];
     this.httpClient.get('http://localhost:5000/api/lifegroup')
@@ -88,7 +85,6 @@ export class MembersService {
     return units;
   }
 
-  //get the notes made by that lifegroup
   getNotes() {
     this.httpClient.get('http://localhost:5000/api/notes?lg=' + this.adminLg)
     .subscribe(
@@ -99,7 +95,6 @@ export class MembersService {
     console.log(this.notes)
   }
 
-  //Search for the full suburb name and its postcode
   searchPostCode(suburb) {
     var suburbs = [];
     this.httpClient.get('http://localhost:5000/api/suburb?suburb='+suburb)
@@ -120,7 +115,6 @@ export class MembersService {
     return suburbs;
   }
 
-  //reinitialise the data when the logout button is clicked
   logout() {
     this.members = [];
     this.passengers = [];
@@ -133,7 +127,6 @@ export class MembersService {
     this.token = "";
   }
 
-  //validates the suburb input
   suburbValidator(): ValidatorFn {
     return (control: AbstractControl): { null: boolean } | ValidationErrors => {
       if (control.value == null) {
