@@ -31,7 +31,7 @@ export class AdminSignupComponent implements OnInit {
   }
 
   onSubmit() {
-    const url = "http://localhost:5000/api/lifegroup";
+    const url = "http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/lifegroup";
     this.httpClient.post(url, {
       "lg": this.lifegroup.nativeElement.value,
       "email": this.email.nativeElement.value,

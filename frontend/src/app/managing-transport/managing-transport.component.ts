@@ -51,7 +51,7 @@ export class ManagingTransportComponent implements OnInit {
     const note = this.noteInput.nativeElement.value;
     this.ms.notes.push(note);
     this.noteInput.nativeElement.value = '';
-    this.httpClient.post('http://localhost:5000/api/notes', {
+    this.httpClient.post('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/notes', {
       lg: this.ms.adminLg,
       note: note
     })
@@ -65,7 +65,7 @@ export class ManagingTransportComponent implements OnInit {
   cancelNote(note) {
     const i = this.notes.indexOf(note);
     this.ms.notes.splice(i, 1);
-    const url = 'http://localhost:5000/api/notes?lg=' + this.ms.adminLg + "&note=" + note
+    const url = 'http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/notes?lg=' + this.ms.adminLg + "&note=" + note
     this.httpClient.delete(url)
       .subscribe(
         (data: any[]) => {

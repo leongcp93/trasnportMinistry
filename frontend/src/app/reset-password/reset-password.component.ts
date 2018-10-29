@@ -37,7 +37,7 @@ export class ResetPasswordComponent implements OnInit {
     const header = new HttpHeaders({
       "Authorization": "Bearer " + this.token
     })
-    const link = 'http://localhost:5000/api/reset-password?password='+this.password.nativeElement.value;
+    const link = 'http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/reset-password?password='+this.password.nativeElement.value;
     this.httpClient.post(link,{}, {headers: header})
     .subscribe((data:any) => {
       if (data.msg == "success") {

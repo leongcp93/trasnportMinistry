@@ -34,7 +34,7 @@ export class MembersService {
     this.header = new HttpHeaders({
       "Authorization": "Bearer " + this.token
     })
-    this.httpClient.get('http://localhost:5000/api/member?lg=' + this.adminLg, {
+    this.httpClient.get('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/member?lg=' + this.adminLg, {
       headers: this.header
     })
     .subscribe(
@@ -72,7 +72,7 @@ export class MembersService {
 
   getLifeGroup() {
     var units = [];
-    this.httpClient.get('http://localhost:5000/api/lifegroup')
+    this.httpClient.get('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/lifegroup')
       .subscribe(
         (data: any[]) => {
           if (data.length) {
@@ -86,7 +86,7 @@ export class MembersService {
   }
 
   getNotes() {
-    this.httpClient.get('http://localhost:5000/api/notes?lg=' + this.adminLg)
+    this.httpClient.get('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/notes?lg=' + this.adminLg)
     .subscribe(
       (data: any[]) => {
         this.notes = data;
@@ -97,7 +97,7 @@ export class MembersService {
 
   searchPostCode(suburb) {
     var suburbs = [];
-    this.httpClient.get('http://localhost:5000/api/suburb?suburb='+suburb)
+    this.httpClient.get('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/suburb?suburb='+suburb)
     .subscribe(
       (data: any[]) => {
         if (data.length > 10) {

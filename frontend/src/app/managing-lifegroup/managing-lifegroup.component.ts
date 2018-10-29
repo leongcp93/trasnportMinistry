@@ -24,7 +24,7 @@ export class ManagingLifegroupComponent implements OnInit {
 
   delLifeGroup(getUnit) {
     if (confirm("Are you sure to delete this lifegroup?")) {
-      const url = "http://localhost:5000/api/lifegroup?lg=" + getUnit; 
+      const url = "http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/lifegroup?lg=" + getUnit; 
       this.httpClient.delete(url, {responseType: 'text'}).subscribe((data:any)=>{
         console.log(data);
         this.units = this.ms.getLifeGroup();
