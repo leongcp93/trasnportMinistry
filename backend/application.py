@@ -32,8 +32,8 @@ application.config.update(
     MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = 465,
     MAIL_USE_SSL = True,
-    MAIL_USERNAME = "xxx@gmail.com",
-    MAIL_PASSWORD = 'secret'
+    MAIL_USERNAME = "bookings@unidus.org.au",
+    MAIL_PASSWORD = 'booking.com'
 )
 mail = Mail(application)
 

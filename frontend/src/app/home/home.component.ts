@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
     this.ms.adminLg = this.lg.nativeElement.value.toLowerCase();
     this.ms.loggedIn = true;
     const password = this.password.nativeElement.value;
-    this.httpClient.get("http://localhost:5000/api/login?lg="
+    this.httpClient.get("http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/login?lg="
     + this.ms.adminLg + "&password="+password)
     .subscribe(
       (data:any[])=>{

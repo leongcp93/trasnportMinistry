@@ -205,31 +205,27 @@ class postcode_finder(object):
 ### Debug: dummy inputs
 if __name__ == "__main__":
     # demo example
-    drivers = {'Vivian':(4113, 4), 
-               'Joy':(4113, 4),
-               'Paul':(4067, 4),
-               'Joel':(4300, 4),
-               'Joyce': (4067, 4)
-               }
+    drivers = {'Jasher' : (4067, 4),
+               'Joy' :(4113, 4),
+               'Paul' :(4067, 4),
+               'Joel' :(4300, 4),
+               'Joyce' : (4067, 4)
+              }
     
-    passengers = {'Jessie Ng':4066,
-                  'Steph':4068,
-                  'Megan':4067,
-                  'Chris':4067,
-                  'Enoch':4067,
-                  'Jason':4067,
-                  'Kenneth':4109,
-                  'Michael':4109,
-                  'Bob':4006,
-                  'Wenxuan':4101,
-                  'Ashley':4067,
-                  'Jessie Li':4068,
-                  'Pingfei':4067,
-                  'Suzy':4101,
-                  'Anna':4101,
+    passengers = {
                   'Andrea':4101,
-                  'Kanye':4101,
-                  'Crystal':4102,
+                  'Anna':4101,
+                  'Steph':4068,
+                  'Ezmond': 4068,
+                  'Jessie Li': 4068,
+                  'Kenneth': 4109,
+                  'Crystal': 4102,
+                  'Jennifer': 4152,
+                  'Jason':4067,
+                  'Megan':4067,
+                  'Ashley': 4067,
+                  'Leslie': 4067,
+                  'Pingfei':4067
                   }
     
     d = find_combinations(drivers, passengers)

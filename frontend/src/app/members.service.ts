@@ -33,8 +33,27 @@ export class MembersService {
 
   }
 
-  getPeople(){
-   return this.peopleService.getPeople();
+  getPeople() {
+    if (this.members.length != 0) {
+      this.members = [];
+    }
+    this.header = new HttpHeaders({
+      "Authorization": "Bearer " + this.token
+    })
+    this.httpClient.get('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/member?lg=' + this.adminLg, {
+      headers: this.header
+    })
+    .subscribe(
+      (data: any[]) => {
+        if (data.length) {
+          for (var i = 0; i < data.length; i++) {
+            this.members.push(data[i]); 
+          }
+        }
+      } 
+    )
+    return this.members;
+
   }
 
 
@@ -51,17 +70,34 @@ export class MembersService {
     this.getLifeGroup;
   }
 
-  getLifeGroup(){
-    return this.lifegroupsService.getLifeGroup();
+  getLifeGroup() {
+    var units = [];
+    this.httpClient.get('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/lifegroup')
+      .subscribe(
+        (data: any[]) => {
+          if (data.length) {
+            for (var i = 0; i < data.length; i++) {
+              units.push(data[i].name.toUpperCase());
+            }
+          }
+        }
+      )
+    return units;
   }
 
-  getNotes(){
-    return this.lifegroupsService.getNotes();
+  getNotes() {
+    this.httpClient.get('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/notes?lg=' + this.adminLg)
+    .subscribe(
+      (data: any[]) => {
+        this.notes = data;
+      }
+    )
+    console.log(this.notes)
   }
 
   searchPostCode(suburb) {
     var suburbs = [];
-    this.httpClient.get('http://localhost:5000/api/suburb?suburb='+suburb)
+    this.httpClient.get('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/suburb?suburb='+suburb)
     .subscribe(
       (data: any[]) => {
         if (data.length > 10) {

@@ -55,7 +55,7 @@ export class SignupComponent implements OnInit {
     if (this.driver) {
       this.numberOfSeats = this.seatsInput.nativeElement.value;
     }
-    this.httpClient.post('http://localhost:5000/api/member', {
+    this.httpClient.post('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/member', {
       lg: this.lg.nativeElement.value,
       name: name,
       seats: this.numberOfSeats,
@@ -64,7 +64,7 @@ export class SignupComponent implements OnInit {
       .subscribe(
         (data: any[]) => {
           this.loading = false;
-          if (data['msg'] != "inserted!") {
+          if (data['msg'] != "success") {
             alert("The member is already in the database");
             return;
           } 

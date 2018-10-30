@@ -66,7 +66,7 @@ export class EditPageComponent implements OnInit {
   }
 
   onSubmit() {
-    this.httpClient.put('http://localhost:5000/api/member',{
+    this.httpClient.put('http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/member',{
       lg: this.ms.adminLg,
       name: this.member['name'],
       suburb: this.suburbInput.nativeElement.value,

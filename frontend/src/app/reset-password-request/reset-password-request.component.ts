@@ -30,7 +30,7 @@ export class ResetPasswordRequestComponent implements OnInit {
     this.err = "";
     this.loading = true;
     const lg = this.lifegroup.nativeElement.value;
-    this.httpClient.get("http://localhost:5000/api/reset-password-request?lg=" + lg)
+    this.httpClient.get("http://transportappbackend-dev.ap-southeast-2.elasticbeanstalk.com/api/reset-password-request?lg=" + lg)
     .subscribe((data:any) => {
       console.log(data);
       this.loading = false;
