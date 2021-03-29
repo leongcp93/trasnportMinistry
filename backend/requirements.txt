@@ -66,7 +66,7 @@ pony==0.7.6
 prometheus-client==0.3.1
 prompt-toolkit==1.0.15
 pycparser==2.19
-Pygments==2.2.0
+Pygments==2.7.4
 PyJWT==1.6.4
 pyparsing==2.2.0
 python-dateutil==2.7.3
